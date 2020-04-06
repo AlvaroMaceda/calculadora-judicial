@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Autonomous Communities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Country</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @autonomous_communities.each do |autonomous_community| %>
+      <tr>
+        <td><%= autonomous_community.name %></td>
+        <td><%= autonomous_community.Country_id %></td>
+        <td><%= link_to 'Show', autonomous_community %></td>
+        <td><%= link_to 'Edit', edit_autonomous_community_path(autonomous_community) %></td>
+        <td><%= link_to 'Destroy', autonomous_community, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Autonomous Community', new_autonomous_community_path %>
