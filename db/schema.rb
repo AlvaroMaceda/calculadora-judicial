@@ -10,21 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_202920) do
+ActiveRecord::Schema.define(version: 2020_04_07_145411) do
 
   create_table "autonomous_communities", force: :cascade do |t|
     t.string "name"
     t.integer "Country_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "holidayable_type"
+    t.integer "holidayable_id"
     t.index ["Country_id"], name: "index_autonomous_communities_on_Country_id"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_autonomous_communities_on_holidays"
   end
 
   create_table "countries", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "holidayable_type"
+    t.integer "holidayable_id"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_country_on_holidays"
+  end
+
+  create_table "holidays", force: :cascade do |t|
+    t.date "date"
+    t.string "holidayable_type", null: false
+    t.integer "holidayable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["holidayable_type", "holidayable_id"], name: "index_holidays_on_holidayable_type_and_holidayable_id"
+  end
+
+  create_table "municipalities", force: :cascade do |t|
+    t.string "name"
+    t.integer "AutonomousCommunity_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "holidayable_type"
+    t.integer "holidayable_id"
+    t.index ["AutonomousCommunity_id"], name: "index_municipalities_on_AutonomousCommunity_id"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_municipalities_on_holidayable_type_and_holidayable_id"
   end
 
   add_foreign_key "autonomous_communities", "Countries"
+  add_foreign_key "municipalities", "AutonomousCommunities"
 end
