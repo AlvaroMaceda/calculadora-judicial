@@ -1,3 +1,3 @@
 class Holiday < ApplicationRecord
-  belongs_to :holidable, polymorphic: true
+  belongs_to :holidayable, polymorphic: true
 end

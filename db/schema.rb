@@ -17,28 +17,28 @@ ActiveRecord::Schema.define(version: 2020_04_08_211520) do
     t.integer "country_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "holidable_type"
-    t.integer "holidable_id"
+    t.string "holidayable_type"
+    t.integer "holidayable_id"
     t.index ["country_id"], name: "index_autonomous_communities_on_country_id"
-    t.index ["holidable_type", "holidable_id"], name: "index_autonomous_communities_on_holidable"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_autonomous_communities_on_holidable"
   end
 
   create_table "countries", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "holidable_type"
-    t.integer "holidable_id"
-    t.index ["holidable_type", "holidable_id"], name: "index_countries_on_holidable"
+    t.string "holidayable_type"
+    t.integer "holidayable_id"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_countries_on_holidable"
   end
 
   create_table "holidays", force: :cascade do |t|
     t.date "date"
-    t.string "holidable_type", null: false
-    t.integer "holidable_id", null: false
+    t.string "holidayable_type", null: false
+    t.integer "holidayable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["holidable_type", "holidable_id"], name: "index_holidays_on_holidable_type_and_holidable_id"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_holidays_on_holidayable_type_and_holidayable_id"
   end
 
   create_table "municipalities", force: :cascade do |t|
@@ -47,11 +47,11 @@ ActiveRecord::Schema.define(version: 2020_04_08_211520) do
     t.integer "autonomous_community_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "holidable_type"
-    t.integer "holidable_id"
+    t.string "holidayable_type"
+    t.integer "holidayable_id"
     t.index ["autonomous_community_id"], name: "index_municipalities_on_autonomous_community_id"
     t.index ["code"], name: "index_municipalities_on_code", unique: true
-    t.index ["holidable_type", "holidable_id"], name: "index_municipalities_on_holidable"
+    t.index ["holidayable_type", "holidayable_id"], name: "index_municipalities_on_holidable"
   end
 
   add_foreign_key "autonomous_communities", "countries"
