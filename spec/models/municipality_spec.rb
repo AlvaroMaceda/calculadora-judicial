@@ -1,5 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Municipality, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  
+  it "has a valid factory" do
+  end
+
+  xit "is invalid without a name" do
+  end
+
+  xit "has a unique name" do
+  end
+
+
 end

@@ -2,5 +2,5 @@ class AutonomousCommunity < ApplicationRecord
   belongs_to :country
   has_many :holidays, as: :holidayable
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 end
