@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Country, type: :model do
+describe Country, type: :model do
 
   it "has a valid factory" do
     country = create(:country)

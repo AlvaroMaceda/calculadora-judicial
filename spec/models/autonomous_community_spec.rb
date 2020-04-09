@@ -1,9 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe AutonomousCommunity, type: :model do
+describe AutonomousCommunity, type: :model do
 
   it "has a valid factory" do
     ac = create(:autonomous_community)
+    puts ac.name
     expect(ac).to be_valid
   end
 
@@ -14,6 +15,7 @@ RSpec.describe AutonomousCommunity, type: :model do
 
   it "has a unique name" do
     ac = create(:autonomous_community)
+    puts ac.name
     repeated_ac = build(:autonomous_community, name: ac.name)
     expect(repeated_ac).not_to be_valid
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Municipality, type: :model do
+describe Municipality, type: :model do
   
   it "has a valid factory" do
   end
