@@ -2,9 +2,12 @@ require 'rails_helper'
 
 describe AutonomousCommunity, type: :model do
 
+  after(:all) do
+    Faker::UniqueGenerator.clear # Clears used values for all generators
+  end
+
   it "has a valid factory" do
     ac = create(:autonomous_community)
-    puts ac.name
     expect(ac).to be_valid
   end
 
@@ -15,7 +18,6 @@ describe AutonomousCommunity, type: :model do
 
   it "has a unique name" do
     ac = create(:autonomous_community)
-    puts ac.name
     repeated_ac = build(:autonomous_community, name: ac.name)
     expect(repeated_ac).not_to be_valid
   end

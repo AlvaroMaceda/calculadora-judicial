@@ -1,7 +1,7 @@
 FactoryBot.define do
 
   factory :country do
-    name { Faker::Address.country }
+    name { Faker::Address.unique.country }
   end
 
   factory :country_with_acs do
