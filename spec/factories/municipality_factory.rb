@@ -1,9 +1,9 @@
 FactoryBot.define do
 
   factory :municipality do
-    # code { Faker::}
-    # Faker::Alphanumeric.alphanumeric(number: 10, min_alpha: 3, min_numeric: 3)
-    name { Faker::Address.municipality }
+    code { Faker::Alphanumeric.unique.alpha(number:5) }
+    name { Faker::Address.city }
+    autonomous_community
   end
 
 end

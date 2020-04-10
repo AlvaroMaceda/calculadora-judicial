@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Municipality, type: :model do
   
-  xit "has a valid factory" do
+  it "has a valid factory" do
     municipality = create(:municipality)
     expect(municipality).to be_valid
   end
@@ -17,7 +17,7 @@ describe Municipality, type: :model do
     expect(municipality).not_to be_valid
   end
 
-  xit "has a unique code" do
+  it "has a unique code" do
     municipality = create(:municipality)
     repeated_municipality = build(:municipality, code: municipality.code)
     expect(repeated_municipality).not_to be_valid    
