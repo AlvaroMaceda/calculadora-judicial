@@ -12,7 +12,14 @@ describe Country, type: :model do
     expect(country).not_to be_valid
   end
 
-  it "has autonomous communities" do
+  it "has multiple autonomous communities" do
+
+    Country.all.each do |country|
+      puts(country.name)
+    end
+    
+    spain = create(:spain)
+    expect(spain.autonomous_communities.length).to be > 0
   end
 
 end
