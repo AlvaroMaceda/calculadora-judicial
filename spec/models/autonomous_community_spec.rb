@@ -6,10 +6,6 @@ describe AutonomousCommunity, type: :model do
     @ac = create(:autonomous_community) 
   end
 
-  after(:all) do
-    Faker::UniqueGenerator.clear # Clears used values for all generators
-  end
-
   it "has a valid factory" do
     expect(@ac).to be_valid
   end
@@ -28,9 +24,9 @@ describe AutonomousCommunity, type: :model do
     expect(@ac.country).not_to be nil
   end
 
-  xit "has multiple municipalities" do
+  it "has multiple municipalities" do
     cuenca = create(:cuenca)
-    expect(spain.autonomous_communities.length).to be > 0
+    expect(cuenca.municipalities.length).to be > 0
   end
 
 end

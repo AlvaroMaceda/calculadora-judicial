@@ -1,8 +1,8 @@
 class AutonomousCommunity < ApplicationRecord
   belongs_to :country
-  has_many :holidays, as: :holidayable
+  has_many :municipalities
 
-  # validates :name, presence: true, uniqueness: { message: "%{attribute} #{data} is already taken" }
+  has_many :holidays, as: :holidayable
 
   validates :name,
     presence: true,
