@@ -1,7 +1,15 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
+import { useState } from 'react';
+
 import Autocomplete from "./autocomplete";
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
+import './deadline_calculator.css'
 
 function DeadlineCalculator(){
+
+    const [startDate, setStartDate] = useState(new Date());
+
     return (
       <div className="row">
         <div className="col-md-8 offset-md-2">
@@ -22,7 +30,16 @@ function DeadlineCalculator(){
 
                 <div className="form-group">
                   <label>Fecha de inicio</label>
-                  <input type="password" className="form-control" id="pwd1" required="" autoComplete="new-password"></input>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <DatePicker
+                        className="form-control col-md-12"
+                        dateFormat="dd/MM/yyyy"
+                        selected={startDate}
+                        onChange={date => setStartDate(date)}
+                      />
+                    </div>
+                  </div>
                   <div className="invalid-feedback">Please enter a password</div>
                 </div>
 
