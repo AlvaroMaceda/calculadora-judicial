@@ -6,24 +6,10 @@ import Autocomplete from "./autocomplete";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
-import createSpinner from './spinner'
+import createSpinner from './loading'
 import DeadlineResults from "./deadline_results";
 
-// const [startDate, setStartDate] = useState(new Date());
-// const [municipality, setMunicipality] = useState('');
-// const [workDays, setworkDays] = useState(20);
-
-const handleSubmit = (event) => {
-  console.log(`
-    startDate: ${startDate}
-    municipality: ${municipality}
-    workDays: ${workDays}
-  `);
-
-  event.preventDefault();
-}
-
-const Spinner = createSpinner(DeadlineResults)
+const Loading = createSpinner(DeadlineResults)
 
 // https://learnetto.com/blog/react-form-validation
 class DeadlineCalculator extends Component {
@@ -35,40 +21,49 @@ class DeadlineCalculator extends Component {
       municipality: '',
       workDays: 0,
       formErrors: {email: '', password: ''},
-      formValid: false
+      formValid: false,
+      loading: false,
     }
   }
 
-  setStartDate(value) {
+  modifyState(changes){
     this.setState({
-        ...this.state,
-        startDate: value
-      })
+      ...this.state,
+      ...changes
+    })
+  }
+
+  setStartDate(value) {
+    this.modifyState({startDate:value})
   }
   setMunicipality(value) {
-    this.setState({
-      ...this.state,
-      municipality: value
-    })
+    this.modifyState({municipality: value})
   }
   setworkDays(value) {
-    this.setState({
-      ...this.state,
-      workDays: value
-    })
+    this.modifyState({workDays: value})
   }
 
   handleSubmit(event){
 
-    event.preventDefault();
-    console.log('banana')
+    event.preventDefault()
+    this.modifyState({loading: true})
 
-    console.log(`
-      startDate: ${this.state.startDate}
-      municipality: ${this.state.municipality}
-      workDays: ${this.state.workDays}
-    `);
-  
+    this.launchRequest()
+  }
+
+  launchRequest(){
+    const delay = 1000
+    let p = new Promise(function(resolve) {
+      setTimeout(resolve, delay);
+      });
+    
+    p.then( () => {
+      console.log('resolved')
+      this.modifyState({loading: false})
+    }).catch( () => {
+      this.modifyState({loading: null})
+      console.log('Error tremendo')
+    })
   }
 
   render() {
@@ -119,9 +114,12 @@ class DeadlineCalculator extends Component {
                 <div className="invalid-feedback">Por favor, introduzca un número</div>
               </div>
 
-              <button type="submit" className="btn btn-success btn-lg btn-block" id="btnLogin">Calcular</button>
+              <button id="btnLogin" type="submitQUITAR" 
+                className="btn btn-success btn-lg btn-block">
+                Calcular
+              </button>
             </form>
-            <Spinner loading={true} results={'banana'}/>
+            <Loading loading={this.state.loading} results={'banana'}/>
           </div>
           
         </div>
