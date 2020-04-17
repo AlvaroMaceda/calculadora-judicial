@@ -1,5 +1,6 @@
 class Api::MunicipalityController < ApplicationController
-  def search
+  def search()
+    puts params
     render json: {
       :municipality => 'search'
     }.to_json
