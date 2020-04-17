@@ -1,4 +1,4 @@
-class V1::BananaController < ApplicationController
+class Api::BananaController < ApplicationController
 
     def index
         render json: {
