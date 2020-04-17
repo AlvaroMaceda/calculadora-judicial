@@ -1,11 +1,13 @@
 import React from "react";
 import { Component } from 'react';
-import { useState } from 'react';
+import style from './deadline_calculator.module.scss'
 
 import Autocomplete from "./autocomplete";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import style from './deadline_calculator.module.scss'
+
+import createSpinner from './spinner'
+import DeadlineResults from "./deadline_results";
 
 // const [startDate, setStartDate] = useState(new Date());
 // const [municipality, setMunicipality] = useState('');
@@ -21,11 +23,13 @@ const handleSubmit = (event) => {
   event.preventDefault();
 }
 
+const Spinner = createSpinner(DeadlineResults)
+
 // https://learnetto.com/blog/react-form-validation
 class DeadlineCalculator extends Component {
 
   constructor (props) {
-    super(props);
+    super(props);    
     this.state = {
       startDate: new Date(),
       municipality: '',
@@ -115,10 +119,11 @@ class DeadlineCalculator extends Component {
                 <div className="invalid-feedback">Por favor, introduzca un número</div>
               </div>
 
-              <button type="submit" className="btn btn-success btn-lg float-right" id="btnLogin">Calcular</button>
-
+              <button type="submit" className="btn btn-success btn-lg btn-block" id="btnLogin">Calcular</button>
             </form>
+            <Spinner loading={true} results={'banana'}/>
           </div>
+          
         </div>
       </div>
     )
