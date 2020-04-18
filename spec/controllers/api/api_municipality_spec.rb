@@ -7,10 +7,13 @@ describe Api::MunicipalityController, type: :controller do
     describe "GET #search" do
 
         before(:all) do
-            create(:municipality, name: "Alcala", code: "50001")
-            create(:municipality, name: "Calahorra", code: "50002")
-            create(:municipality, name: "Calcatta", code: "50003")
-            create(:municipality, name: "La Costa Este", code: "50004")
+            narnia = create(:autonomous_community, name: 'Narnia')
+            teruel = create(:autonomous_community, name: 'Teruel')
+            create(:municipality, name: "Alcala", code: "50001", autonomous_community: narnia )
+            create(:municipality, name: "Calahorra", code: "50002", autonomous_community: narnia)
+            create(:municipality, name: "Calcatta", code: "50003", autonomous_community: narnia)
+            create(:municipality, name: "La Costa Este", code: "80001", autonomous_community: teruel)
+            create(:municipality, name: "Sal calada", code: "80002", autonomous_community: teruel)
         end
 
         before :each do
@@ -18,21 +21,18 @@ describe Api::MunicipalityController, type: :controller do
         end
   
         it 'searches the complete name' do
-            # get :search, params: { name: 'Calahorra' }
-            # get :search, format: :json
-            # headers = { "ACCEPT" => "application/json" }
-            # get :search, :headers => headers
-            # get :search, :format => :json
-            # get 'search', :format => :json
-            get 'search', as: :json
-            
-            puts '****************************'
-            puts response.status
-            puts response.body
-            puts '****************************'
+            get 'search', as: :json, params: { name: 'Calahorra' }
 
             expect(response).to have_http_status(:success)
-            expect(response).to match_response_schema("municipality_search") 
+            expect(response).to match_response_schema("municipality_search")
+
+            foo = {
+                "id": 25,
+                "email": "john.smith@example.com",
+                "name": "John"
+              }
+
+            expect(response).to include_json(foo)
         end
 
         it 'searches at the midle of the name' do
@@ -45,6 +45,9 @@ describe Api::MunicipalityController, type: :controller do
         end
 
         it 'works when there are no matches' do
+        end
+
+        it 'ignores spaces when searching' do
         end
 
     end

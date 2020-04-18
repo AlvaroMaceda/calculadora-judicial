@@ -9,7 +9,8 @@
                     "type": "object",
                     "properties": {
                         "code": { "type": "string" },
-                        "name": { "type": "string" }
+                        "name": { "type": "string" },
+                        "autonomous_community_id": { "type": "integer" }
                     },
                     "required": [
                         "code",
