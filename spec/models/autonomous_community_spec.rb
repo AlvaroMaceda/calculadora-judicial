@@ -2,12 +2,10 @@ require 'rails_helper'
 
 describe AutonomousCommunity, type: :model do
 
-  before(:all) do
-    @ac = create(:autonomous_community) 
-  end
+  let(:ac) { create(:autonomous_community) }
 
   it "has a valid factory" do
-    expect(@ac).to be_valid
+    expect(ac).to be_valid
   end
 
   it "is invalid without a name" do
@@ -16,12 +14,12 @@ describe AutonomousCommunity, type: :model do
   end
 
   it "has a unique name" do
-    repeated_ac = build(:autonomous_community, name: @ac.name)
+    repeated_ac = build(:autonomous_community, name: ac.name)
     expect(repeated_ac).not_to be_valid
   end
 
   it "belongs to a country" do
-    expect(@ac.country).not_to be nil
+    expect(ac.country).not_to be nil
   end
 
   it "has multiple municipalities" do

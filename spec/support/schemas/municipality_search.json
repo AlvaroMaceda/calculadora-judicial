@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": [ "municipalities" ],    
+    "properties": {
+        "municipalities": {
+            "type": "array",
+            "items": {
+                    "type": "object",
+                    "properties": {
+                        "code": { "type": "string" },
+                        "name": { "type": "string" }
+                    },
+                    "required": [
+                        "code",
+                        "name"
+                    ]
+            }
+        }
+    },
+
+
+    "examples": [
+        [
+            {
+                "name": "Calahorra",
+                "code": "0005"
+            },
+            {
+                "code": "0006",
+                "name": "Bilbao"
+            }
+        ]
+    ]
+
+    
+}
