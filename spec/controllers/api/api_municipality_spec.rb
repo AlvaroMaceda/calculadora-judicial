@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe Api::MunicipalityController, type: :controller do
+
+    render_views
+    
     describe "GET #search" do
 
         before(:all) do
@@ -20,7 +23,8 @@ describe Api::MunicipalityController, type: :controller do
             # headers = { "ACCEPT" => "application/json" }
             # get :search, :headers => headers
             # get :search, :format => :json
-            get 'search', :format => :json
+            # get 'search', :format => :json
+            get 'search', as: :json
             
             puts '****************************'
             puts response.status
