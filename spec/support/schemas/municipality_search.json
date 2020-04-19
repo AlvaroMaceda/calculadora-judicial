@@ -10,7 +10,7 @@
                     "properties": {
                         "code": { "type": "string" },
                         "name": { "type": "string" },
-                        "autonomous_community_id": { "type": "integer" }
+                        "ac_id": { "type": "integer" }
                     },
                     "required": [
                         "code",
@@ -25,11 +25,13 @@
         [
             {
                 "name": "Calahorra",
-                "code": "0005"
+                "code": "0005",
+                "ac_id": 5
             },
             {
                 "code": "0006",
-                "name": "Bilbao"
+                "name": "Bilbao",
+                "ac_id": 5
             }
         ]
     ]
