@@ -39,7 +39,10 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'solargraph'
+  gem 'spring-commands-rspec'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'solargraph' # For vscode
 end
 
 group :test do

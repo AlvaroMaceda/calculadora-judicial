@@ -32,3 +32,6 @@ Use ```rails server``` to launch the project in development mode. You can speed 
 The project will be available at http://localhost:3000
 
 Alternatively, you can use [overmind](https://github.com/DarthSim/overmind). Install it and run ```overmind start```
+
+### Test
+You can run tests with ```rspec``` or watch for changes using ```guard```
