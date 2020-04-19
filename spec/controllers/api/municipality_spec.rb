@@ -1,5 +1,10 @@
 require 'rails_helper'
 
+def BANANA(schema)
+    expect(response).to have_http_status(:success)
+    expect(response).to match_response_schema(schema)
+end
+
 describe Api::MunicipalityController, type: :controller do
 
     render_views
@@ -26,25 +31,41 @@ describe Api::MunicipalityController, type: :controller do
             expect(response).to have_http_status(:success)
             expect(response).to match_response_schema("municipality_search")
 
-            puts response.body
-            puts @narnia
-            expected = {
-                municipalities: [
-                    {
-                        code: "50002",
-                        name: "Calahorra",
-                        ac_id: @narnia.id
-                    }
-                ]
-            }.to_json
+            expected = {municipalities: [
+                { code: "50002", name: "Calahorra", ac_id: @narnia.id }
+            ]}.to_json
             # expect(response).to include_json(foo)
             expect(response.body).to eq(expected)
         end
 
-        it 'searches at the midle of the name' do
+        it 'searches at the midle of the name' do 
+            get 'search', as: :json, params: { name: 'atta' }
+
+            expect(response).to have_http_status(:success)
+            expect(response).to match_response_schema("municipality_search")
+            
+            expected = {municipalities: [
+                { code: "50003", name: "Calcatta", ac_id: @narnia.id }
+            ]}.to_json
+            expect(response.body).to eq(expected)
         end
 
-        it 'it\s not case-sensitive' do
+        xit 'it\s not case-sensitive' do
+            get 'search', as: :json, params: { name: 'cAL' }
+
+            expect(response).to have_http_status(:success)
+            expect(response).to match_response_schema("municipality_search")
+            
+            puts response.body
+            expected =[
+                { code: "50003", name: "Calcatta", ac_id: @narnia.id },
+                { code: "50001", name: "Alcala", ac_id: @narnia.id },
+                { code: "50002", name: "Calahorra", ac_id: @narnia.id },
+                { code: "80002", name: "Sal calada", ac_id: @teruel.id },
+            ]
+            parsed_body = JSON.parse(response.body)
+            puts parsed_body['municipalities']
+            expect(parsed_body['municipalities']).to match_unordered_json(expected)            
         end
 
         it 'returns more than one match' do

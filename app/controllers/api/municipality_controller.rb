@@ -1,5 +1,5 @@
 class Api::MunicipalityController < ApplicationController
   def search()
-    @municipalities = Municipality.find_by(name: "Calahorra")
+    @municipalities = Municipality.where(name: "Calahorra")
   end
 end
