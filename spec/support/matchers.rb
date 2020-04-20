@@ -1,47 +1,33 @@
 # https://stackoverflow.com/questions/38991873/can-i-use-a-built-in-rspec-matcher-in-a-custom-matcher
 module My
     module Matchers
-      def be_valid_responde(schema)
-        BeValidResponse.new schema
+      def be_success_responde(schema)
+        BeSuccessResponse.new schema
       end
   
-      class BeValidResponse
+      class BeSuccessResponse
+
         include RSpec::Matchers
-        include RSpec::Rails::Matchers::HaveHttpStatus
-  
+        include RSpec::Rails::Matchers
+
         def initialize(schema)
           @schema = schema
+          @status_matcher = have_http_status(:success)
+          @schema_matcher = match_response_schema("municipality_search")
         end
   
+        # We won't check json schema if response is not :success
         def matches?(response)
-            # @foo = include module RSpec::Rails::Matchers::HaveHttpStatus
-        #   actual = Addressable::URI.parse(url).query_values
-        #   @matcher = include @expected
-        #   @matcher.matches? actual
-
-
-            # puts self.matcher_for_status
-            puts '*****************'
-            # puts self.have_http_status
-            foo= self.have_http_status(response)
-            puts response.status
-            puts foo.matches? :success
-
-            # puts '-----------'    
-            # foo = have_http_status(:success)
-            # puts foo.inspect
-            # # puts foo.method_name
-            # puts response.status
-            # puts foo.matches? response
-            # puts '-----------'
-            # false
+            @status_ok = @status_matcher.matches? response
+            return false unless @status_ok
+            @schema_matcher.matches? response
         end
   
         def failure_message
-        #   @matcher.failure_message
-            'Tlemendo error'
-        end
-  
+          return @status_matcher.failure_message unless @status_ok
+          @schema_matcher.failure_message
+        end        
+
       end
     end
   end
