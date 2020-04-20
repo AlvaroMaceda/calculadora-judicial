@@ -7,14 +7,25 @@ describe Api::MunicipalityController, type: :controller do
     
     describe "GET #search" do
 
+        def expect_hash(municipality)
+            return { code: municipality[:code], name:municipality[:name], ac_id: municipality[:autonomous_community].id}
+        end
+        
         before(:all) do
             @narnia = create(:autonomous_community, name: 'Narnia')
             @teruel = create(:autonomous_community, name: 'Teruel')
-            create(:municipality, name: "Alcala", code: "50001", autonomous_community: @narnia )
-            create(:municipality, name: "Calahorra", code: "50002", autonomous_community: @narnia)
-            create(:municipality, name: "Calcatta", code: "50003", autonomous_community: @narnia)
-            create(:municipality, name: "La Costa Este", code: "80001", autonomous_community: @teruel)
-            create(:municipality, name: "Sal calada", code: "80002", autonomous_community: @teruel)
+
+            @alcala = {name: "Alcala", code: "50001", autonomous_community: @narnia }
+            @calahorra = {name: "Calahorra", code: "50002", autonomous_community: @narnia}
+            @calcatta = {name: "Calcatta", code: "50003", autonomous_community: @narnia}
+            @la_costa_este = {name: "La Costa Este", code: "80001", autonomous_community: @teruel}
+            @sal_calada = {name: "Sal calada", code: "80002", autonomous_community: @teruel}
+    
+            create(:municipality, @alcala )
+            create(:municipality, @calahorra )
+            create(:municipality, @calcatta )
+            create(:municipality, @la_costa_este )
+            create(:municipality, @sal_calada )
         end
 
         before :each do
@@ -26,8 +37,9 @@ describe Api::MunicipalityController, type: :controller do
 
             expect(response).to be_json_success_response("municipality_search")
 
+            # puts @calahorra
             expected = {municipalities: [
-                { code: "50002", name: "Calahorra", ac_id: @narnia.id }
+                expect_hash(@calahorra)
             ]}.to_json
             # expect(response).to include_json(foo)
             expect(response.body).to eq(expected)
@@ -39,35 +51,42 @@ describe Api::MunicipalityController, type: :controller do
             expect(response).to be_json_success_response("municipality_search")
             
             expected = {municipalities: [
-                { code: "50003", name: "Calcatta", ac_id: @narnia.id }
+                expect_hash(@calcatta)
             ]}.to_json
             expect(response.body).to eq(expected)
         end
 
-        xit 'it\s not case-sensitive' do
-            get 'search', as: :json, params: { name: 'cAL' }
+        it 'it\s not case-sensitive' do
+            get 'search', as: :json, params: { name: 'HoRRa' }
 
-            expect(response).to be_json_success_responde("municipality_search")
+            expect(response).to be_json_success_response("municipality_search")
             
-            puts response.body
-            expected =[
-                { code: "50003", name: "Calcatta", ac_id: @narnia.id },
-                { code: "50001", name: "Alcala", ac_id: @narnia.id },
-                { code: "50002", name: "Calahorra", ac_id: @narnia.id },
-                { code: "80002", name: "Sal calada", ac_id: @teruel.id },
-            ]
-            parsed_body = JSON.parse(response.body)
-            puts parsed_body['municipalities']
-            expect(parsed_body['municipalities']).to match_unordered_json(expected)            
-        end
-
-        it 'returns more than one match' do
+            expected = {municipalities: [
+                expect_hash(@calahorra)
+            ]}.to_json
+            expect(response.body).to eq(expected)            
         end
 
         it 'works when there are no matches' do
+            get 'search', as: :json, params: { name: 'non existing municipality' }
+
+            expect(response).to be_json_success_response("municipality_search")
+
+            expected = {municipalities: []}.to_json
+            expect(response.body).to eq(expected) 
         end
 
         it 'ignores spaces when searching' do
+            get 'search', as: :json, params: { name: 'lca' }
+
+            expect(response).to be_json_success_response("municipality_search")
+
+            expected = {municipalities: [
+                expect_hash(@alcala),
+                expect_hash(@calcatta),
+                expect_hash(@sal_calada)
+            ]}.to_json
+            expect(response.body).to eq(expected)  
         end
 
     end
