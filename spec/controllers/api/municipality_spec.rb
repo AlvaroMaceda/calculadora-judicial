@@ -1,8 +1,27 @@
 require 'rails_helper'
+# include My::Matchers
 
 def BANANA(schema)
     expect(response).to have_http_status(:success)
     expect(response).to match_response_schema(schema)
+end
+
+RSpec::Matchers.define :be_valid_responde do |schema|
+    match do |response|
+        have_http_status(:success).matches? response
+        match_response_schema("municipality_search").matches? response
+    end
+    failure_message do |actual_response|
+        puts '-----------------'
+        puts @banana
+        puts '-----------------'
+        # "expected that #{actual_monster} would have all the attributes the same as #{expected_monster}. Attributes:\n
+        # ACTUAL | EXPECTED\n
+        # #{actual_monster.name} | #{expected_monster.name}\n
+        # #{actual_monster.skin_color} | #{expected_monster.skin_color}\n
+        # #{actual_monster.size} | #{expected_monster.size}\n
+        # #{actual_monster.health} | #{expected_monster.health}\n"
+    end
 end
 
 describe Api::MunicipalityController, type: :controller do
@@ -31,6 +50,10 @@ describe Api::MunicipalityController, type: :controller do
             expect(response).to have_http_status(:success)
             expect(response).to match_response_schema("municipality_search")
 
+            # puts (response.status)
+            response.status = 500
+            expect(response).to be_valid_responde("municipality_search")
+
             expected = {municipalities: [
                 { code: "50002", name: "Calahorra", ac_id: @narnia.id }
             ]}.to_json
@@ -38,7 +61,7 @@ describe Api::MunicipalityController, type: :controller do
             expect(response.body).to eq(expected)
         end
 
-        it 'searches at the midle of the name' do 
+        xit 'searches at the midle of the name' do 
             get 'search', as: :json, params: { name: 'atta' }
 
             expect(response).to have_http_status(:success)
