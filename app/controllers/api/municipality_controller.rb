@@ -1,5 +1,8 @@
 class Api::MunicipalityController < ApplicationController
   def search()
-    @municipalities = Municipality.where(name: "Calahorra")
+    search_expression = ".*#{params['name']}.*"
+    @municipalities = Municipality.where(
+      "name REGEXP ?", search_expression
+    )
   end
 end

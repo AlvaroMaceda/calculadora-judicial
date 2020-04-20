@@ -33,10 +33,10 @@ describe Api::MunicipalityController, type: :controller do
             expect(response.body).to eq(expected)
         end
 
-        xit 'searches at the midle of the name' do 
+        it 'searches at the midle of the name' do 
             get 'search', as: :json, params: { name: 'atta' }
 
-            expect(response).to be_success_responde("municipality_search")
+            expect(response).to be_json_success_response("municipality_search")
             
             expected = {municipalities: [
                 { code: "50003", name: "Calcatta", ac_id: @narnia.id }
@@ -47,7 +47,7 @@ describe Api::MunicipalityController, type: :controller do
         xit 'it\s not case-sensitive' do
             get 'search', as: :json, params: { name: 'cAL' }
 
-            expect(response).to be_success_responde("municipality_search")
+            expect(response).to be_json_success_responde("municipality_search")
             
             puts response.body
             expected =[
