@@ -43,6 +43,8 @@ group :development do
   gem 'guard'
   gem 'guard-rspec'
   gem 'solargraph' # For vscode
+  gem "ruby-debug-ide", "~> 0.7.2", :group => :development
+  gem "debase", "~> 0.2.4", :group => :development
 end
 
 group :test do
@@ -61,7 +63,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem "ruby-debug-ide", "~> 0.7.2", :group => :development
-gem "debase", "~> 0.2.4", :group => :development
 gem "bootstrap", "~> 4.4"
 gem "font-awesome-rails", "~> 4.7"
