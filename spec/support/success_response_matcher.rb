@@ -1,7 +1,7 @@
 # https://stackoverflow.com/questions/38991873/can-i-use-a-built-in-rspec-matcher-in-a-custom-matcher
 module My
     module Matchers
-      def be_json_success_responde(schema)
+      def be_json_success_response(schema)
         BeJSonSuccessResponse.new schema
       end
   
