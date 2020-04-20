@@ -1,7 +1,6 @@
 class Country < ApplicationRecord
     has_many :autonomous_communities
-    
-    has_many :holidays, as: :holidayable
+    include Holidayable
 
     validates :name, presence: true
 end
