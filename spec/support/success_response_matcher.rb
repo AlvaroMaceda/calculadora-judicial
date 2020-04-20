@@ -1,11 +1,11 @@
 # https://stackoverflow.com/questions/38991873/can-i-use-a-built-in-rspec-matcher-in-a-custom-matcher
 module My
     module Matchers
-      def be_success_responde(schema)
-        BeSuccessResponse.new schema
+      def be_json_success_responde(schema)
+        BeJSonSuccessResponse.new schema
       end
   
-      class BeSuccessResponse
+      class BeJSonSuccessResponse
 
         include RSpec::Matchers
         include RSpec::Rails::Matchers
