@@ -2,33 +2,51 @@ require 'rails_helper'
 
 describe Holiday, type: :model do
   
-  it 'has a valid factory' do
-    h = create(:holiday)
+  it 'has a valid factory for country' do
+    h = create(:holiday, :for_country, date: Date.today)
     expect(h).to be_valid
   end
 
-  context('Country') do
+  it 'has a valid factory for autnomous community' do
+    h = create(:holiday, :for_autonomous_community, date: Date.today)
+    expect(h).to be_valid
+  end
 
-    before(:all) do
-      @a_country = create(:country, name: 'Nevermore')
-    end
+  it 'has a valid factory for municipality' do
+    h = create(:holiday, :for_municipality, date: Date.today)
+    expect(h).to be_valid
+  end
 
-    it 'can have holidays' do
-      christmas = create(:holiday, holidayable: @a_country)
+  it 'must have a date' do
+    holiday = build(:holiday, date: nil)
+    expect(holiday).not_to be_valid
+  end
 
-      expect(christmas).to be_valid
-      expect(christmas.holidayable.class.name).to eq "Country"
-    end
+  it 'does not admit an invalid date' do
+    holiday = build(:holiday, date: 'banana')
+    expect(holiday).not_to be_valid
+  end
 
-    xit 'can\'t have the same date as another holiday in the country' do
-    end
 
-    xit 'can have the same date as a holiday in another country' do
-    end
+  it 'can\'t have the same date as another holiday in the holidayable' do
+    date = Date.new(2020,12,25)
+    one_country = create(:country, name: 'Nevermore')
 
-    xit 'can have the same date as a holiday in an autonomous community of this country' do
-    end
+    christmas = create(:holiday, holidayable:one_country, date: date)
+    christmas2 = build(:holiday, holidayable:one_country, date: date)
 
+    expect(christmas2).not_to be_valid
+  end
+
+  it 'can have the same date as a holiday in another holidayable' do
+    date = Date.new(2020,12,25)
+    one_ac = create(:autonomous_community, name: 'Castilla la Ancha')
+    another_ac = create(:autonomous_community, name: 'Al-Andalus')
+
+    christmas = create(:holiday, holidayable: one_ac, date: date)
+    christmas2 = build(:holiday, holidayable: another_ac, date: date)
+
+    expect(christmas2).to be_valid
   end
 
 end
