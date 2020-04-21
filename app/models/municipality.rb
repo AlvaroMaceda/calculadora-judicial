@@ -1,4 +1,6 @@
 class Municipality < ApplicationRecord
+  self.primary_key = 'code'
+
   belongs_to :autonomous_community
   has_many :municipalities
 
