@@ -1,7 +1,11 @@
 FactoryBot.define do
 
+  sequence :municipality_code do |n|
+    '%05i' % n
+  end
+
   factory :municipality do
-    code { Faker::Alphanumeric.unique.alphanumeric(number:5, min_numeric: 5) }
+    code { generate(:municipality_code) }
     name { Faker::Address.city }
     autonomous_community
   end
