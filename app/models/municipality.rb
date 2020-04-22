@@ -1,8 +1,7 @@
 class Municipality < ApplicationRecord
   self.primary_key = 'code'
 
-  belongs_to :autonomous_community
-  has_many :municipalities
+  belongs_to :autonomous_community, primary_key: 'code'
 
   has_many :holidays, as: :holidayable
 
