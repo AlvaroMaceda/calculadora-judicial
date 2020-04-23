@@ -45,10 +45,11 @@ class DeadlineCalculator
 
     We will add an extra weekend if the day ends in saturday, sunday or beyond.
     For example:
-        - If we start in We and count 2 days we will end in Fr, no extra weekend
-        - If we start in We and count 3 days we will end in Sa, extra weekend
-        - If we start in We and count 4 days we will end in Su, extra weekend
-        - If we start in Fr and count 1 days we will end in Sa, extra weekend
+        - If we start in We and count 2 days we will end in Fr (it's in friday's position on top row):
+          no extra weekend
+        - If we start in We and count 3 days we will end in Sa: extra weekend
+        - If we start in We and count 4 days we will end in Su: extra weekend
+        - If we start in Fr and count 1 days we will end in Sa: extra weekend
 
     day_of_week         shifts_with_extra_weekend
               1	  Mo    none
