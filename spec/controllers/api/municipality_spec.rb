@@ -15,11 +15,11 @@ describe Api::MunicipalityController, type: :controller do
             @narnia = create(:autonomous_community, name: 'Narnia')
             @teruel = create(:autonomous_community, name: 'Teruel')
 
-            @alcala = {name: "Alcala", code: "50001", autonomous_community: @narnia }
-            @calahorra = {name: "Calahorra", code: "50002", autonomous_community: @narnia}
-            @calcatta = {name: "Calcatta", code: "50003", autonomous_community: @narnia}
-            @la_costa_este = {name: "La Costa Este", code: "80001", autonomous_community: @teruel}
-            @sal_calada = {name: "Sal calada", code: "80002", autonomous_community: @teruel}
+            @alcala = {name: "Alcala - search tests", code: "50001", autonomous_community: @narnia }
+            @calahorra = {name: "Calahorra - search tests", code: "50002", autonomous_community: @narnia}
+            @calcatta = {name: "Calcatta - search tests", code: "50003", autonomous_community: @narnia}
+            @la_costa_este = {name: "La Costa Este - search tests", code: "80001", autonomous_community: @teruel}
+            @sal_calada = {name: "Sal calada - search tests", code: "80002", autonomous_community: @teruel}
     
             create(:municipality, @alcala )
             create(:municipality, @calahorra )
@@ -87,6 +87,15 @@ describe Api::MunicipalityController, type: :controller do
                 expect_hash(@sal_calada)
             ]}.to_json
             expect(response.body).to eq(expected)  
+        end
+
+        it 'returns an empty array if search string is empty' do
+            get 'search', as: :json, params: { name: '' }
+
+            expect(response).to be_json_success_response("municipality_search")
+
+            expected = {municipalities: []}.to_json
+            expect(response.body).to eq(expected)              
         end
 
     end
