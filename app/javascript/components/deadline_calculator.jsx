@@ -17,7 +17,7 @@ class DeadlineCalculator extends Component {
   constructor (props) {
     super(props);    
     this.state = {
-      startDate: new Date(),
+      startDate: new Date(), //CHANGE TO notificationDate
       municipality: '',
       workDays: 0,
       formErrors: {email: '', password: ''},
