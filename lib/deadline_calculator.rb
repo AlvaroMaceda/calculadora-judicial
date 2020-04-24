@@ -10,9 +10,9 @@ class DeadlineCalculator
         @holidayable = holidayable
     end
 
-    def from_date(date, days)
+    def deadline(notification_date, days)
     
-        start_date = next_working_day(date)
+        start_date = next_working_day(notification_date)
 
         whole_weeks = days / WORKING_DAYS_IN_A_WEEK
         single_days = days % WORKING_DAYS_IN_A_WEEK - 1 # starting day does not count
