@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_155751) do
     t.integer "holidayable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"holidayable\", \"date\"", name: "index_holidays_on_holidayable_and_date", unique: true
+    t.index ["holidayable_type", "holidayable_id", "date"], name: "index_holidays_on_holidayable_type_and_holidayable_id_and_date", unique: true
     t.index ["holidayable_type", "holidayable_id"], name: "index_holidays_on_holidayable_type_and_holidayable_id"
   end
 
