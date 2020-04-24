@@ -1,70 +1,91 @@
 //https://github.com/microsoft/vscode-recipes/tree/master/debugging-Ruby-on-Rails
+// If you are using rvm you must launch vscode from the command line in project's directory
+// needs ruby-debug extension
 {
-  "version": "0.2.0",
-  "configurations": [
-      {
-          "name": "Start Rails server",
-          "type": "Ruby",
-          "request": "launch",
-          "cwd": "${workspaceRoot}",
-          "program": "${workspaceRoot}/bin/rails",
-          "args": [
-              "server",
-              "-p",
-              "3000"
-          ]
-      },
-      {
-          "name": "Debug Rails server",
-          "type": "Ruby",
-          "request": "launch",
-          "cwd": "${workspaceRoot}",
-          "useBundler": true,
-          "program": "${workspaceRoot}/bin/rails",
-          "args": [
-              "server",
-              "-p",
-              "3000"
-          ]
-      },      
-      {
-          "name": "Run RSpec - all",
-          "type": "Ruby",
-          "request": "launch",
-          "cwd": "${workspaceRoot}",
-          "program": "./bin/rspec",
-          "args": [
-              "--pattern",
-              "${workspaceRoot}/spec/**/*_spec.rb"
-          ]
-      },
-      // This does not work
-      {
-          "name": "Debug RSpec - open spec file",
-          "type": "Ruby",
-          "request": "launch",
-          "cwd": "${workspaceRoot}",
-          "useBundler": true,
-          "pathToBundler": "/home/alvaro/.rvm/gems/ruby-2.6.3@calculadora_judicial/bin/bundle",
-          "pathToRDebugIDE": "/home/alvaro/.rvm/gems/ruby-2.6.3@calculadora_judicial/bin/rdebug-ide",
-          "debuggerPort": "1235",
-          "program": "./bin/rspec",
-          "args": [
-              "${file}"
-          ]
-      },
-      // This does not work
-      {
-        "name": "Debug RSpec - open spec file on a certain line",
-        "type": "Ruby",
-        "request": "launch",
-        "cwd": "${workspaceRoot}",
-        "useBundler": true,
-        "pathToBundler": "/home/alvaro/.rvm/gems/ruby-2.6.3@calculadora_judicial/bin/bundle",
-        "pathToRDebugIDE": "/home/alvaro/.rvm/gems/ruby-2.6.3@calculadora_judicial/bin/rdebug-ide",
-        "debuggerPort": "1235",
-        "program": "./bin/rspec",
-        "args": ["${file}:${lineNumber}"]
-      }
-  ]
+"version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run RSpec - open spec file on a certain line",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "useBundler": true,
+            "pathToBundler": "/home/alvaro/.rvm/gems/ruby-2.6.3@calculadora_judicial/bin/bundle",
+            "pathToRDebugIDE": "/home/alvaro/.rvm/gems/ruby-2.6.3@calculadora_judicial/bin/rdebug-ide",
+            "debuggerPort": "1235",
+            "program": "./bin/rspec",
+            "args": ["${file}:${lineNumber}"]
+        },
+        {
+            "name": "Debug RSpec (Active File)",
+            "type": "ruby-debug",
+            "request": "launch",            
+            "program": "rspec",
+            "programArgs": [
+                "-I",
+                "${workspaceFolder}",
+                "${file}"
+            ],
+            "useBundler": false
+        },
+        {
+            "name": "Debug Rails server",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "useBundler": true,
+            "program": "${workspaceRoot}/bin/rails",
+            "args": [
+                "server",
+                "-p",
+                "3000"
+            ]
+        },
+        {
+            "name": "Debug RSpec (All)",
+            "type": "ruby-debug",
+            "request": "launch",            
+            "program": "rspec",
+            "programArgs": [
+                "--pattern",
+                "${workspaceRoot}/spec/**/*_spec.rb"
+            ],
+            "useBundler": false
+        },
+        {
+            "name": "Run RSpec (Active File)",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "useBundler": true,
+            "debuggerPort": "1235",
+            "program": "./bin/rspec",
+            "args": [
+                "${file}"
+            ]
+        },
+        {
+            "name": "Run RSpec - all",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "./bin/rspec",
+            "args": [
+                "--pattern",
+                "${workspaceRoot}/spec/**/*_spec.rb"
+            ]
+        },
+        {
+            "name": "Start Rails server",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rails",
+            "args": [
+                "server",
+                "-p",
+                "3000"
+            ]
+        }
+    ]
 }
