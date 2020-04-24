@@ -15,21 +15,21 @@ class DeadlineCalculator
         start_date = next_working_day(date)
 
         whole_weeks = days / WORKING_DAYS_IN_A_WEEK
-        single_days = days % WORKING_DAYS_IN_A_WEEK
+        single_days = days % WORKING_DAYS_IN_A_WEEK - 1 # starting day does not count
         
         days_to_add =  (whole_weeks * DAYS_IN_A_WEEK)
         days_to_add += single_days
         days_to_add += DAYS_IN_A_WEEKEND if extra_weekend?(start_date,single_days)
 
-        return date+days_to_add
+        return start_date+days_to_add
     end
 
     private
 
     def next_working_day(date)
         return date+2 if date.saturday?
-        return date+1 if date.sunday? 
-        date
+        return date+3 if date.friday? 
+        date+1
     end
 
     """
