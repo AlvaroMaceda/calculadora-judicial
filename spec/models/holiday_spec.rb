@@ -3,17 +3,17 @@ require 'rails_helper'
 describe Holiday, type: :model do
   
   it 'has a valid factory for country' do
-    h = create(:holiday, :for_country, date: Date.today)
+    h = create(:holiday, :for_country, date: Date.parse('21 Oct 2015'))
     expect(h).to be_valid
   end
 
   it 'has a valid factory for autnomous community' do
-    h = create(:holiday, :for_autonomous_community, date: Date.today)
+    h = create(:holiday, :for_autonomous_community, date: Date.parse('21 Oct 2015'))
     expect(h).to be_valid
   end
 
   it 'has a valid factory for municipality' do
-    h = create(:holiday, :for_municipality, date: Date.today)
+    h = create(:holiday, :for_municipality, date: Date.parse('21 Oct 2015'))
     expect(h).to be_valid
   end
 
