@@ -30,7 +30,7 @@ describe Holiday, type: :model do
 
   it 'can\'t have the same date as another holiday in the holidayable' do
     date = Date.new(2020,12,25)
-    one_country = create(:country, name: 'Nevermore')
+    one_country = create(:country)
 
     christmas = create(:holiday, holidayable:one_country, date: date)
     christmas2 = build(:holiday, holidayable:one_country, date: date)
@@ -40,8 +40,8 @@ describe Holiday, type: :model do
 
   it 'can have the same date as a holiday in another holidayable' do
     date = Date.new(2020,12,25)
-    one_ac = create(:autonomous_community, name: 'Castilla la Ancha')
-    another_ac = create(:autonomous_community, name: 'Al-Andalus')
+    one_ac = create(:autonomous_community)
+    another_ac = create(:autonomous_community)
 
     christmas = create(:holiday, holidayable: one_ac, date: date)
     christmas2 = build(:holiday, holidayable: another_ac, date: date)

@@ -24,7 +24,8 @@ describe AutonomousCommunity, type: :model do
   end
 
   it "belongs to a country" do
-    expect(ac.country).not_to be nil
+    ac.country = nil
+    expect(ac).not_to be_valid
   end
 
   it "has a unique code for a country" do
@@ -34,13 +35,13 @@ describe AutonomousCommunity, type: :model do
 
   it "can repeat code for another country" do
     another_country = create(:country)
-    repeated_ac = build(:autonomous_community, name: ac.name, country: another_country)
+    repeated_ac = build(:autonomous_community, code: ac.code, country: another_country)
     expect(repeated_ac).to be_valid
   end
 
   it "has multiple municipalities" do
-    cuenca = create(:cuenca)
-    expect(cuenca.municipalities.length).to be > 0
+    create_list(:municipality, 10, autonomous_community: ac)
+    expect(ac.municipalities.length).to be > 0
   end
 
 end
