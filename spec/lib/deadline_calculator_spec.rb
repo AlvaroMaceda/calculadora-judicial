@@ -37,17 +37,27 @@ describe DeadlineCalculator do
             expect(deadline).to eq(expected_deadline)
         end
         
-        it 'starts counting next workday' do
-            a_sunday = Date.parse('21 Oct 2018')
+        it 'starts counting on monday if notified saturday' do
+            a_saturday = Date.parse('20 Oct 2018')
             days = 1
             expected_deadline = Date.parse('22 Oct 2018')
 
-            deadline = calculator.deadline(a_sunday,days)
+            deadline = calculator.deadline(a_saturday,days)
 
             expect(deadline).to eq(expected_deadline)
         end
 
-        context 'extra weekend dont needed' do
+        it 'starts counting on monday if notified sunday' do
+            a_saturday = Date.parse('21 Oct 2018')
+            days = 1
+            expected_deadline = Date.parse('22 Oct 2018')
+
+            deadline = calculator.deadline(a_saturday,days)
+
+            expect(deadline).to eq(expected_deadline)
+        end        
+
+        context 'deadline does not end on weekend' do
             """
                   June 2017        
             Mo Tu We Th Fr Sa Su  
@@ -66,9 +76,30 @@ describe DeadlineCalculator do
 
                 expect(deadline).to eq(expected_deadline)
             end
+
+            """
+                    May 2017             June 2017             July 2017        
+            Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  
+            1  2  3  4  5  6  7            1  2  3  4                  1  2  
+            8  9 10 11 12 13 14   5  6  7  8  9 10 11   3  4  5  6  7  8  9  
+            15 16 17 18 19 20 21  12 13 14 15 16 17 18  10 11 12 13 14 15 16  
+            22 23 24 25 26 27 28  19 20 21 22 23 24 25  17 18 19 20 21 22 23  
+            29 30 31              26 27 28 29 30        24 25 26 27 28 29 30  
+                                                        31                            
+            """
+            it 'exact number of weeks' do
+                notification_date = Date.parse('23 May 2017')
+                days = 30
+                expected_deadline = Date.parse('4 Jul 2017')
+
+                deadline = calculator.deadline(notification_date,days)
+                
+                expect(deadline).to eq(expected_deadline)
+            end
+
         end
 
-        context 'extra weekend needed' do
+        context 'deadline ends on weekend' do
 
             """
             June 2017        
@@ -142,7 +173,7 @@ describe DeadlineCalculator do
         }
 
         let(:ac_with_holidays) {
-            ac = create(:autonomous_community, country: country_with_holidays, name: 'Autonomous community with holidays')
+            ac = create(:autonomous_community, country: country_with_holidays)
             create(:holiday, :for_autonomous_community, holidayable: ac, date: Date.parse('6 Dec 2019'))
             return ac
         }
@@ -154,27 +185,7 @@ describe DeadlineCalculator do
         }
 
         let(:calculator) { DeadlineCalculator.new(municipality_with_holidays) }
-
-        """
-             May 2017             June 2017             July 2017        
-        Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  
-        1  2  3  4  5  6  7            1  2  3  4                  1  2  
-        8  9 10 11 12 13 14   5  6  7  8  9 10 11   3  4  5  6  7  8  9  
-        15 16 17 18 19 20 21  12 13 14 15 16 17 18  10 11 12 13 14 15 16  
-        22 23 24 25 26 27 28  19 20 21 22 23 24 25  17 18 19 20 21 22 23  
-        29 30 31              26 27 28 29 30        24 25 26 27 28 29 30  
-                                                    31                            
-        """
-        it 'no holidays' do
-            notification_date = Date.parse('23 May 2017')
-            days = 30
-            expected_deadline = Date.parse('4 Jul 2017')
-
-            deadline = calculator.deadline(notification_date,days)
-            
-            expect(deadline).to eq(expected_deadline)
-        end
-
+        
         """
            October 2019          November 2019
         Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su

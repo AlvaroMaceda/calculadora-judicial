@@ -3,4 +3,15 @@ class Country < ApplicationRecord
     include Holidayable
 
     validates :name, presence: true
+
+    # Start and end dates are included
+    def holidays_between(start_date, end_date)
+        # holidays.where([
+        #     'date >= ?',
+        #     'date <= ?'
+        # ], start_date, end_date).to_a
+        # []
+        foo = holidays.between(start_date, end_date).to_a
+        foo
+    end
 end
