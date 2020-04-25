@@ -20,14 +20,61 @@ describe Country, type: :model do
         expect(country.autonomous_communities.length).to be > 0
     end
 
-    it 'returns its holidays between two dates in order' do        
-        h1 = create(:holiday, date: Date.parse('6 Dec 2020'), holidayable: country)
-        h2 = create(:holiday, date: Date.parse('8 Dec 2020'), holidayable: country)
-        h3 = create(:holiday, date: Date.parse('25 Dec 2020'), holidayable: country)
-        
-        holidays = country.holidays_between(Date.parse(), Date.parse())
+    context 'returns its holidays between two dates in order' do
 
-        expect(holidays).to eq([h2, h3])
+        # Don't know how to resolve this with let
+        before(:all) do
+            @country = create(:country) 
+            @november_1 = create(:holiday, date: Date.parse('1 Nov 2020'), holidayable: @country)
+            @december_6 = create(:holiday, date: Date.parse('6 Dec 2020'), holidayable: @country)
+            @december_8 = create(:holiday, date: Date.parse('8 Dec 2020'), holidayable: @country)
+            @december_25 = create(:holiday, date: Date.parse('25 Dec 2020'), holidayable: @country)
+        end
+
+        it 'includes holidays in the interval' do
+            start_date = Date.parse('30 Oct 2020')
+            end_date = Date.parse('15 Dec 2020')
+
+            holidays_found = @country.holidays_between(start_date, end_date)
+
+            expected = [
+                @november_1,
+                @december_6,
+                @december_8,
+            ]
+            expect(holidays_found).to eq(expected)
+        end
+
+        it 'includes start date' do
+            start_date = Date.parse('1 Nov 2020')
+            end_date = Date.parse('15 Dec 2020')
+
+            holidays_found = @country.holidays_between(start_date, end_date)
+
+            expected = [
+                @november_1,
+                @december_6,
+                @december_8,
+            ]
+            expect(holidays_found).to eq(expected)
+        end
+
+        it 'includes end date' do 
+            start_date = Date.parse('30 Oct 2020')
+            end_date = Date.parse('25 Dec 2020')
+
+            holidays_found = @country.holidays_between(start_date, end_date)
+
+            expected = [
+                @november_1,
+                @december_6,
+                @december_8,
+                @december_25,
+            ]
+            expect(holidays_found).to eq(expected)
+        end
+
+
     end
 
 end
