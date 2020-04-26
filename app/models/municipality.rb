@@ -24,4 +24,15 @@ class Municipality < ApplicationRecord
           "#{NAME_FIELD_WITHOUT_SPACES} LIKE ?", "%#{name}%"
       )
     }
+
+    def holidays_between(start_date, end_date)
+      self_holidays = holidays.between(start_date, end_date).to_a
+      autonomous_community_holidays = autonomous_community.holidays_between(start_date, end_date).to_a
+
+      my_holidays_unordered = self_holidays + autonomous_community_holidays
+
+      return my_holidays_unordered.sort_by { |holiday| holiday[:date] }
+
+    end
+
 end

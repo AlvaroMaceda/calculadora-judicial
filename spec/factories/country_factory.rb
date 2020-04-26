@@ -3,7 +3,7 @@ FactoryBot.define do
   factory :country do
     name { Faker::Address.unique.country }
 
-    factory :spain do
+    factory :banana do
       name {'Spain'}
   
       after(:create) do |country|

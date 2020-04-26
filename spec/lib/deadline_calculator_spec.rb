@@ -226,6 +226,9 @@ describe DeadlineCalculator do
             expect(deadline).to eq(expected_deadline)            
         end
 
+        xit 'WHAT HAPPENS IF A HOLIDAY IS IN WEEKEND?' do
+        end
+
     end
 
 end

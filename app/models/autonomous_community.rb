@@ -21,7 +21,10 @@ class AutonomousCommunity < ApplicationRecord
   def holidays_between(start_date, end_date)
     self_holidays = holidays.between(start_date, end_date).to_a
     country_holidays = country.holidays_between(start_date, end_date).to_a
-    return self_holidays + country_holidays
+
+    my_holidays_unordered = self_holidays + country_holidays
+
+    return my_holidays_unordered.sort_by { |holiday| holiday[:date] }
   end
 
 end
