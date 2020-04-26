@@ -23,23 +23,11 @@ describe Country, type: :model do
     context 'returns its holidays between two dates in order' do
 
         # Don't know how to resolve this with let
-        before(:all) do
-            # @country = create(:country) 
-            # @november_1 = create(:holiday, date: Date.parse('1 Nov 2020'), holidayable: @country)
-            # @december_6 = create(:holiday, date: Date.parse('6 Dec 2020'), holidayable: @country)
-            # @december_8 = create(:holiday, date: Date.parse('8 Dec 2020'), holidayable: @country)
-            # @december_25 = create(:holiday, date: Date.parse('25 Dec 2020'), holidayable: @country)
+        before(:each) do
+            Spain.create!
         end
 
-        let (:spain_country) { Spain.country }
-
         it 'includes holidays in the interval' do
-            # puts '-----------------------'
-            # puts Spain.holidays.class.name
-            # puts '-----------------------'
-            # puts 'Banana'
-            # puts '***'+Spain.holidays[:november_1]+'***'
-            # puts '-----------------------'
             start_date = Date.parse('30 Oct 2020')
             end_date = Date.parse('15 Dec 2020')
             expected = [
@@ -48,12 +36,7 @@ describe Country, type: :model do
                 Spain.holidays[:december_8]
             ]
 
-            holidays_found = spain_country.holidays_between(start_date, end_date)
-
-            puts '-----------------------'
-            puts 'Holidays found:'
-            puts holidays_found.count
-            puts '-----------------------'
+            holidays_found = Spain.country.holidays_between(start_date, end_date)
 
             expect(holidays_found).to eq(expected)
         end
