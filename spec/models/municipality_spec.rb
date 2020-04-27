@@ -33,4 +33,43 @@ describe Municipality, type: :model do
     expect(municipality.autonomous_community).not_to be nil
   end
 
+  context 'returns its holidays between two dates in order' do
+
+    before(:each) do
+        Spain.create!
+    end
+
+    xit 'includes holidays in the interval' do
+      start_date = Date.parse('19 March 2020')
+      end_date = Date.parse('13 Apr 2020')
+      expected = [          
+          Spain.holidays[:valencian_community][:march_19],
+          Spain.holidays[:valencian_community][:april_13]
+      ]
+
+      holidays_found = Spain.benidorm.holidays_between(start_date, end_date)
+
+      expect(holidays_found).to eq(expected)
+  end
+
+  xit 'includes autonomous community\'s holidays ' do
+  end
+
+  xit 'includes country\'s holidays ' do
+      start_date = Date.parse('1 Oct 2020')
+      end_date = Date.parse('15 Dec 2020')
+      expected = [
+          Spain.holidays[:valencian_community][:october_12],
+          Spain.holidays[:country][:november_1],
+          Spain.holidays[:country][:december_6],
+          Spain.holidays[:country][:december_8]
+      ]
+
+      holidays_found = Spain.valencian_community.holidays_between(start_date, end_date)
+
+      expect(holidays_found).to eq(expected)
+  end
+
+  end
+
 end

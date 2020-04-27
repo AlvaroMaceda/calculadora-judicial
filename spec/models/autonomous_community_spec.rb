@@ -78,6 +78,6 @@ describe AutonomousCommunity, type: :model do
             expect(holidays_found).to eq(expected)
         end
 
-        end
+    end
 
 end

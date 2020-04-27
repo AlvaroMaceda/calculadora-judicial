@@ -6,6 +6,7 @@ class Spain
 
             @country = FactoryBot::create(:country, name: 'Spain') 
             @valencian_community = FactoryBot::create(:autonomous_community, name: 'Comunidad Valenciana', country: @country)
+            @benidorm = FactoryBot::create(:municipality, name: 'Benidorm', autonomous_community: @valencian_community)
         
             @holidays = {        
                 country: {
@@ -18,7 +19,11 @@ class Spain
                     march_19: FactoryBot::create(:holiday, date: Date.parse('19 March 2020'), holidayable: @valencian_community),
                     april_13: FactoryBot::create(:holiday, date: Date.parse('13 Apr 2020'), holidayable: @valencian_community),
                     october_12: FactoryBot::create(:holiday, date: Date.parse('12 Oct 2020'), holidayable: @valencian_community)
-                }           
+                },
+                benidorm: {
+                    november_9: nil,
+                    november_10: nil
+                }
             }
     
         end
