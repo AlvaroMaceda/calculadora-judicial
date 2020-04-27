@@ -215,7 +215,8 @@ describe DeadlineCalculator do
          2  3  4  5  6  7  8  	 7  8  9 10 11 12 13  
          9 10 11 12 13 14 15  	14 15 16 17 18 19 20  
         16 17 18 19 20 21 22  	21 22 23 24 25 26 27  
-        23 24 25 26 27 28 29  	28 29 30 31      
+        23 24 25 26 27 28 29  	28 29 30 31 
+        30     
 
         Holidays
         ------------------------------------------------
@@ -231,11 +232,67 @@ describe DeadlineCalculator do
             #     8 Dec (country)
             notification_date = Date.parse('25 Nov 2020')
             days = 15
-            expected_deadline = Date.parse('22 Dec 2020')
+            expected_deadline = Date.parse('21 Dec 2020')
 
             deadline = calculator.deadline(notification_date,days)
             
             expect(deadline).to eq(expected_deadline)    
+        end
+
+
+        xit 'deadline withouth holidays ends in a holiday followed by a working day' do
+            # # Holidays:
+            # #     7 Dec (autonomous community)
+            # #     8 Dec (country)
+            # notification_date = Date.parse('1 Dec 2020')
+            # days = 4
+            # expected_deadline = Date.parse('9 Dec 2020')
+
+            # deadline = calculator.deadline(notification_date,days)
+            
+            # expect(deadline).to eq(expected_deadline)  
+        end
+
+        xit 'deadline withouth holidays ends in a holiday followed by a weekend' do
+            # # Holidays:
+            # #     7 Dec (autonomous community)
+            # #     8 Dec (country)
+            # notification_date = Date.parse('1 Dec 2020')
+            # days = 4
+            # expected_deadline = Date.parse('9 Dec 2020')
+
+            # deadline = calculator.deadline(notification_date,days)
+            
+            # expect(deadline).to eq(expected_deadline)  
+        end
+
+        """
+           December 2020      
+        Mo Tu We Th Fr Sa Su
+            1  2  3  4  5  6  
+         7  8  9 10 11 12 13  
+        14 15 16 17 18 19 20  
+        21 22 23 24 25 26 27  
+        28 29 30 31 
+
+        Holidays
+        ------------------------------------------------
+        Country: 1 Jan, 10 Apr, 1 May, 15 Aug, 12 Oct, 8 Dec, 25 Dec
+        Valencian Community: 6 Jan, 19 March, 13 Apr, 9 Oct, 7 Dec
+        Benidorm: 9 Nov, 10 Nov, 10 Dec
+        (see factories/spain.rb for holiday definitions)   
+        """
+        it 'deadline withouth holidays ends in a holiday followed by a holiday' do
+            # Holidays:
+            #     7 Dec (autonomous community)
+            #     8 Dec (country)
+            notification_date = Date.parse('1 Dec 2020')
+            days = 4
+            expected_deadline = Date.parse('9 Dec 2020')
+
+            deadline = calculator.deadline(notification_date,days)
+            
+            expect(deadline).to eq(expected_deadline)  
         end
 
         xit 'does not add an additional day if there is a holiday on saturday' do

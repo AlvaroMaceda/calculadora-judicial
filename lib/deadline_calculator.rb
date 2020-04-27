@@ -33,13 +33,22 @@ class DeadlineCalculator
         whole_weeks = days / WORKING_DAYS_IN_A_WEEK
         single_days = days % WORKING_DAYS_IN_A_WEEK
         
+        puts
+        puts "days: #{days}"
+        puts "notification_date: #{notification_date}"         
+        puts "start_date: #{start_date}" 
+        puts "whole_weeks: #{whole_weeks}"
+        puts "single_days: #{single_days}" 
+        puts
+        
         days_to_add =  (whole_weeks * DAYS_IN_A_WEEK)
         days_to_add += single_days
         days_to_add += DAYS_IN_A_WEEKEND if extra_weekend?(start_date,single_days)
 
         end_date_without_holidays = start_date+days_to_add
 
-        return end_date_without_holidays + applicable_holidays(notification_date, end_date_without_holidays)
+        return apply_holidays(start_date, end_date_without_holidays)
+        # return end_date_without_holidays + applicable_holidays(notification_date, end_date_without_holidays)
     end
 
     private
@@ -51,17 +60,42 @@ class DeadlineCalculator
         puts '-------------------------'
         holidays.count
     end
-
+    
     def adjust_if_friday_or_saturday(date)
+        # We count from sunday if notified friday or saturday
         return date+2 if date.friday?
         return date+1 if date.saturday? 
         date
     end
 
-    def next_working_day_old(date)
-        return date+2 if date.saturday?
-        return date+3 if date.friday? 
-        date+1
+    def num_holidays_inside_interval(start_date, end_date)
+        @holidayable.holidays_between(start_date, end_date).count
+    end
+
+    def is_holiday?(date)
+        @holidayable.holidays_between(date, date).count > 0
+    end
+
+    def is_weekend?(date)
+        date.saturday? or date.sunday?
+    end
+
+    def non_working?(date)
+        is_weekend?(date) or is_holiday?(date)
+    end
+
+    def apply_holidays(start_date, end_date)
+        num_holidays = num_holidays_inside_interval(start_date, end_date)
+        puts
+        puts "start_date: #{start_date}"
+        puts "end_date without holidays: #{end_date}"
+        puts "num_holidays: #{num_holidays}"
+        puts
+        end_date += num_holidays
+        while( non_working?(end_date) )
+            end_date +=1
+        end
+        end_date
     end
 
     """
