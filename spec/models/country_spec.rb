@@ -31,9 +31,9 @@ describe Country, type: :model do
             start_date = Date.parse('30 Oct 2020')
             end_date = Date.parse('15 Dec 2020')
             expected = [
-                Spain.holidays[:november_1],
-                Spain.holidays[:december_6],
-                Spain.holidays[:december_8]
+                Spain.holidays[:country][:november_1],
+                Spain.holidays[:country][:december_6],
+                Spain.holidays[:country][:december_8]
             ]
 
             holidays_found = Spain.country.holidays_between(start_date, end_date)
@@ -41,31 +41,31 @@ describe Country, type: :model do
             expect(holidays_found).to eq(expected)
         end
 
-        xit 'includes start date' do
+        it 'includes start date' do
             start_date = Date.parse('1 Nov 2020')
             end_date = Date.parse('15 Dec 2020')
             expected = [
-                spain.holidays[:november_1],
-                spain.holidays[:december_6],
-                spain.holidays[:december_8]
+                Spain.holidays[:country][:november_1],
+                Spain.holidays[:country][:december_6],
+                Spain.holidays[:country][:december_8]
             ]
 
-            holidays_found = @country.holidays_between(start_date, end_date)
+            holidays_found = Spain.country.holidays_between(start_date, end_date)
 
             expect(holidays_found).to eq(expected)
         end
 
-        xit 'includes end date' do 
+        it 'includes end date' do 
             start_date = Date.parse('30 Oct 2020')
             end_date = Date.parse('25 Dec 2020')
             expected = [
-                @november_1,
-                @december_6,
-                @december_8,
-                @december_25,
+                Spain.holidays[:country][:november_1],
+                Spain.holidays[:country][:december_6],
+                Spain.holidays[:country][:december_8],
+                Spain.holidays[:country][:december_25]
             ]
 
-            holidays_found = @country.holidays_between(start_date, end_date)
+            holidays_found = Spain.country.holidays_between(start_date, end_date)
 
             expect(holidays_found).to eq(expected)
         end
