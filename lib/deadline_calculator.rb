@@ -29,8 +29,15 @@ class DeadlineCalculator
     private
 
     def applicable_holidays(notification_date, end_date)
-        #@holidayable.holidays_between(notification_date+1, end_date)
-        0
+        holidays = @holidayable.holidays_between(notification_date+1, end_date)
+        puts @holidayable.name
+        puts @holidayable.holidays.to_a.map { |holiday| holiday.date}
+        puts '----------'
+        puts notification_date+1
+        puts end_date
+        puts 'Computed holidays:'
+        puts holidays
+        holidays.count
     end
 
     def next_working_day(date)

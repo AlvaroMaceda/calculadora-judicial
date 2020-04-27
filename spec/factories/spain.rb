@@ -12,17 +12,22 @@ class Spain
             @benidorm = FactoryBot::create(:municipality, name: 'Benidorm', autonomous_community: @valencian_community)
             @javea = FactoryBot::create(:municipality, name: 'Javea', autonomous_community: @valencian_community)
                     
+            # Similar but not real holidays
             @holidays = {        
                 country: {
-                    november_1: FactoryBot::create(:holiday, date: Date.parse('1 Nov 2020'), holidayable: @country),
-                    december_6: FactoryBot::create(:holiday, date: Date.parse('6 Dec 2020'), holidayable: @country),
+                    january_1:  FactoryBot::create(:holiday, date: Date.parse('1 Jan 2020'), holidayable: @country),
+                    april_10:  FactoryBot::create(:holiday, date: Date.parse('10 Apr 2020'), holidayable: @country),
+                    may_1:  FactoryBot::create(:holiday, date: Date.parse('1 May 2020'), holidayable: @country),
+                    august_15:  FactoryBot::create(:holiday, date: Date.parse('15 Aug 2020'), holidayable: @country),
+                    october_12: FactoryBot::create(:holiday, date: Date.parse('12 Oct 2020'), holidayable: @country),                    
                     december_8: FactoryBot::create(:holiday, date: Date.parse('8 Dec 2020'), holidayable: @country),
-                    december_25: FactoryBot::create(:holiday, date: Date.parse('25 Dec 2020'), holidayable: @country)    
+                    december_25: FactoryBot::create(:holiday, date: Date.parse('25 Dec 2020'), holidayable: @country)  # Sunday
                 },
                 valencian_community: {
+                    january_6:  FactoryBot::create(:holiday, date: Date.parse('6 Jan 2020'), holidayable: @valencian_community),
                     march_19: FactoryBot::create(:holiday, date: Date.parse('19 March 2020'), holidayable: @valencian_community),
                     april_13: FactoryBot::create(:holiday, date: Date.parse('13 Apr 2020'), holidayable: @valencian_community),
-                    october_12: FactoryBot::create(:holiday, date: Date.parse('12 Oct 2020'), holidayable: @valencian_community),
+                    october_9: FactoryBot::create(:holiday, date: Date.parse('9 Oct 2020'), holidayable: @valencian_community),
                     december_7: FactoryBot::create(:holiday, date: Date.parse('7 Dec 2020'), holidayable: @valencian_community)                    
                 },
                 basque_country: {

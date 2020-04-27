@@ -39,7 +39,19 @@
                 "${file}"
             ],
             "useBundler": false
-        },        
+        }, 
+        {
+            "name": "Debug RSpec (Active Line)",
+            "type": "ruby-debug",
+            "request": "launch",            
+            "program": "rspec",
+            "programArgs": [
+                // "-I",
+                "${workspaceFolder}",
+                "${file}:${lineNumber}"
+            ],
+            "useBundler": false
+        },                  
         {
             "name": "Debug RSpec (All)",
             "type": "ruby-debug",

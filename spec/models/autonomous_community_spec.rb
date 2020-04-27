@@ -51,11 +51,10 @@ describe AutonomousCommunity, type: :model do
         end
 
         it 'includes holidays in the interval' do
-            start_date = Date.parse('19 March 2020')
-            end_date = Date.parse('13 Apr 2020')
+            start_date = Date.parse('17 March 2020')
+            end_date = Date.parse('20 March 2020')
             expected = [          
-                Spain.holidays[:valencian_community][:march_19],
-                Spain.holidays[:valencian_community][:april_13]
+                Spain.holidays[:valencian_community][:march_19]
             ]
 
             holidays_found = Spain.valencian_community.holidays_between(start_date, end_date)
@@ -67,9 +66,8 @@ describe AutonomousCommunity, type: :model do
             start_date = Date.parse('1 Oct 2020')
             end_date = Date.parse('15 Dec 2020')
             expected = [
-                Spain.holidays[:valencian_community][:october_12],
-                Spain.holidays[:country][:november_1],
-                Spain.holidays[:country][:december_6],
+                Spain.holidays[:valencian_community][:october_9],
+                Spain.holidays[:country][:october_12],
                 Spain.holidays[:valencian_community][:december_7],
                 Spain.holidays[:country][:december_8]
             ]

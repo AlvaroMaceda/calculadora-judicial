@@ -28,11 +28,10 @@ describe Country, type: :model do
         end
 
         it 'includes holidays in the interval' do
-            start_date = Date.parse('30 Oct 2020')
+            start_date = Date.parse('11 Oct 2020')
             end_date = Date.parse('15 Dec 2020')
             expected = [
-                Spain.holidays[:country][:november_1],
-                Spain.holidays[:country][:december_6],
+                Spain.holidays[:country][:october_12],
                 Spain.holidays[:country][:december_8]
             ]
 
@@ -42,11 +41,10 @@ describe Country, type: :model do
         end
 
         it 'includes start date' do
-            start_date = Date.parse('1 Nov 2020')
+            start_date = Date.parse('12 Oct 2020')
             end_date = Date.parse('15 Dec 2020')
             expected = [
-                Spain.holidays[:country][:november_1],
-                Spain.holidays[:country][:december_6],
+                Spain.holidays[:country][:october_12],
                 Spain.holidays[:country][:december_8]
             ]
 
@@ -59,8 +57,6 @@ describe Country, type: :model do
             start_date = Date.parse('30 Oct 2020')
             end_date = Date.parse('25 Dec 2020')
             expected = [
-                Spain.holidays[:country][:november_1],
-                Spain.holidays[:country][:december_6],
                 Spain.holidays[:country][:december_8],
                 Spain.holidays[:country][:december_25]
             ]

@@ -11,7 +11,7 @@ describe DeadlineCalculator do
         expect(calculator).not_to be nil
     end
     
-    context 'no holidays' do
+    xcontext 'no holidays' do
 
         let(:country_withouth_holidays) {create(:country)}
         let(:calculator) { DeadlineCalculator.new(country_withouth_holidays) }
@@ -134,69 +134,36 @@ describe DeadlineCalculator do
 
     end
 
-    xcontext 'holidays' do
+    context 'holidays' do 
 
-        let(:country_withouth_holidays) {create(:country)}
-        let(:calculator) { DeadlineCalculator.new(country_withouth_holidays) }
-        let(:a_working_week) { 5*1 }
-        let(:two_working_weeks) { 5*2 }
-
-        xit 'skips a country\'s holiday' do
+        before(:each) do
+            Spain.create!
         end
 
-        xit 'skips an autonomous community\'s holiday' do
-        end
-
-        xit 'skips a municipality\'s holiday' do
-        end
-
-        xit 'skips a combination of country, autonomous community and municipality holidays' do
-        end
-
-        xit 'does not skip holidays in another municipality' do
-        end
-
-        xit 'does not skip holidays in another autonomous community' do
-        end
-
-    end
-
-    context 'real examples' do # This will become context('holidays')
-
-        let(:country_with_holidays) {
-            country = create(:country, name: 'Country with holidays')
-            create(:holiday, :for_country, holidayable: country, date: Date.parse('1 Nov 2019'))
-            create(:holiday, :for_country, holidayable: country, date: Date.parse('24 Dec 2019'))
-            create(:holiday, :for_country, holidayable: country, date: Date.parse('25 Dec 2019'))
-            m = create(:municipality)
-            return country
-        }
-
-        let(:ac_with_holidays) {
-            ac = create(:autonomous_community, country: country_with_holidays)
-            create(:holiday, :for_autonomous_community, holidayable: ac, date: Date.parse('6 Dec 2019'))
-            return ac
-        }
-
-        let(:municipality_with_holidays) {
-            municipality = create(:municipality, autonomous_community: ac_with_holidays)
-            create(:holiday, :for_municipality, holidayable: municipality, date: Date.parse('9 Sep 2019'))
-            return municipality
-        }
-
-        let(:calculator) { DeadlineCalculator.new(municipality_with_holidays) }
+        let(:calculator) { DeadlineCalculator.new(Spain.benidorm) }
         
         """
-           October 2019          November 2019
-        Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su
-            1  2  3  4  5  6              *1* 2  3
-         7  8  9 10 11 12 13   4  5  6  7  8  9 10
-        14 15 16 17 18 19 20  11 12 13 14 15 16 17
-        21 22 23 24 25 26 27  18 19 20 21 22 23 24
-        28 29 30 31           25 26 27 28 29 30   
+             October 2020           November 2020      
+        Mo Tu We Th Fr Sa Su  	Mo Tu We Th Fr Sa Su  
+                  1  2  3  4  	                   1  
+         5  6  7  8  9 10 11  	 2  3  4  5  6  7  8  
+        12 13 14 15 16 17 18  	 9 10 11 12 13 14 15  
+        19 20 21 22 23 24 25  	16 17 18 19 20 21 22  
+        26 27 28 29 30 31     	23 24 25 26 27 28 29  
+                                30  
+
+        Holidays
+        ------------------------------------------------
+        Country: 1 Nov, 6 Dec, 8 Dec, 25 Dec
+        Valencian Community: 18 March, 13 Apr, 12 Oct, 7 Dec
+        Benidorm: 9 Nov, 10 Nov
+        (see factories/spain.rb for holiday definitions)
         """
         it 'skips a country\'s holiday'  do
-            # Holidays: 1 Nov 2019 (country)
+            # Holidays: 
+            #     1 Nov 2019 (country)
+            #     9 Nov 2019 (municipality)
+            #    10 Nov 2019 (municipality)
             notification_date = Date.parse('21 Oct 2019')
             days = 20
             expected_deadline = Date.parse('19 Nov 2019')
@@ -214,7 +181,14 @@ describe DeadlineCalculator do
         11 12 13 14 15 16 17   9 10 11 12 13 14 15  13 14 15 16 17 18 19  
         18 19 20 21 22 23 24  16 17 18 19 20 21 22  20 21 22 23 24 25 26  
         25 26 27 28 29 30     23 24 25 26 27 28 29  27 28 29 30 31        
-                              30 31         
+                              30 31      
+    
+        Holidays
+        ------------------------------------------------
+        Country: 1 Nov, 6 Dec, 8 Dec, 25 Dec
+        Valencian Community: 18 March, 13 Apr, 12 Oct, 7 Dec
+        Benidorm: 9 Nov, 10 Nov
+        (see factories/spain.rb for holiday definitions)                                
         """
         xit 'skips country and autonomous community holidays' do
             notification_date = Date.parse('26 Nov 2019')
@@ -224,6 +198,9 @@ describe DeadlineCalculator do
             deadline = calculator.deadline(notification_date,days)
             
             expect(deadline).to eq(expected_deadline)            
+        end
+
+        xit 'skips country, autonomous community and municipality holidays' do
         end
 
         xit 'WHAT HAPPENS IF A HOLIDAY IS IN WEEKEND?' do
