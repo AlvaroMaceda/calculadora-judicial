@@ -10,7 +10,7 @@ class DeadlineCalculator
         @holidayable = holidayable
     end
 
-    def deadline(notification_date, days)
+    def deadline_old(notification_date, days)
     
         start_date = next_working_day(notification_date)
 
@@ -26,21 +26,39 @@ class DeadlineCalculator
         return end_date_without_holidays + applicable_holidays(notification_date, end_date_without_holidays)
     end
 
+    def deadline(notification_date, days)
+    
+        start_date = adjust_if_friday_or_saturday(notification_date)
+
+        whole_weeks = days / WORKING_DAYS_IN_A_WEEK
+        single_days = days % WORKING_DAYS_IN_A_WEEK
+        
+        days_to_add =  (whole_weeks * DAYS_IN_A_WEEK)
+        days_to_add += single_days
+        days_to_add += DAYS_IN_A_WEEKEND if extra_weekend?(start_date,single_days)
+
+        end_date_without_holidays = start_date+days_to_add
+
+        return end_date_without_holidays + applicable_holidays(notification_date, end_date_without_holidays)
+    end
+
     private
 
     def applicable_holidays(notification_date, end_date)
         holidays = @holidayable.holidays_between(notification_date+1, end_date)
-        puts @holidayable.name
-        puts @holidayable.holidays.to_a.map { |holiday| holiday.date}
-        puts '----------'
-        puts notification_date+1
-        puts end_date
-        puts 'Computed holidays:'
-        puts holidays
+        puts '-------------------------'
+        puts holidays.map { |holiday| "#{holiday.holidayable.name} #{holiday.date}" }
+        puts '-------------------------'
         holidays.count
     end
 
-    def next_working_day(date)
+    def adjust_if_friday_or_saturday(date)
+        return date+2 if date.friday?
+        return date+1 if date.saturday? 
+        date
+    end
+
+    def next_working_day_old(date)
         return date+2 if date.saturday?
         return date+3 if date.friday? 
         date+1

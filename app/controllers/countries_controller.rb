@@ -60,9 +60,6 @@ class CountriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def country_params
-      puts '*********************'
-      params.inspect
-      puts '*********************'
       params.require(:country).permit(:name)
     end
 end

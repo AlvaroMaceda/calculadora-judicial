@@ -36,7 +36,8 @@ class Spain
                 },
                 benidorm: {
                     november_9: FactoryBot::create(:holiday, date: Date.parse('9 Nov 2020'), holidayable: @benidorm),
-                    november_10: FactoryBot::create(:holiday, date: Date.parse('10 Nov 2020'), holidayable: @benidorm)
+                    november_10: FactoryBot::create(:holiday, date: Date.parse('10 Nov 2020'), holidayable: @benidorm),
+                    december_10: FactoryBot::create(:holiday, date: Date.parse('10 Dec 2020'), holidayable: @benidorm)
                 },
                 javea: {
                     november_9: FactoryBot::create(:holiday, date: Date.parse('9 Nov 2020'), holidayable: @javea),

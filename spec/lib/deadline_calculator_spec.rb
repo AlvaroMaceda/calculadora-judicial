@@ -11,7 +11,7 @@ describe DeadlineCalculator do
         expect(calculator).not_to be nil
     end
     
-    xcontext 'no holidays' do
+    context 'no holidays' do
 
         let(:country_withouth_holidays) {create(:country)}
         let(:calculator) { DeadlineCalculator.new(country_withouth_holidays) }
@@ -36,8 +36,27 @@ describe DeadlineCalculator do
 
             expect(deadline).to eq(expected_deadline)
         end
-        
-        it 'starts counting on monday if notified saturday' do
+
+        """
+        October 2018      
+        Mo Tu We Th Fr Sa Su  
+         1  2  3  4  5  6  7  
+         8  9 10 11 12 13 14  
+        15 16 17 18 19 20 21  
+        22 23 24 25 26 27 28  
+        29 30 31 
+        """
+        it 'starts counting on sunday if notified friday' do
+            a_saturday = Date.parse('19 Oct 2018')
+            days = 1
+            expected_deadline = Date.parse('22 Oct 2018')
+
+            deadline = calculator.deadline(a_saturday,days)
+
+            expect(deadline).to eq(expected_deadline)
+        end        
+
+        it 'starts counting on sunday if notified saturday' do
             a_saturday = Date.parse('20 Oct 2018')
             days = 1
             expected_deadline = Date.parse('22 Oct 2018')
@@ -46,16 +65,6 @@ describe DeadlineCalculator do
 
             expect(deadline).to eq(expected_deadline)
         end
-
-        it 'starts counting on monday if notified sunday' do
-            a_saturday = Date.parse('21 Oct 2018')
-            days = 1
-            expected_deadline = Date.parse('22 Oct 2018')
-
-            deadline = calculator.deadline(a_saturday,days)
-
-            expect(deadline).to eq(expected_deadline)
-        end        
 
         context 'deadline does not end on weekend' do
             """
@@ -143,66 +152,93 @@ describe DeadlineCalculator do
         let(:calculator) { DeadlineCalculator.new(Spain.benidorm) }
         
         """
-             October 2020           November 2020      
+           April 2020       	      May 2020        
         Mo Tu We Th Fr Sa Su  	Mo Tu We Th Fr Sa Su  
-                  1  2  3  4  	                   1  
-         5  6  7  8  9 10 11  	 2  3  4  5  6  7  8  
-        12 13 14 15 16 17 18  	 9 10 11 12 13 14 15  
-        19 20 21 22 23 24 25  	16 17 18 19 20 21 22  
-        26 27 28 29 30 31     	23 24 25 26 27 28 29  
-                                30  
+               1  2  3  4  5  	             1  2  3  
+         6  7  8  9 10 11 12  	 4  5  6  7  8  9 10  
+        13 14 15 16 17 18 19  	11 12 13 14 15 16 17  
+        20 21 22 23 24 25 26  	18 19 20 21 22 23 24  
+        27 28 29 30           	25 26 27 28 29 30 31  
+                                                                      
+        Holidays
+        ------------------------------------------------
+        Country: 1 Jan, 10 Apr, 1 May, 15 Aug, 12 Oct, 8 Dec, 25 Dec
+        Valencian Community: 6 Jan, 19 March, 13 Apr, 9 Oct, 7 Dec
+        Benidorm: 9 Nov, 10 Nov, 10 Dec
+        (see factories/spain.rb for holiday definitions)
+        """
+        it 'skips a country\'s holiday'  do
+            # Holidays: 
+            #     1 May (country)
+            notification_date = Date.parse('15 Aprl 2020')
+            days = 20
+            expected_deadline = Date.parse('14 May 2020')
+
+            deadline = calculator.deadline(notification_date,days)
+            
+            expect(deadline).to eq(expected_deadline)            
+        end
+
+        """
+          September 2020     	    October 2020      
+        Mo Tu We Th Fr Sa Su  	Mo Tu We Th Fr Sa Su  
+            1  2  3  4  5  6  	          1  2  3  4  
+         7  8  9 10 11 12 13  	 5  6  7  8  9 10 11  
+        14 15 16 17 18 19 20  	12 13 14 15 16 17 18  
+        21 22 23 24 25 26 27  	19 20 21 22 23 24 25  
+        28 29 30              	26 27 28 29 30 31  
+    
+        Holidays
+        ------------------------------------------------
+        Country: 1 Jan, 10 Apr, 1 May, 15 Aug, 12 Oct, 8 Dec, 25 Dec
+        Valencian Community: 6 Jan, 19 March, 13 Apr, 9 Oct, 7 Dec
+        Benidorm: 9 Nov, 10 Nov, 10 Dec
+        (see factories/spain.rb for holiday definitions)                                
+        """
+        it 'skips country and autonomous community holidays' do
+            # Holidays: 
+            #      9 Oct  (autonomous community)
+            #     12 Oct (country)
+            notification_date = Date.parse('5 Oct 2020')
+            days = 10
+            expected_deadline = Date.parse('21 Oct 2020')
+
+            deadline = calculator.deadline(notification_date,days)
+            
+            expect(deadline).to eq(expected_deadline)            
+        end
+
+        """
+           November 2020      	   December 2020      
+        Mo Tu We Th Fr Sa Su  	Mo Tu We Th Fr Sa Su  
+                           1  	    1  2  3  4  5  6  
+         2  3  4  5  6  7  8  	 7  8  9 10 11 12 13  
+         9 10 11 12 13 14 15  	14 15 16 17 18 19 20  
+        16 17 18 19 20 21 22  	21 22 23 24 25 26 27  
+        23 24 25 26 27 28 29  	28 29 30 31      
 
         Holidays
         ------------------------------------------------
         Country: 1 Jan, 10 Apr, 1 May, 15 Aug, 12 Oct, 8 Dec, 25 Dec
         Valencian Community: 6 Jan, 19 March, 13 Apr, 9 Oct, 7 Dec
-        Benidorm: 9 Nov, 10 Nov
-        (see factories/spain.rb for holiday definitions)
+        Benidorm: 9 Nov, 10 Nov, 10 Dec
+        (see factories/spain.rb for holiday definitions)   
         """
-        xit 'skips a country\'s holiday'  do
-            # Holidays: 
-            #     9 Nov 2019 (municipality)
-            #    10 Nov 2019 (municipality)
-            notification_date = Date.parse('21 Oct 2019')
-            days = 20
-            expected_deadline = Date.parse('19 Nov 2019')
+        it 'skips country, autonomous community and municipality holidays' do
+            # Holidays:
+            #    10 Dec (municipality)
+            #     7 Dec (autonomous community)
+            #     8 Dec (country)
+            notification_date = Date.parse('25 Nov 2020')
+            days = 15
+            expected_deadline = Date.parse('22 Dec 2020')
 
             deadline = calculator.deadline(notification_date,days)
             
-            expect(deadline).to eq(expected_deadline)            
+            expect(deadline).to eq(expected_deadline)    
         end
 
-        """
-        November 2019         December 2019          January 2020      
-        Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  
-                     1  2  3                     1         1  2  3  4  5  
-         4  5  6  7  8  9 10   2  3  4  5  6  7  8   6  7  8  9 10 11 12  
-        11 12 13 14 15 16 17   9 10 11 12 13 14 15  13 14 15 16 17 18 19  
-        18 19 20 21 22 23 24  16 17 18 19 20 21 22  20 21 22 23 24 25 26  
-        25 26 27 28 29 30     23 24 25 26 27 28 29  27 28 29 30 31        
-                              30 31      
-    
-        Holidays
-        ------------------------------------------------
-        Country: 1 Nov, 6 Dec, 8 Dec, 25 Dec
-        Valencian Community: 18 March, 13 Apr, 12 Oct, 7 Dec
-        Benidorm: 9 Nov, 10 Nov
-        (see factories/spain.rb for holiday definitions)                                
-        """
-        xit 'skips country and autonomous community holidays' do
-            notification_date = Date.parse('26 Nov 2019')
-            days = 20
-            expected_deadline = Date.parse('3 Jan 2019')
-
-            deadline = calculator.deadline(notification_date,days)
-            
-            expect(deadline).to eq(expected_deadline)            
-        end
-
-        xit 'skips country, autonomous community and municipality holidays' do
-        end
-
-        xit 'WHAT HAPPENS IF A HOLIDAY IS IN WEEKEND?' do
+        xit 'does not add an additional day if there is a holiday on saturday' do
         end
 
     end
