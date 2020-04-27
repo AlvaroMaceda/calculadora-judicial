@@ -9,8 +9,14 @@ class Holiday < ApplicationRecord
             "(#{data[:model]}): #{data[:value]} already exist!"
         end
     }
+    validate :not_sunday
   
     scope :between, lambda {|start_date, end_date| where("date >= ? AND date <= ?", start_date, end_date )}
+    
+    def not_sunday
+        if date && date.sunday?
+            errors.add(:date, 'cannot be sunday')
+        end
+    end
 
-    # validates_uniqueness_of :user_name, scope: :account_id
 end
