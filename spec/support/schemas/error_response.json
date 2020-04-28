@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": ["code", "message"],
+    "properties": {
+        "code": { "type": "integer" },
+        "message": { "type": "string" }
+    }, 
+
+    "examples": [
+        {
+            "code": 401,
+            "message": "An error occurred"
+        }
+    ]
+
+    
+}

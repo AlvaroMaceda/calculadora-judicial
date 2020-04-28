@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     
     get 'banana', to: 'banana#index'
-    # get 'municipality/search', to: 'municipality#search'
+    
     get 'municipality/search/:name', to: 'municipality_search#search'
+    get 'deadline', to: 'deadline_calculator#deadline'
 
   end
 

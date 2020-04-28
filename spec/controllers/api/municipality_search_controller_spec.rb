@@ -35,14 +35,11 @@ describe Api::MunicipalitySearchController, type: :controller do
         it 'searches the complete name' do
             get 'search', as: :json, params: { name: 'Calahorra' }
 
-            puts response.status
             expect(response).to be_json_success_response("municipality_search")
 
-            # puts @calahorra
             expected = {municipalities: [
                 expect_hash(@calahorra)
             ]}.to_json
-            # expect(response).to include_json(foo)
             expect(response.body).to eq(expected)
         end
 

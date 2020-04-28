@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": ["municipality_code", "deadline"],
+    "properties": {
+        "municipality_code": { "type": "string" },
+        "deadline": {
+            "type": "string",
+            "format": "date"
+        }
+    }, 
+
+    "examples": [
+        {
+            "municipality_code": "00001",
+            "deadline": "2020-01-15"
+        }
+    ]
+
+    
+}
