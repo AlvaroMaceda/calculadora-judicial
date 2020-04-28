@@ -37,17 +37,22 @@ class DeadlineCalculator
 
     def apply_holidays(start_date, end_date)
         end_date = sum_holidays_to_end_date(start_date, end_date)
-        end_date = next_working_day(end_date)
+    end_date = next_working_day(end_date)
         end_date
     end
 
     def sum_holidays_to_end_date(start_date, end_date)
-        num_holidays = num_holidays_inside_interval(start_date, end_date)
-        return end_date + num_holidays
+        holidays = holidays_inside_interval(start_date, end_date)
+        holidays = remove_saturdays(holidays)
+        end_date + holidays.count
     end
 
-    def num_holidays_inside_interval(start_date, end_date)
-        @holidayable.holidays_between(start_date, end_date).count
+    def holidays_inside_interval(start_date, end_date)
+        @holidayable.holidays_between(start_date, end_date)
+    end
+
+    def remove_saturdays(holidays_array)
+        holidays_array.select {|holiday| not holiday.date.saturday? }
     end
 
     def next_working_day(date)

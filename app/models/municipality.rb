@@ -32,7 +32,6 @@ class Municipality < ApplicationRecord
       my_holidays_unordered = self_holidays + autonomous_community_holidays
 
       return my_holidays_unordered.sort_by { |holiday| holiday[:date] }
-
     end
 
 end
