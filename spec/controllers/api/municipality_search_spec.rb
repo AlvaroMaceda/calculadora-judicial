@@ -1,7 +1,7 @@
 require 'rails_helper'
 include My::Matchers
 
-describe Api::MunicipalityController, type: :controller do
+describe Api::MunicipalitySearchController, type: :controller do
 
     render_views
     
@@ -35,6 +35,7 @@ describe Api::MunicipalityController, type: :controller do
         it 'searches the complete name' do
             get 'search', as: :json, params: { name: 'Calahorra' }
 
+            puts response.status
             expect(response).to be_json_success_response("municipality_search")
 
             # puts @calahorra

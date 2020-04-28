@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     
     get 'banana', to: 'banana#index'
     # get 'municipality/search', to: 'municipality#search'
-    get 'municipality/search/:name', to: 'municipality#search'
+    get 'municipality/search/:name', to: 'municipality_search#search'
 
   end
 
