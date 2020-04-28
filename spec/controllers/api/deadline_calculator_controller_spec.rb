@@ -27,10 +27,9 @@ describe Api::DeadlineCalculatorController, type: :controller do
 
             puts response.body
 
-            expected = {
-                municipality_code: Spain.benidorm.code,
+            expected = params.merge({
                 deadline: expected_deadline
-            }.to_json
+            }).to_json
             expect(response.body).to eq(expected)            
         end
 

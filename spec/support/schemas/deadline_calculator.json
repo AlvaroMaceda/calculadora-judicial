@@ -1,18 +1,24 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "required": ["municipality_code", "deadline"],
+    "required": [
+        "municipality_code", 
+        "notification",
+        "days",
+        "deadline"
+    ],
     "properties": {
         "municipality_code": { "type": "string" },
-        "deadline": {
-            "type": "string",
-            "format": "date"
-        }
+        "notification": { "type": "string", "format": "date" },
+        "days": { "type": "integer" },
+        "deadline": { "type": "string", "format": "date" }
     }, 
 
     "examples": [
         {
             "municipality_code": "00001",
+            "notification": "2020-11-25",
+            "days": 15,
             "deadline": "2020-01-15"
         }
     ]
