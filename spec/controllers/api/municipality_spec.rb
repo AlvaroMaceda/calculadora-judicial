@@ -8,7 +8,7 @@ describe Api::MunicipalityController, type: :controller do
     describe "GET #search" do
 
         def expect_hash(municipality)
-            return { code: municipality[:code], name:municipality[:name], ac_id: municipality[:autonomous_community].id}
+            return { code: municipality[:code], name:municipality[:name] }
         end
         
         before(:all) do

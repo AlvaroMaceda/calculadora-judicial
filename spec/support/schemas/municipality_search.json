@@ -9,8 +9,7 @@
                     "type": "object",
                     "properties": {
                         "code": { "type": "string" },
-                        "name": { "type": "string" },
-                        "ac_id": { "type": "integer" }
+                        "name": { "type": "string" }
                     },
                     "required": [
                         "code",
@@ -25,13 +24,11 @@
         [
             {
                 "name": "Calahorra",
-                "code": "0005",
-                "ac_id": 5
+                "code": "0005"
             },
             {
                 "code": "0006",
-                "name": "Bilbao",
-                "ac_id": 5
+                "name": "Bilbao"
             }
         ]
     ]
