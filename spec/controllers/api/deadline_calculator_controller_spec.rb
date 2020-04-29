@@ -23,9 +23,9 @@ describe Api::DeadlineCalculatorController, type: :controller do
          
             get 'deadline', as: :json, params: params
 
-            expect(response).to be_json_success_response("deadline_calculator")
-
             puts response.body
+            
+            expect(response).to be_json_success_response("deadline_calculator")
 
             expected = params.merge({
                 deadline: expected_deadline
