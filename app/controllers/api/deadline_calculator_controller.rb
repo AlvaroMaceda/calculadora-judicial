@@ -24,7 +24,7 @@ class Api::DeadlineCalculatorController < ApplicationController
     end
 
     class ParamsValidator < BaseParamsValidator
-        attr_accessor :municipality_code, :notification, :days
+        params :municipality_code, :notification, :days
 
         validates :municipality_code, 
             presence: true, 

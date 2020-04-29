@@ -1,10 +1,17 @@
 class BaseParamsValidator
     include ActiveModel::Validations
 
-    def initialize(params)
-        params.each do |name,value| 
+    class << self
+        def params(*allowed_params)
+            # How to store allowed params?
+            self.send(:attr_accessor, *allowed_params)
+        end
+    end
+
+    def initialize(param_values)
+        # I need to access allowed_params here to filter allowed ones
+        param_values.each do |name, value| 
             instance_variable_set("@#{name}", value) 
-            # self.class.send(:attr_accessor, name)
         end
     end    
 end   
