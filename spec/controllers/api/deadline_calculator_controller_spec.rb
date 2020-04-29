@@ -23,8 +23,6 @@ describe Api::DeadlineCalculatorController, type: :controller do
          
             get 'deadline', as: :json, params: params
 
-            puts response.body
-            
             expect(response).to be_json_success_response("deadline_calculator")
 
             expected = params.merge({
@@ -34,7 +32,19 @@ describe Api::DeadlineCalculatorController, type: :controller do
         end
 
         context 'missing parameters' do
-            xit 'returns error if municipality code missing'
+            it 'returns error if municipality code missing' do
+                params = {
+                    notification: '2020-01-10',
+                    days: 15
+                }
+    
+                get 'deadline', as: :json, params: params
+    
+                puts response.body
+                
+                expect(response).to be_json_error_response
+            end
+
             xit 'returns error if notification date missing'
             xit 'returns error if days missing'
         end
@@ -50,6 +60,8 @@ describe Api::DeadlineCalculatorController, type: :controller do
             }
 
             get 'deadline', as: :json, params: params
+
+            puts response.body
 
             # https://cloud.google.com/blog/products/api-management/restful-api-design-what-about-errors
             expect(response).to be_json_error_response("deadline_calculator")

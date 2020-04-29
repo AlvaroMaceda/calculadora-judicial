@@ -14,31 +14,17 @@ class Api::DeadlineCalculatorController < ApplicationController
         @municipality_code = params[:municipality_code]
         @notification_date = Date.parse(params[:notification])
         @days = params[:days].to_i
-
-        # params[:param1].present? && params[:param2].present?
-        # required = [:one, :two, :three]
-        # if required.all? {|k| params.has_key? k}
-        # true
     end
       
     def validate_parameters
         validator = ParamsValidator.new(params)
         if !validator.valid?
-            render json: { error: validator.errors }
+            render status: :bad_request, json: { error: validator.errors }
         end
     end
 
-    class ParamsValidator
-        include ActiveModel::Validations
-
-        # attr_accessor :municipality_code, :notification, :days
-
-        def initialize(params)
-            params.each do |name,value| 
-                instance_variable_set("@#{name}", value) 
-                self.class.send(:attr_accessor, name)
-            end
-        end
+    class ParamsValidator < BaseParamsValidator
+        attr_accessor :municipality_code, :notification, :days
 
         validates :municipality_code, 
             presence: true, 

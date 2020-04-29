@@ -3,21 +3,24 @@ module My
     module Matchers
 
         def be_json_success_response(schema)
-                BeJSonSuccessResponse.new schema
+            BeJSonResponse.new schema, :success
         end
   
-        class BeJSonSuccessResponse
+        def be_json_error_response(schema = 'error_response')
+            BeJSonResponse.new schema, :bad_request
+        end
+  
+        class BeJSonResponse
 
             include RSpec::Matchers
             include RSpec::Rails::Matchers
 
-            def initialize(schema)
-                @schema = schema
-                @status_matcher = have_http_status(:success)
-                @schema_matcher = match_response_schema("municipality_search")
+            def initialize(expected_schema, expected_http_status)
+                @schema_matcher = match_response_schema(expected_schema)
+                @status_matcher = have_http_status(expected_http_status)
             end
     
-            # We won't check json schema if response is not :success
+            # We won't check json schema if response code is not the expected
             def matches?(response)
                 @status_ok = @status_matcher.matches? response
                 return false unless @status_ok
