@@ -18,7 +18,7 @@ class Api::DeadlineCalculatorController < ApplicationController
       
     def validate_parameters
         validator = ParamsValidator.new(params)
-        if !validator.valid?
+        if validator.invalid?
             render status: :bad_request, json: { error: validator.errors }
         end
     end
