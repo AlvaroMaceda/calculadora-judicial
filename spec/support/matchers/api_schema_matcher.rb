@@ -52,7 +52,7 @@ module My
       end
 
       def error_message(errors)
-        msg = 'Invalid schema: '
+        msg = 'Invalid schema.'
         errors.each do |error|
           msg << error['details'].to_s
         end
