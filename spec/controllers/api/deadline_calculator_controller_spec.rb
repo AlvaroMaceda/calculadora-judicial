@@ -52,7 +52,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
         xit 'returns error if municipality does not exist' do
         end
 
-        xit 'returns error if notification date is invalid' do
+        it 'returns error if notification date is invalid' do
             params = {
                 municipality_code: Spain.benidorm.code,
                 notification: 'banana',
@@ -64,7 +64,9 @@ describe Api::DeadlineCalculatorController, type: :controller do
             puts response.body
 
             # https://cloud.google.com/blog/products/api-management/restful-api-design-what-about-errors
-            expect(response).to be_json_error_response("deadline_calculator")
+            expect(response).to be_json_error_response
+
+
         end
 
         xit 'returns error if days is invalid' do
