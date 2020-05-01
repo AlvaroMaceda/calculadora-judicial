@@ -12,7 +12,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
             Spain.create!
         end
 
-        it 'computes a deadline' do
+        it 'computes a deadline', :focus do
             # See deadline_calculator_spec for examples of deadline calculations
             params = {
                 municipality_code: Spain.benidorm.code,
