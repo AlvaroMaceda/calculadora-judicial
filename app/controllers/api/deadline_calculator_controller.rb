@@ -11,7 +11,8 @@ class Api::DeadlineCalculatorController < ApplicationController
     private 
 
     def json_error(message)
-        render status: :bad_request, json: { message: message }
+        # THIS SHOULD FAIL
+        render status: :bad_request, json: { message: message, banana: 'cavendish'}
     end
 
     def parse_parameters

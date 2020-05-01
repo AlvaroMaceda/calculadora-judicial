@@ -12,7 +12,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
             Spain.create!
         end
 
-        it 'computes a deadline', :focus do
+        it 'computes a deadline' do
             # See deadline_calculator_spec for examples of deadline calculations
             params = {
                 municipality_code: Spain.benidorm.code,
@@ -52,7 +52,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
         xit 'returns error if municipality does not exist' do
         end
 
-        it 'returns error if notification date is invalid' do
+        it 'returns error if notification date is invalid',:focus  do
             params = {
                 municipality_code: Spain.benidorm.code,
                 notification: 'banana',

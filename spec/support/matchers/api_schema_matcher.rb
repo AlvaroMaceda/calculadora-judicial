@@ -21,18 +21,21 @@ module My
           puts '****************'
           puts response.body
           puts @schema_file_tmp
-          puts @schemer.valid?(response.body)
+          puts @schemer.valid?(JSON.parse(response.body))
           puts '------------------'
-          error = @schemer.validate(response.body).to_a
-          puts error.inspect
+          errors = @schemer.validate(JSON.parse(response.body)).to_a
+          errors.each do |error|
+            puts '·················'
+            puts error['details']
+          end
+          puts '·················'
+          puts errors.inspect
           puts '****************'
-          if not @schemer.valid?(response.body)
+          if errors.empty?
             @last_error = ''
             return true            
           else
-            # This will return the error but it is unintelligible
-            # error = @schemer.validate(response.body)
-            @last_error = 'Invalid schema'
+            @last_error = error_message(errors)
             return false
           end
 
@@ -46,6 +49,14 @@ module My
 
       def schema_path(schema)
         @schema_path = "#{BeJSonSuccessResponse::SCHEMAS_DIRECTORY}/#{schema}.json"
+      end
+
+      def error_message(errors)
+        msg = 'Invalid schema: '
+        errors.each do |error|
+          msg << error['details'].to_s
+        end
+        msg
       end
 
     end
