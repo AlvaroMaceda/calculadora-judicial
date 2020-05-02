@@ -12,13 +12,21 @@ describe Api::DeadlineCalculatorController, type: :controller do
             Spain.create!
         end
 
-        it 'computes a deadline' do
-            # See deadline_calculator_spec for examples of deadline calculations
-            params = {
+        let(:correct_params) { 
+            {
                 municipality_code: Spain.benidorm.code,
                 notification: '2020-11-25',
                 days: 15
             }
+        }
+
+        def error_message(response)
+            JSON.parse(response.body)['message']
+        end
+
+        it 'computes a deadline' do
+            # See deadline_calculator_spec for examples of deadline calculations
+            params = correct_params
             expected_deadline = '2020-12-21'
          
             get 'deadline', as: :json, params: params
@@ -32,27 +40,42 @@ describe Api::DeadlineCalculatorController, type: :controller do
         end
 
         context 'missing parameters' do
-            xit 'returns error if municipality code missing' do
-                params = {
-                    notification: '2020-01-10',
-                    days: 15
-                }
+            it 'returns error if municipality code missing' do
+                params = correct_params.except :municipality_code
     
                 get 'deadline', as: :json, params: params
-    
-                puts response.body
                 
                 expect(response).to be_json_error_response
+                expect(error_message(response)).to include 'Municipality code can\'t be blank'
             end
 
-            xit 'returns error if notification date missing'
-            xit 'returns error if days missing'
+            it 'returns error if notification date missing', :focus do
+                params = correct_params.except :notification
+    
+                get 'deadline', as: :json, params: params
+                
+                expect(response).to be_json_error_response
+                expect(error_message(response)).to include 'Notification can\'t be blank'                
+            end
+            
+            xit 'returns error if days missing' do
+                params = correct_params.except :days
+                
+                puts params
+                get 'deadline', as: :json, params: params
+                
+                puts response.body
+
+                expect(response).to be_json_error_response
+                expect(error_message(response)).to include 'FILL THIS WITH CORRECT MESSAGE'                     
+            end
+
         end
 
         xit 'returns error if municipality does not exist' do
         end
 
-        it 'returns error if notification date is invalid',:focus  do
+        it 'returns error if notification date is invalid' do
             params = {
                 municipality_code: Spain.benidorm.code,
                 notification: 'banana',
@@ -61,11 +84,9 @@ describe Api::DeadlineCalculatorController, type: :controller do
 
             get 'deadline', as: :json, params: params
 
-            puts response.body
-
             # https://cloud.google.com/blog/products/api-management/restful-api-design-what-about-errors
             expect(response).to be_json_error_response
-
+            expect(error_message(response)).to eq 'Notification Invalid date format. Expected yyyy-mm-dd'
 
         end
 
