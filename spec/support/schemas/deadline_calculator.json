@@ -13,7 +13,8 @@
         "days": { "type": "integer" },
         "deadline": { "type": "string", "format": "date" }
     }, 
-
+    "additionalProperties": false,
+    
     "examples": [
         {
             "municipality_code": "00001",
