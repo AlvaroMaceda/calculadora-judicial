@@ -17,20 +17,7 @@ module My
       end
 
       def matches?(response)
-          
-          puts '****************'
-          puts response.body
-          puts @schema_file_tmp
-          puts @schemer.valid?(JSON.parse(response.body))
-          puts '------------------'
           errors = @schemer.validate(JSON.parse(response.body)).to_a
-          errors.each do |error|
-            puts '·················'
-            puts error['details']
-          end
-          puts '·················'
-          puts errors.inspect
-          puts '****************'
           if errors.empty?
             @last_error = ''
             return true            
@@ -38,7 +25,6 @@ module My
             @last_error = error_message(errors)
             return false
           end
-
       end
 
       def failure_message
@@ -52,11 +38,8 @@ module My
       end
 
       def error_message(errors)
-        msg = 'Invalid schema.'
-        errors.each do |error|
-          msg << error['details'].to_s
-        end
-        msg
+        # I've been unable to obtain a meaningful message from json_schemer output
+        'Invalid schema'
       end
 
     end
