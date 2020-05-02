@@ -4,7 +4,7 @@ class Api::DeadlineCalculatorController < ApplicationController
     before_action :parse_parameters
 
     def deadline()
-        municipality = Municipality.find_by(code: @municipality_code)
+municipality = Municipality.find_by(code: @municipality_code)
         @deadline = DeadlineCalculator.new(municipality).deadline(@notification_date, @days)
     end
 

@@ -49,7 +49,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
                 expect(error_message(response)).to include 'Municipality code can\'t be blank'
             end
 
-            it 'returns error if notification date missing', :focus do
+            it 'returns error if notification date missing' do
                 params = correct_params.except :notification
     
                 get 'deadline', as: :json, params: params
@@ -58,39 +58,42 @@ describe Api::DeadlineCalculatorController, type: :controller do
                 expect(error_message(response)).to include 'Notification can\'t be blank'                
             end
             
-            xit 'returns error if days missing' do
+            it 'returns error if days missing' do
                 params = correct_params.except :days
                 
-                puts params
                 get 'deadline', as: :json, params: params
                 
-                puts response.body
-
                 expect(response).to be_json_error_response
-                expect(error_message(response)).to include 'FILL THIS WITH CORRECT MESSAGE'                     
+                expect(error_message(response)).to include 'Days can\'t be blank'                     
             end
 
         end
 
-        xit 'returns error if municipality does not exist' do
-        end
-
-        it 'returns error if notification date is invalid' do
-            params = {
-                municipality_code: Spain.benidorm.code,
-                notification: 'banana',
-                days: 15
-            }
+        it 'returns error if municipality does not exist' do
+            params = { **correct_params, municipality_code:'99999' }
 
             get 'deadline', as: :json, params: params
 
-            # https://cloud.google.com/blog/products/api-management/restful-api-design-what-about-errors
             expect(response).to be_json_error_response
-            expect(error_message(response)).to eq 'Notification Invalid date format. Expected yyyy-mm-dd'
-
+            expect(error_message(response)).to include 'FILL HERE THE CORRECT ERROR MESSAGE'
         end
 
-        xit 'returns error if days is invalid' do
+        it 'returns error if notification date is invalid' do
+            params = { **correct_params, notification:'banana' }
+
+            get 'deadline', as: :json, params: params
+
+            expect(response).to be_json_error_response
+            expect(error_message(response)).to include 'Notification Invalid date format. Expected yyyy-mm-dd'
+        end
+
+        it 'returns error if days is invalid' do
+            params = { **correct_params, days:'banana' }
+
+            get 'deadline', as: :json, params: params
+
+            expect(response).to be_json_error_response
+            expect(error_message(response)).to include 'Days is not a number'
         end
 
     end
