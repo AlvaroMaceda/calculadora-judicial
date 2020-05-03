@@ -1,6 +1,22 @@
 import React from "react";
 import { Component } from 'react';
-import Autocomplete from './autocomplete'
+import AsyncSelect from 'react-select/async';
+
+async function searchMunicipalities(text){
+  try {
+    const response = await fetch('/api/municipality/search/'+text)
+    if (!response.ok) throw Error(response.statusText);
+    let municipalities = await response.json();
+    municipalities.map( (municipality) => { return {
+      value: municipality.code,
+      label: municipality.name
+    }} )
+  }catch(error) {
+    console.log('Error obtaining municipalities')
+  }  
+}
+
+const promiseOptions = inputValue => searchMunicipalities(inputValue)
 
 class Municipality extends Component {
 
@@ -17,27 +33,18 @@ class Municipality extends Component {
   render() {
 
     return(
-      <Autocomplete
-          getItemValue={(item) => item.label}
-          suggestions={[
-            { label: 'apple', value: 1 },
-            { label: 'banana', value: 2 },
-            { label: 'pear', value: 3 }
-          ]}
-          renderItem={(item, isHighlighted) =>
-            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-              {item.label}
-            </div>
-          }
-          value={this.state.value}
-          onChange={(e) => this.value = e.target.value}
-          onSelect={(val) => this.value = val}
+      <AsyncSelect 
+        cacheOptions 
+        isClearable
+        placeholder = '...'
+        defaultOptions={[]} 
+        loadOptions={promiseOptions} 
+        noOptionsMessage={ (_) => {return 'No se ha encontrado el municipio'} }
       />
     )
 
   }
 
 }
-
 
 export default Municipality;
