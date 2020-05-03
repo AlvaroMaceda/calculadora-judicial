@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import style from './autocomplete.module.scss'
+
+const UP_ARROW = 38
+const DOWN_ARROW = 40
+const KEY_ENTER = 13
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -33,7 +38,7 @@ class Autocomplete extends Component {
     // Filter our suggestions that don't contain the user's input
     const filteredSuggestions = suggestions.filter(
       suggestion =>
-        suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        suggestion.label.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );
 
     // Update the user input and filtered suggestions, reset the active
@@ -63,7 +68,7 @@ class Autocomplete extends Component {
 
     // User pressed the enter key, update the input and close the
     // suggestions
-    if (e.keyCode === 13) {
+    if (e.keyCode === KEY_ENTER) {
       this.setState({
         activeSuggestion: 0,
         showSuggestions: false,
@@ -71,7 +76,7 @@ class Autocomplete extends Component {
       });
     }
     // User pressed the up arrow, decrement the index
-    else if (e.keyCode === 38) {
+    else if (e.keyCode === UP_ARROW) {
       if (activeSuggestion === 0) {
         return;
       }
@@ -79,7 +84,7 @@ class Autocomplete extends Component {
       this.setState({ activeSuggestion: activeSuggestion - 1 });
     }
     // User pressed the down arrow, increment the index
-    else if (e.keyCode === 40) {
+    else if (e.keyCode === DOWN_ARROW) {
       if (activeSuggestion - 1 === filteredSuggestions.length) {
         return;
       }
@@ -106,22 +111,16 @@ class Autocomplete extends Component {
     if (showSuggestions && userInput) {
       if (filteredSuggestions.length) {
         suggestionsListComponent = (
-          <ul class="suggestions">
+          <ul className={style.suggestions}>
             {filteredSuggestions.map((suggestion, index) => {
-              let className;
-
-              // Flag the active suggestion with a class
-              if (index === activeSuggestion) {
-                className = "suggestion-active";
-              }
 
               return (
                 <li
-                  className={className}
-                  key={suggestion}
+                  className={index === activeSuggestion ? style.suggestion_active : ''}
+                  key={suggestion.value}
                   onClick={onClick}
                 >
-                  {suggestion}
+                  {suggestion.label}
                 </li>
               );
             })}
@@ -129,7 +128,7 @@ class Autocomplete extends Component {
         );
       } else {
         suggestionsListComponent = (
-          <div className="no-suggestions">
+          <div className={style.no_suggestions}>
             <em>No suggestions, you're on your own!</em>
           </div>
         );
@@ -142,7 +141,7 @@ class Autocomplete extends Component {
           type="text"
           onChange={onChange}
           onKeyDown={onKeyDown}
-          value={userInput}
+          value={userInput.label}
         />
         {suggestionsListComponent}
       </Fragment>

@@ -6,10 +6,11 @@ import Autocomplete from "./autocomplete";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
-import createSpinner from './loading'
+import createLoading from './loading'
 import DeadlineResults from "./deadline_results";
+import Municipality from './municipality'
 
-const Loading = createSpinner(DeadlineResults)
+const Loading = createLoading(DeadlineResults)
 
 // https://learnetto.com/blog/react-form-validation
 class DeadlineCalculator extends Component {
@@ -22,7 +23,7 @@ class DeadlineCalculator extends Component {
       workDays: 0,
       formErrors: {email: '', password: ''},
       formValid: false,
-      loading: false,
+      loading: null,
     }
   }
 
@@ -34,13 +35,13 @@ class DeadlineCalculator extends Component {
   }
 
   setStartDate(value) {
-    this.modifyState({startDate:value})
+    this.modifyState({startDate:value, loading: null})
   }
   setMunicipality(value) {
-    this.modifyState({municipality: value})
+    this.modifyState({municipality: value, loading: null})
   }
   setworkDays(value) {
-    this.modifyState({workDays: value})
+    this.modifyState({workDays: value, loading: null})
   }
 
   handleSubmit(event){
@@ -94,6 +95,19 @@ class DeadlineCalculator extends Component {
                 <div className="invalid-feedback">Please enter a password</div>
               </div>
 
+              
+              <div className="form-group">
+                <label htmlFor="municipality" className="lb-lg">Municipio</label>
+                <Municipality />
+                <input id="municipality" type="text" 
+                  className="form-control" required="" autoComplete="on"
+                  value={this.state.municipality}
+                  onChange={e => this.setMunicipality(e.target.value)}
+                />
+                <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
+              </div>
+
+              {/* 
               <div className="form-group">
                 <label htmlFor="municipality" className="lb-lg">Municipio</label>
                 <input id="municipality" type="text" 
@@ -103,6 +117,7 @@ class DeadlineCalculator extends Component {
                 />
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
               </div>
+              */}
 
               <div className="form-group">
                 <label>Días hábiles</label>
@@ -119,6 +134,7 @@ class DeadlineCalculator extends Component {
                 Calcular
               </button>
             </form>
+            <h3>Loading: {this.state.loading?'Si':'no'}</h3>
             <Loading loading={this.state.loading} results={'banana'}/>
           </div>
           
