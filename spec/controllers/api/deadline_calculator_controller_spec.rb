@@ -31,6 +31,8 @@ describe Api::DeadlineCalculatorController, type: :controller do
          
             get 'deadline', as: :json, params: params
 
+            puts response.body
+
             expect(response).to be_json_success_response("deadline_calculator")
 
             expected = params.merge({
@@ -70,7 +72,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
         end
 
         it 'returns error if municipality does not exist' do
-            params = { **correct_params, municipality_code:'99999' }
+            params = { **correct_params, municipality_code:'9999999' }
 
             get 'deadline', as: :json, params: params
 

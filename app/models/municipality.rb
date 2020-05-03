@@ -4,16 +4,12 @@ class Municipality < ApplicationRecord
 
     has_many :holidays, as: :holidayable
 
+    # We will prefix code with ISO 3166-1 country codes if this app becomes multicountry one day 
     validates :code, 
         presence: true, 
-        length: {minimum: 5, maximum: 5}, 
+        length: {minimum: 7, maximum: 7}, 
         allow_blank: false,
-        uniqueness: {
-            scope: :autonomous_community,
-            message: ->(object, data) do
-              "(#{data[:model]}): #{data[:value]} is taken already for that autonomous community!"
-            end
-        }
+        uniqueness: true
 
     validates :name, presence: true
 

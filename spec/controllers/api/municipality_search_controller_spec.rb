@@ -15,11 +15,11 @@ describe Api::MunicipalitySearchController, type: :controller do
             @ac1 = create(:autonomous_community)
             @ac2 = create(:autonomous_community)
 
-            @alcala = {name: "Alcala - search tests", code: "50001", autonomous_community: @ac1 }
-            @calahorra = {name: "Calahorra - search tests", code: "50002", autonomous_community: @ac1}
-            @calcatta = {name: "Calcatta - search tests", code: "50003", autonomous_community: @ac1}
-            @la_costa_este = {name: "La Costa Este - search tests", code: "80001", autonomous_community: @ac2}
-            @sal_calada = {name: "Sal calada - search tests", code: "80002", autonomous_community: @ac2}
+            @alcala = {name: "Alcala - search tests", code: "ES50001", autonomous_community: @ac1 }
+            @calahorra = {name: "Calahorra - search tests", code: "ES50002", autonomous_community: @ac1}
+            @calcatta = {name: "Calcatta - search tests", code: "ES50003", autonomous_community: @ac1}
+            @la_costa_este = {name: "La Costa Este - search tests", code: "ES80001", autonomous_community: @ac2}
+            @sal_calada = {name: "Sal calada - search tests", code: "ES80002", autonomous_community: @ac2}
     
             create(:municipality, @alcala )
             create(:municipality, @calahorra )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_22_155751) do
+ActiveRecord::Schema.define(version: 2020_04_22_154107) do
 
   create_table "autonomous_communities", force: :cascade do |t|
     t.string "name"
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 2020_04_22_155751) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "holidayable_type"
     t.integer "holidayable_id"
-    t.index ["autonomous_community_id", "code"], name: "index_municipalities_on_autonomous_community_id_and_code", unique: true
     t.index ["autonomous_community_id"], name: "index_municipalities_on_autonomous_community_id"
+    t.index ["code"], name: "index_municipalities_on_code", unique: true
     t.index ["holidayable_type", "holidayable_id"], name: "index_municipalities_on_holidable"
   end
 

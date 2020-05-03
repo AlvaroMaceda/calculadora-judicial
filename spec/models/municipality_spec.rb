@@ -18,15 +18,9 @@ describe Municipality, type: :model do
         expect(nocode_municipality).not_to be_valid
     end
 
-    it "has a unique code for its autonomous community " do
-        repeated_municipality = build(:municipality, code: municipality.code, autonomous_community: municipality.autonomous_community)
-        expect(repeated_municipality).not_to be_valid    
-    end
-
-    it "can repeat code for another autonomous community " do
-        another_ac = create(:autonomous_community)
-        repeated_municipality = create(:municipality, code: municipality.code, autonomous_community: another_ac)
-        expect(repeated_municipality).to be_valid    
+    it "has a unique code" do
+        repeated_municipality = build(:municipality, code: municipality.code)
+        expect(repeated_municipality).not_to be_valid 
     end
 
     it "belongs to an autonomous community" do
