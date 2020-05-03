@@ -75,7 +75,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
             get 'deadline', as: :json, params: params
 
             expect(response).to be_json_error_response
-            expect(error_message(response)).to include 'FILL HERE THE CORRECT ERROR MESSAGE'
+            expect(error_message(response)).to include 'Municipality not found'
         end
 
         it 'returns error if notification date is invalid' do
