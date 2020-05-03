@@ -1,166 +1,291 @@
-import React, { Component, Fragment } from "react";
+/*
+
+  Autocomplete component.
+
+  suggestView.setItems(items: Array()) to display menu.
+
+  Properties: see at the end of the file
+
+*/
+import React from "react";
 import PropTypes from "prop-types";
+import throttle from "lodash/throttle";
+import scrollIntoView from "dom-scroll-into-view";
 import style from './autocomplete.module.scss'
 
-const UP_ARROW = 38
-const DOWN_ARROW = 40
-const KEY_ENTER = 13
-const KEY_ESCAPE = 27
-
-class Autocomplete extends Component {
-  static propTypes = {
-    suggestions: PropTypes.instanceOf(Array)
-  };
-
-  static defaultProps = {
-    suggestions: []
-  };
-
+class Autocomplete extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      // The active selection's index
-      activeSuggestion: 0,
-      // The suggestions that match the user's input
-      filteredSuggestions: [],
-      // Whether or not the suggestion list is shown
-      showSuggestions: false,
-      // What the user has entered
-      userInput: ""
+      // true to show the options, false otherwise
+      isOpen: false,
+
+      // true to show the loading indicator
+      loading: false,
+
+      // the options to display
+      items: [],
+
+      // the index of the highlighted option
+      index: -1,
+
+      // the current input value
+      value: props.value
+    };
+    // true if the user is scrolling with keys, to ignore mouse events until done
+    this.scrollingIntoView = false;
+    this.keyDownHandlers = {
+      ArrowDown() {
+        if (!this.state.isOpen && this.state.items.length) {
+          this.setState({
+            isOpen: true
+          });
+        } else {
+          this.moveSelectedOption(1);
+        }
+      },
+
+      ArrowUp() {
+        this.moveSelectedOption(-1);
+      },
+
+      Enter() {
+        var { isOpen, index } = this.state;
+        if (isOpen && index > -1) {
+          this.onSelectIndex(index);
+        }
+      },
+
+      Escape() {
+        this.hideItems();
+      },
+
+      PageUp() {
+        this.state.isOpen && this.moveSelectedOption(-10);
+      },
+
+      PageDown() {
+        this.state.isOpen && this.moveSelectedOption(10);
+      },
+
+      End() {
+        this.state.isOpen &&
+          this.setState({
+            index: (this.state.items.length || 0) - 1,
+            isOpen: true
+          });
+      },
+
+      Home() {
+        this.state.isOpen &&
+          this.setState({
+            index: 0,
+            isOpen: true
+          });
+      }
+    };
+
+    this.suggestItems = throttle(
+      value => {
+        this.setState({
+          loading: true
+        });
+        this.props.onChange(value);
+      },
+      400,
+      { leading: false }
+    );
+
+    this.onChangeInput = e => {
+      const value = e.target.value;
+      this.setState({ value });
+      this.suggestItems(value);
+    };
+
+    this.hideItems = () => {
+      this.setState({
+        isOpen: false,
+        loading: false
+      });
+    };
+
+    this.onMouseOver = e => {
+      if (this.scrollingIntoView) {
+        this.scrollingIntoView = false;
+        return;
+      }
+      let element = e.target;
+      let _index;
+      do {
+        _index = element.getAttribute("data-index");
+        element = element.parentElement;
+      } while (!_index && element);
+      _index &&
+        this.setState({
+          index: +_index
+        });
+    };
+
+    this.onClickItem = e => {
+      var _index = +e.currentTarget.getAttribute("data-index");
+      this.onSelectIndex(_index);
+    };
+
+    this.onSelectIndex = index => {
+      var item = this.state.items[index];
+      var newInputValue = this.props.onSelect(item);
+      this.state.value = newInputValue || "";
+      this.hideItems();
+    };
+
+    this.onKeyDown = event => {
+      const handler = this.keyDownHandlers[event.key];
+      if (handler) {
+        event.preventDefault();
+        handler.call(this, event);
+      }
     };
   }
 
-  // Event fired when the input value is changed
-  onChange = e => {
-    const { suggestions } = this.props;
-    const userInput = e.currentTarget.value;
-
-    // Filter our suggestions that don't contain the user's input
-    const filteredSuggestions = suggestions.filter(
-      suggestion =>
-        suggestion.label.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-    );
-
-    // Update the user input and filtered suggestions, reset the active
-    // suggestion and make sure the suggestions are shown
+  setItems(items) {
     this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions,
-      showSuggestions: true,
-      userInput: e.currentTarget.value
+      isOpen: true,
+      loading: false,
+      items: items,
+      index: items.length ? 0 : -1
     });
-  };
-
-  // Event fired when the user clicks on a suggestion
-  onClick = e => {
-    // Update the user input and reset the rest of the state
-    this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions: [],
-      showSuggestions: false,
-      userInput: e.currentTarget.innerText
-    });
-  };
-
-  // Event fired when the user presses a key down
-  onKeyDown = e => {
-    const { activeSuggestion, filteredSuggestions } = this.state;
-
-    switch(e.keyCode) {
-      case KEY_ESCAPE:
-        break;
-      case KEY_ENTER:
-        this.setState({
-          activeSuggestion: 0,
-          showSuggestions: false,
-          userInput: filteredSuggestions[activeSuggestion]
-        });
-        break;
-      case UP_ARROW:
-        e.preventDefault();
-        this.listUp()
-        break;
-      case DOWN_ARROW:
-        e.preventDefault();
-        this.listDown()
-        break;
-    }
-  };
-
-  listUp(){
-    const { activeSuggestion, filteredSuggestions } = this.state;
-    if (activeSuggestion === 0) {
-      return;
-    }
-
-    this.setState({ activeSuggestion: activeSuggestion - 1 });
   }
 
-  listDown(){
-    const { activeSuggestion, filteredSuggestions } = this.state;
-
-    if (activeSuggestion == filteredSuggestions.length - 1) {
-      return;
+  componentWillUpdate(nextProps, { isOpen }) {
+    const prevIsOpen = this.state.isOpen;
+    if (prevIsOpen && !isOpen) {
+      document.removeEventListener("click", this.hideItems);
+    } else if (!prevIsOpen && isOpen) {
+      document.addEventListener("click", this.hideItems);
     }
+  }
 
-    this.setState({ activeSuggestion: activeSuggestion + 1 });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.isOpen === true) {
+      const selected = document.getElementsByClassName(
+        "autocomplete-li selected"
+      );
+      if (selected.length) {
+        this.scrollingIntoView = true;
+        scrollIntoView(selected[0], selected[0].parentElement, {
+          onlyScrollIfNeeded: true
+        });
+      }
+    }
+  }
+
+  // select the next or previous option
+  // @param delta +1 or -1 to move to the next or previous choice
+  moveSelectedOption(delta) {
+    var { index, items } = this.state;
+    if (!items.length) {
+      index = -1;
+    } else {
+      var index = ((index || 0) + delta) % items.length;
+      if (index < 0) {
+        index = 0;
+      }
+    }
+    this.setState({
+      index: index,
+      isOpen: true
+    });
+  }
+
+  renderItems() {
+    const { items, index, isOpen } = this.state;
+    const { renderItem } = this.props;
+
+    console.log('renderItems')
+    console.log(items)
+
+    const $empty =
+      items && items.length ? (
+        undefined
+      ) : (
+        <div className={style.autocomplete_li+' empty'}>{this.props.emptyMessage}</div>
+      );
+    return !isOpen ? (
+      undefined
+    ) : (
+      <div className={style.autocomplete_list} onMouseOver={this.onMouseOver}>
+        {$empty ||
+          items.map((item, _index) => {
+            return (
+              <div
+                className={
+                  "autocomplete-li" + (index == _index ? " selected" : "")
+                }
+                key={_index}
+                onClick={this.onClickItem}
+                data-index={_index}
+              >
+                {renderItem({ item, highlighted: index == _index })}
+              </div>
+            );
+          })}
+      </div>
+    );
   }
 
   render() {
     const {
+      renderItem,
+      onSelect,
       onChange,
-      onClick,
-      onKeyDown,
-      state: {
-        activeSuggestion,
-        filteredSuggestions,
-        showSuggestions,
-        userInput
-      }
-    } = this;
-
-    let suggestionsListComponent;
-
-    if (showSuggestions && userInput) {
-      if (filteredSuggestions.length) {
-        suggestionsListComponent = (
-          <ul className={style.suggestions}>
-            {filteredSuggestions.map((suggestion, index) => {
-
-              return (
-                <li
-                  className={index === activeSuggestion ? style.suggestion_active : ''}
-                  key={suggestion.value}
-                  onClick={onClick}
-                >
-                  {suggestion.label}
-                </li>
-              );
-            })}
-          </ul>
-        );
-      } else {
-        suggestionsListComponent = (
-          <div className={style.no_suggestions}>
-            <em>No suggestions, you're on your own!</em>
-          </div>
-        );
-      }
-    }
-
+      emptyMessage,
+      value: defaultValue,
+      className,
+      ...inputProps
+    } = this.props;
+    const { value } = this.state;
     return (
-      <Fragment>
+      <div className={"autocomplete " + className}>
         <input
           type="text"
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          value={userInput.label}
+          ref="input"
+          className="autocomplete-input"
+          autoComplete="off"
+          aria-autocomplete="list"
+          value={value}
+          {...inputProps}
+          onChange={this.onChangeInput}
+          onKeyDown={this.onKeyDown}
         />
-        {suggestionsListComponent}
-      </Fragment>
+        {this.renderItems()}
+        {this.state.loading ? <div className="loading"></div> : undefined}
+      </div>
     );
   }
 }
+
+Autocomplete.propTypes = {
+  // Render each item. Receives props: item and highlighted
+  renderItem: PropTypes.func.isRequired,
+
+  // invoked when there is a change in the input field. Should go to server
+  // (probably using Promises) and invoke setItems when response is received.
+  onChange: PropTypes.func.isRequired,
+
+  // invoked when the user has selected an item. Receives the selected item
+  // returns the test to put on the input field. Any extra text will be selected
+  onSelect: PropTypes.func.isRequired,
+
+  // message when there are no results
+  emptyMessage: PropTypes.string,
+
+  // The inital value of the input, if any
+  value: PropTypes.string
+};
+
+Autocomplete.defaultProps = {
+  emptyMessage: "No results found",
+  value: ""
+};
 
 export default Autocomplete;
