@@ -5,6 +5,7 @@ import style from './autocomplete.module.scss'
 const UP_ARROW = 38
 const DOWN_ARROW = 40
 const KEY_ENTER = 13
+const KEY_ESCAPE = 27
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -66,32 +67,45 @@ class Autocomplete extends Component {
   onKeyDown = e => {
     const { activeSuggestion, filteredSuggestions } = this.state;
 
-    // User pressed the enter key, update the input and close the
-    // suggestions
-    if (e.keyCode === KEY_ENTER) {
-      this.setState({
-        activeSuggestion: 0,
-        showSuggestions: false,
-        userInput: filteredSuggestions[activeSuggestion]
-      });
-    }
-    // User pressed the up arrow, decrement the index
-    else if (e.keyCode === UP_ARROW) {
-      if (activeSuggestion === 0) {
-        return;
-      }
-
-      this.setState({ activeSuggestion: activeSuggestion - 1 });
-    }
-    // User pressed the down arrow, increment the index
-    else if (e.keyCode === DOWN_ARROW) {
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
-        return;
-      }
-
-      this.setState({ activeSuggestion: activeSuggestion + 1 });
+    switch(e.keyCode) {
+      case KEY_ESCAPE:
+        break;
+      case KEY_ENTER:
+        this.setState({
+          activeSuggestion: 0,
+          showSuggestions: false,
+          userInput: filteredSuggestions[activeSuggestion]
+        });
+        break;
+      case UP_ARROW:
+        e.preventDefault();
+        this.listUp()
+        break;
+      case DOWN_ARROW:
+        e.preventDefault();
+        this.listDown()
+        break;
     }
   };
+
+  listUp(){
+    const { activeSuggestion, filteredSuggestions } = this.state;
+    if (activeSuggestion === 0) {
+      return;
+    }
+
+    this.setState({ activeSuggestion: activeSuggestion - 1 });
+  }
+
+  listDown(){
+    const { activeSuggestion, filteredSuggestions } = this.state;
+
+    if (activeSuggestion == filteredSuggestions.length - 1) {
+      return;
+    }
+
+    this.setState({ activeSuggestion: activeSuggestion + 1 });
+  }
 
   render() {
     const {
