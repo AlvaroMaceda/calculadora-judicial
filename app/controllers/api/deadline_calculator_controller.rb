@@ -1,3 +1,5 @@
+require './lib/deadline_calculator'
+
 class Api::DeadlineCalculatorController < ApplicationController
 
     before_action :validate_parameters

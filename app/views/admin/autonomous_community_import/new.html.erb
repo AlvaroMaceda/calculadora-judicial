@@ -1,13 +1,41 @@
 <% flash.each do |key, msg| %>
-    <%= content_tag :div, msg, :class => [key, " message"], :id => "notice_#{key}" %>
+  <%= content_tag :div, msg, :class => [key, " message"], :id => "notice_#{key}" %>
 <% end %>
 
+<div class='container'>
 
-<%= form_tag url_for(action: 'create', method: 'post'), method: 'post', :multipart => true do %>
-    <p>
-    <%= file_field_tag 'upload[file]' %>
-    </p>
-    <p>
+  <div class='card'>
+
+    <div class='header'>
+    <h3 class="mb-0">Importar Comunidades Autónomas</h3>
+    </div>
+
+    <div class='body'>
+
+      <%= form_tag url_for(action: 'import', method: 'post'), method: 'post', :multipart => true do %>
+        
+        <div className="form-group">
+          <label>Fichero CSV</label>
+          <div className="row">
+            <div className="col-md-12">
+              <%= file_field_tag 'upload[file]' %>
+            </div>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>¿Eliminar datos existentes?</label>
+          <div className="row">
+            <div className="col-md-12">
+              AQUi DOBLE CONFIRMACION
+            </div>
+          </div>
+        </div>
+
         <%= submit_tag "Upload" %>
-    </p>
-<% end %>
+      <% end %>
+    </div> <%# body %>
+
+  </div> <%# card %>
+</div> <%# container %>
+

@@ -2,8 +2,10 @@ require 'rails_helper'
 require 'date'
 
 # You can generate calendars with ncalc:
-#  export LANG=en_US.utf-8
-#  ncal -M -C -d 2018-10
+#   export LANG=en_US.utf-8
+#   ncal -M -C -d 2018-10
+# For two months:
+#   paste <(ncal -M -C -d 2018-10) <(ncal -M -C -d 2018-11)
 describe DeadlineCalculator do
 
     it 'instantiates' do
