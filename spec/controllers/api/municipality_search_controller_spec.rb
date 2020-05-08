@@ -11,8 +11,9 @@ describe Api::MunicipalitySearchController, type: :controller do
             return { code: municipality[:code], name:municipality[:name] }
         end
         
-        before(:all) do
-            @ac1 = create(:autonomous_community)
+        before(:each) do
+            # This is not processed by DatabaseCleaner
+            @ac1 = create(:autonomous_community)            
             @ac2 = create(:autonomous_community)
 
             @alcala = {name: "Alcala - search tests", code: "ES50001", autonomous_community: @ac1 }
