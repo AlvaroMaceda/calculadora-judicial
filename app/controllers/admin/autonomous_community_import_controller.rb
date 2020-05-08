@@ -8,6 +8,9 @@ class Admin::AutonomousCommunityImportController < ApplicationController
   end
 
   def import
+    puts '**************************'
+    puts params.inspect
+    puts params[:upload].inspect
     name = params[:upload][:file].original_filename
     
     # path = File.join("public", "images", "upload", name)
