@@ -14,7 +14,7 @@ class AutonomousCommunityImporter
             validate_headers headers
 
             csv.each do |row|
-                create_ac row
+                create_autonomous_community row
             end        
 
         rescue ImportError => e
@@ -35,10 +35,10 @@ class AutonomousCommunityImporter
         end
     end
 
-    def create_ac(row_data)
+    def create_autonomous_community(row_data)
         begin
             curated_row = {
-                country_id: @country.id+0,
+                country_id: @country.id,
                 name: row_data['name'],
                 code: row_data['code']
             }
