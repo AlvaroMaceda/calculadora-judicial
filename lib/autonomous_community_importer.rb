@@ -55,10 +55,13 @@ class AutonomousCommunityImporter
         end
     end
 
-    class HeadersError < RuntimeError
+    class Error < RuntimeError
     end
 
-    class ImportError < RuntimeError
+    class HeadersError < Error
+    end
+
+    class ImportError < Error
     end
 
 end
