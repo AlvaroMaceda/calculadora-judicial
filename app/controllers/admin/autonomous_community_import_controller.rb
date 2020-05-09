@@ -4,19 +4,17 @@ class Admin::AutonomousCommunityImportController < ApplicationController
 
   def new
     puts 'ejecutando new'
-    puts AutonomousCommunityImporter::banana
+    # puts AutonomousCommunityImporter::banana
   end
 
   def import
-    puts '**************************'
-    puts params.inspect
-    puts params[:upload].inspect
-    name = params[:upload][:file].original_filename
+    country = Country.find(params[:country])
+    importer = AutonomousCommunityImporter.new(country)
     
-    # path = File.join("public", "images", "upload", name)
-    # File.open(path, "wb") { |f| f.write(params[:upload][:file].read) }
-    flash[:notice] = "File uploaded. Name: #{name}"
-    # redirect_to "/upload/new"
+    csv_file = params[:csv_file].tempfile
+    importer.importCSV(csv_file)
+
+    flash[:notice] = "File uploaded. Name: #{params[:csv_file].original_filename}"
     redirect_to action: 'new'
   end
 

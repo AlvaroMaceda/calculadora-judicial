@@ -1,13 +1,5 @@
 require 'rails_helper'
 
-def ac_data(ac)
-    { code: ac.code, name: ac.name, country: ac.country.id}
-end
-
-def all_acs_in_DB()
-    AutonomousCommunity.all.to_a.map { |ac| ac_data(ac) }
-end
-
 describe DeadlineCalculator do
 
     let(:country) { create(:country) }
@@ -34,8 +26,7 @@ describe DeadlineCalculator do
         csv = StringIO.new(csv_data)
         importer.importCSV csv
 
-        retrieved = AutonomousCommunity.all.to_a.map { |ac| ac_data(ac) }
-        expect(all_acs_in_DB).to match_array(expected)
+        expect(all_autonomous_communities_in_DB).to match_array(expected)
     end
     
     it 'additional data is ignored' do
@@ -55,8 +46,7 @@ describe DeadlineCalculator do
         csv = StringIO.new(csv_data)
         importer.importCSV csv
 
-        retrieved = AutonomousCommunity.all.to_a.map { |ac| ac_data(ac) }
-        expect(all_acs_in_DB).to match_array(expected)
+        expect(all_autonomous_communities_in_DB).to match_array(expected)
     end
 
     context 'errors' do
