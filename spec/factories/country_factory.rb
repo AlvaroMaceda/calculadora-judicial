@@ -1,16 +1,17 @@
+
 FactoryBot.define do
 
-  factory :country do
-    name { Faker::Address.unique.country }
-
-    factory :banana do
-      name {'Spain'}
+  sequence :country_code do |n|
+    '%02i' % n
+  end
   
-      after(:create) do |country|
-        create_list(:autonomous_community, 17, country: country)
-      end
-    end
-
+  sequence :country_name do |n|
+    "Country #{n}"
+  end
+  
+  factory :country do
+    code { generate(:country_code) }
+    name { generate(:country_name) }
   end
   
 end

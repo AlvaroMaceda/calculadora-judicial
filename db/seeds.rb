@@ -5,3 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# Wipe countries, autonomous communities, municipalities and holidays
+Country.destroy_all
+
+spain = Country.create(name: 'Spain')
