@@ -1,4 +1,4 @@
-potato,name
-"one potato","Autonomous Community 1"
-"two potatos","Autonomous Community 2"
-"03","Autonomous Community 3"
+potato,name,country_code
+"one potato","Autonomous Community 1","ES"
+"two potatos","Autonomous Community 2","ES"
+"03","Autonomous Community 3","ES"

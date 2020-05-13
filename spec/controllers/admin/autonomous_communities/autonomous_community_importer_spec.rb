@@ -3,38 +3,26 @@ include My::Matchers
 
 describe Admin::AutonomousCommunityImportController, type: :controller do
 
-    let(:country) { create(:country) }
+    before(:each) do
+        create(:country, code: 'ES')
+        create(:country, code: 'GB')
+    end
 
     it 'uploads a csv file' do        
         filename = File.join(__dir__,'correct_example.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
-            country: country.id,
             csv_file: file 
         }
         post :import, params: params
 
         expected = [
-            {code: '01', name: 'Autonomous Community 1', country: country.id},
-            {code: '02', name: 'Autonomous Community 2', country: country.id},
-            {code: '03', name: 'Autonomous Community 3', country: country.id}
+            {code: '01', name: 'Autonomous Community 1', country: 'ES'},
+            {code: '02', name: 'Autonomous Community 2', country: 'ES'},
+            {code: '01', name: 'Autonomous Community 1', country: 'GB'}
         ]
         expect(all_autonomous_communities_in_DB).to match_array(expected)
-    end
-
-    it 'fails if the country does not exists' do
-        filename = File.join(__dir__,'correct_example.csv')
-        file = Rack::Test::UploadedFile.new filename, 'text/csv'
-        
-        params = { 
-            country: 'unexistent country',
-            csv_file: file 
-        }
-        post :import, params: params
-
-        expect(flash[:error]).to include "Country with id:#{params[:country]} does not exist"
-        expect(response).to redirect_to(:admin_import_ac)
     end
 
     it 'shows an error if csv contains erroneous data' do
@@ -42,7 +30,6 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
-            country: country.id,
             csv_file: file 
         }
         post :import, params: params
@@ -56,7 +43,6 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
-            country: country.id,
             csv_file: file 
         }
         post :import, params: params

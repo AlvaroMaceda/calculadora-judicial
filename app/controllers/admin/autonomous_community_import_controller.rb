@@ -9,14 +9,7 @@ class Admin::AutonomousCommunityImportController < ApplicationController
 
     def import
 
-        begin
-            country = Country.find(params[:country])
-        rescue ActiveRecord::RecordNotFound => e
-            flash[:error] = "Country with id:#{params[:country]} does not exist"
-            redirect_to action: 'new' and return
-        end
-
-        importer = AutonomousCommunityImporter.new(country)
+        importer = AutonomousCommunityImporter.new
         csv_file = params[:csv_file].tempfile
 
         begin
@@ -26,7 +19,6 @@ class Admin::AutonomousCommunityImportController < ApplicationController
             redirect_to action: 'new' and return
         end
         
-
         flash[:notice] = "File uploaded. Name: #{params[:csv_file].original_filename}"
         redirect_to action: 'new'
     end
