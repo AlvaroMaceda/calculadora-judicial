@@ -6,11 +6,12 @@ class AutonomousCommunityImporter
         @country_ids = {}
     end
 
-    def importCSV(csv_file)
+    def importCSV(csv_filename_or_io)        
+        csv_io = get_io_from_parameter(csv_filename_or_io)
         begin
             lines = 1
             imported = 0
-            csv = CSV.new(csv_file, headers: true, return_headers: true)            
+            csv = CSV.new(csv_io, headers: true, return_headers: true)            
             
             headers = csv.first
             validate_headers headers
@@ -25,6 +26,7 @@ class AutonomousCommunityImporter
         
             return ImportResults.new(lines, imported)
 
+
         rescue ImportError,CountryNotFound => e
             message = "Line #{csv.lineno}. " + e.message
             raise ImportError.new(message)
@@ -32,6 +34,26 @@ class AutonomousCommunityImporter
     end
 
     private
+
+    def get_io_from_parameter(filename_or_io)
+        if is_a_file_name? filename_or_io
+            return open_file(filename_or_io)
+        else
+            return filename_or_io
+        end
+    end
+
+    def is_a_file_name?(parameter)
+        parameter.instance_of? String
+    end
+
+    def open_file(filename)
+        begin
+            return File.open(filename, "r")
+        rescue SystemCallError => e
+            raise ImportError.new("Imput/Output error: #{e.message}")
+        end        
+    end
 
     def validate_headers(headers)
         columns = headers.to_h.keys

@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-describe DeadlineCalculator do
+describe AutonomousCommunityImporter do
 
     before(:each) do
         create(:country,code:"ES")
         create(:country,code:"FR")
+        create(:country,code:"GB")
     end
 
     let(:importer) { AutonomousCommunityImporter.new }
@@ -33,13 +34,13 @@ describe DeadlineCalculator do
         expect(all_autonomous_communities_in_DB).to match_array(expected)
     end
     
-    xit 'works with a file name' do
-       
-        csv_file = File.join(__dir__,)        
+    it 'works with a file name' do
+
+        csv_file = File.join(__dir__,'correct_example.csv')        
         expected = [
             {code: '01', name: 'Autonomous Community 1', country: "ES"},
             {code: '02', name: 'Autonomous Community 2', country: "ES"},
-            {code: '01', name: 'Autonomous Community 1', country: "FR"}
+            {code: '01', name: 'Autonomous Community 1', country: "GB"}
         ]
 
         importer.importCSV csv_file
@@ -145,7 +146,7 @@ describe DeadlineCalculator do
         it 'returns error if country does not exists' do
             csv_data = <<~HEREDOC
                 country_code,code,name
-                "GB","01","Autonomous Community 1"
+                "ZZ","01","Autonomous Community 1"
             HEREDOC
 
             csv = StringIO.new(csv_data)
@@ -166,6 +167,18 @@ describe DeadlineCalculator do
             expect {importer.importCSV csv}.to raise_error(AutonomousCommunityImporter::ImportError)
             expect(all_autonomous_communities_in_DB).to match_array([])
         end
+
+        it 'returns error if file does not exist' do
+            csv_file = File.join(__dir__,'THIS_FILE_DOES_NOT_EXIST.csv')        
+            expected = [
+                {code: '01', name: 'Autonomous Community 1', country: "ES"},
+                {code: '02', name: 'Autonomous Community 2', country: "ES"},
+                {code: '01', name: 'Autonomous Community 1', country: "GB"}
+            ]
+    
+            expect {importer.importCSV csv_file}.to raise_error(AutonomousCommunityImporter::ImportError)
+        end
+
     end
 
 end

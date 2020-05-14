@@ -16,9 +16,8 @@ def seed_autonomous_communities
     require 'autonomous_community_importer'
 
     filename = File.join(__dir__,'seeds','autonomous_communities.csv')
-    file = File.open(filename, "r")
     ac_importer = AutonomousCommunityImporter.new
-    ac_importer.importCSV(file)
+    ac_importer.importCSV(filename)
 
 end
 seed_autonomous_communities
