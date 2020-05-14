@@ -33,6 +33,22 @@ describe DeadlineCalculator do
         expect(all_autonomous_communities_in_DB).to match_array(expected)
     end
     
+    it 'returns statistics' do
+       
+        csv_data = <<~HEREDOC
+            country_code,code,name
+            "ES","01","Autonomous Community 1"
+            "ES","02","Autonomous Community 2"
+            "FR","01","Autonomous Community 1"
+        HEREDOC
+
+        csv = StringIO.new(csv_data)
+        result = importer.importCSV csv
+
+        expect(result.lines).to eq(4)
+        expect(result.imported).to eq(3)
+    end
+
     it 'additional data is ignored' do
         csv_data = <<~HEREDOC
             country_code,ignored1,code,name,ignored2,ignored3

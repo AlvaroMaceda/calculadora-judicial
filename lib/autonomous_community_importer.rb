@@ -8,6 +8,8 @@ class AutonomousCommunityImporter
 
     def importCSV(csv_file)
         begin
+            lines = 1
+            imported = 0
             csv = CSV.new(csv_file, headers: true, return_headers: true)            
             
             headers = csv.first
@@ -15,9 +17,13 @@ class AutonomousCommunityImporter
 
             AutonomousCommunity.transaction do
                 csv.each do |row|
+                    lines += 1                    
                     create_autonomous_community row
+                    imported +=1
                 end
             end
+        
+            return ImportResults.new(lines, imported)
 
         rescue ImportError,CountryNotFound => e
             message = "Line #{csv.lineno}. " + e.message
@@ -83,6 +89,14 @@ class AutonomousCommunityImporter
 
     def cache_country_id(code, country_id)
         @country_ids[code] = country_id
+    end
+
+    class ImportResults
+        attr_reader :lines, :imported
+        def initialize(lines, imported)
+            @lines = lines
+            @imported = imported
+        end
     end
 
     class Error < RuntimeError
