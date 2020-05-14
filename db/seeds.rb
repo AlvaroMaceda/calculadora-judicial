@@ -9,4 +9,16 @@
 # Wipe countries, autonomous communities, municipalities and holidays
 Country.destroy_all
 
-spain = Country.create(name: 'Spain')
+spain = Country.create(name: 'Spain', code: "ES")
+
+def seed_autonomous_communities
+
+    require 'autonomous_community_importer'
+
+    filename = File.join(__dir__,'seeds','autonomous_communities.csv')
+    # puts filename
+    ac_importer = AutonomousCommunityImporter.new
+    ac_importer.importCSV(filename)
+
+end
+seed_autonomous_communities
