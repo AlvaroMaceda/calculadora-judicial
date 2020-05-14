@@ -1,6 +1,10 @@
 require 'rails_helper'
 include My::Matchers
 
+def example_file(filename)
+    File.join(__dir__,'..','..','lib','autonomous_community_importer',filename)
+end
+
 describe Admin::AutonomousCommunityImportController, type: :controller do
 
     before(:each) do
@@ -9,7 +13,7 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
     end
 
     it 'uploads a csv file' do        
-        filename = File.join(__dir__,'correct_example.csv')
+        filename =example_file('correct_example.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
@@ -26,7 +30,7 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
     end
 
     it 'shows an error if csv contains erroneous data' do
-        filename = File.join(__dir__,'erroneous_data_example.csv')
+        filename = example_file('erroneous_data_example.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
@@ -39,7 +43,7 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
     end
 
     it 'shows an error if csv is malformed' do
-        filename = File.join(__dir__,'malformed_csv_example.csv')
+        filename = example_file('malformed_csv_example.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
