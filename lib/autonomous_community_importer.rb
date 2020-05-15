@@ -9,9 +9,13 @@ class AutonomousCommunityImporter
     def importCSV(csv_filename_or_io)        
         csv_io = get_io_from_parameter(csv_filename_or_io)
         begin
+            puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
             lines = 1
             imported = 0
-            csv = CSV.new(csv_io, headers: true, return_headers: true)            
+            csv = CSV.new(csv_io, headers: true, return_headers: true, encoding: 'UTF-8')
+            # :encoding
+            # Maybe I should do it with read instead of new
+            # file_contents = CSV.read("csvfile.csv", col_sep: "$", encoding: "ISO8859-1")
             
             headers = csv.first
             validate_headers headers
@@ -69,11 +73,16 @@ class AutonomousCommunityImporter
     end
 
     def create_autonomous_community(row_data)
+        puts '!!!!!!!!!!!!!!!1'
+        puts 'BEFORE'
+        # This is ASCII-8BIT for some files
+        puts row_data['name'].encoding
+        puts '!!!!!!!!!!!!!!!1'
         begin
             curated_row = {
-                country_id: get_country_id(row_data['country_code']),
-                name: row_data['name'],
-                code: row_data['code']
+                country_id: get_country_id(FORCE_FUCKING_ENCODING_TO_UTF8(row_data['country_code'])),
+                name: FORCE_FUCKING_ENCODING_TO_UTF8(row_data['name']),
+                code: FORCE_FUCKING_ENCODING_TO_UTF8(row_data['code'])
             }
             ac = AutonomousCommunity.create!(curated_row.to_h)
 
@@ -96,6 +105,11 @@ class AutonomousCommunityImporter
             
             raise ImportError.new(message)
         end
+    end
+
+    def FORCE_FUCKING_ENCODING_TO_UTF8(value)
+        # value.encode(value.encoding).force_encoding("utf-8")
+        value.encode("utf-8")
     end
 
     def get_country_id(code)

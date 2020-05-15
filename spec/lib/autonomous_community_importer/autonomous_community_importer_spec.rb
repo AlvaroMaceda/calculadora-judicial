@@ -34,6 +34,22 @@ describe AutonomousCommunityImporter do
         expect(all_autonomous_communities_in_DB).to match_array(expected)
     end
     
+    it 'works with non-ascii characters' do
+       
+        csv_data = <<~HEREDOC
+            country_code,code,name
+            "ES","01","IIƆS∀ ʇou sᴉ sᴉɥ┴"
+        HEREDOC
+        expected = [
+            {code: '01', name: 'IIƆS∀ ʇou sᴉ sᴉɥ┴', country: "ES"},
+        ]
+
+        csv = StringIO.new(csv_data)
+        importer.importCSV csv
+
+        expect(all_autonomous_communities_in_DB).to match_array(expected)
+    end
+
     it 'works with a file name' do
 
         csv_file = File.join(__dir__,'correct_example.csv')        

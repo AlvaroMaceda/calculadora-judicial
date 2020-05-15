@@ -27,10 +27,24 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
             {code: '01', name: 'Autonomous Community 1', country: 'GB'}
         ]
         expect(all_autonomous_communities_in_DB).to match_array(expected)
+        expect(response).to redirect_to(:action => :new)
     end
 
     it 'shows an error if csv contains erroneous data' do
         filename = example_file('erroneous_data_example.csv')
+        file = Rack::Test::UploadedFile.new filename, 'text/csv'
+        
+        params = { 
+            csv_file: file 
+        }
+        post :import, params: params
+
+        expect(flash[:error]).to include "Error in csv file"
+        expect(response).to redirect_to(:admin_import_ac)
+    end
+
+    it 'shows errors containing non-ascii characters', focus:true do
+        filename = example_file('unicode_error.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         
         params = { 
