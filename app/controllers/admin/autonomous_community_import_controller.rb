@@ -1,5 +1,3 @@
-require './lib/autonomous_community_importer'
-
 class Admin::AutonomousCommunityImportController < ApplicationController
 
     def new
@@ -10,17 +8,15 @@ class Admin::AutonomousCommunityImportController < ApplicationController
     def import
 
         importer = AutonomousCommunityImporter.new
+        puts 'csv_file:'
+        puts params[:csv_file].inspect
+        puts 'tempfile:'
+        puts params[:csv_file].tempfile.inspect
         csv_file = params[:csv_file].tempfile
 
         begin
             importer.importCSV(csv_file)
         rescue AutonomousCommunityImporter::Error => e
-            puts '***********************'
-            # e.message is ASCII-8BIT!!
-            puts e.message.encoding
-            puts '***********************'
-            message = "Error in csv file:#{e.message}"
-            message.force_encoding('UTF-8').html_safe
             flash[:error] = "Error in csv file:#{e.message}"
             redirect_to action: 'new' and return
         end

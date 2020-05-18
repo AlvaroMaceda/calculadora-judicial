@@ -43,7 +43,7 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
         expect(response).to redirect_to(:admin_import_ac)
     end
 
-    it 'shows errors containing non-ascii characters', focus:true do
+    it 'shows errors containing non-ascii characters' do
         filename = example_file('unicode_error.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
         

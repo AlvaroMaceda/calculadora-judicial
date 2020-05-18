@@ -13,8 +13,6 @@ spain = Country.create(name: 'Spain', code: "ES")
 
 def seed_autonomous_communities
 
-    require 'autonomous_community_importer'
-
     filename = File.join(__dir__,'seeds','autonomous_communities.csv')
     ac_importer = AutonomousCommunityImporter.new
     ac_importer.importCSV(filename)
