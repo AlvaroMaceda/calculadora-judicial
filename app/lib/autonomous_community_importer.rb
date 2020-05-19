@@ -1,4 +1,5 @@
-require 'csv'
+# require 'csv'
+require_relative '../../tmp/csv'
 
 class AutonomousCommunityImporter
 
@@ -13,41 +14,39 @@ class AutonomousCommunityImporter
             imported = 0
             headers_row = true
 
-            AutonomousCommunity.transaction do
-                CSV.foreach(csv_io, headers: true) do |row|
-                    if headers_row
-                        validate_headers row.headers
-                        headers_row = false
-                    end
-                    line += 1                    
-                    create_autonomous_community row
-                    imported +=1
-
-                    # puts row.headers
-                    # i = i+1
-                    # # puts row if i<3
-                    # puts row['name'] if i<5
-                    # puts row['name'].encoding if i<5
-
-
-                end
-            end # Transaction
-
-            # csv = CSV.new(csv_io, headers: true, return_headers: true, encoding: 'UTF-8')
-            # # :encoding
-            # # Maybe I should do it with read instead of new
-            # # file_contents = CSV.read("csvfile.csv", col_sep: "$", encoding: "ISO8859-1")
-            
-            # headers = csv.first
-            # validate_headers headers
-
+            #--------------------------------------------------
+            # METHOD 1
+            #--------------------------------------------------
             # AutonomousCommunity.transaction do
-            #     csv.each do |row|
-            #         lines += 1                    
+            #     CSV.foreach(csv_io, headers: true) do |row|
+            #         if headers_row
+            #             validate_headers row.headers
+            #             headers_row = false
+            #         end
+            #         line += 1                    
             #         create_autonomous_community row
             #         imported +=1
             #     end
-            # end
+            # end # Transaction
+
+            #--------------------------------------------------
+            # METHOD 2
+            #--------------------------------------------------
+            csv = CSV.new(csv_io, headers: true, return_headers: true, encoding: 'UTF-8')
+            # :encoding
+            # Maybe I should do it with read instead of new
+            # file_contents = CSV.read("csvfile.csv", col_sep: "$", encoding: "ISO8859-1")
+            
+            headers = csv.first
+            validate_headers headers
+
+            AutonomousCommunity.transaction do
+                csv.each do |row|
+                    line += 1                    
+                    create_autonomous_community row
+                    imported +=1
+                end
+            end
         
             total_lines = line
             return ImportResults.new(total_lines, imported)

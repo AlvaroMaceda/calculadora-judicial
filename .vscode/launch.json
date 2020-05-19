@@ -4,6 +4,16 @@
 {
 "version": "0.2.0",
     "configurations": [
+        // rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 ./YOUR_FILE
+        {
+            "name": "Listen for rdebug-ide",
+            "type": "Ruby",
+            "request": "attach",
+            "remoteHost": "127.0.0.1",
+            "remotePort": "1234",
+            "remoteWorkspaceRoot": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}"
+        },
         {
             "name": "Run RSpec (Active File)",
             "type": "Ruby",
@@ -98,6 +108,14 @@
                 "-p",
                 "3000"
             ]
-        }
+        },
+        {
+            "name": "Debug Ruby Local File",
+            "type": "ruby-debug",
+            "request": "launch",
+            "program": "${file}",
+            "programArgs": [],
+            "useBundler": true
+        },       
     ]
 }
