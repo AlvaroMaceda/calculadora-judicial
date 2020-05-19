@@ -1,5 +1,4 @@
-# require 'csv'
-require_relative '../../tmp/csv'
+require 'csv'
 
 class AutonomousCommunityImporter
 
@@ -7,39 +6,19 @@ class AutonomousCommunityImporter
         @country_ids = {}
     end
 
-    def importCSV(csv_filename_or_io)        
+    def importCSV(csv_filename_or_io)
+
         csv_io = get_io_from_parameter(csv_filename_or_io)
+
         begin
-            line = 1
-            imported = 0
-            headers_row = true
 
-            #--------------------------------------------------
-            # METHOD 1
-            #--------------------------------------------------
-            # AutonomousCommunity.transaction do
-            #     CSV.foreach(csv_io, headers: true) do |row|
-            #         if headers_row
-            #             validate_headers row.headers
-            #             headers_row = false
-            #         end
-            #         line += 1                    
-            #         create_autonomous_community row
-            #         imported +=1
-            #     end
-            # end # Transaction
-
-            #--------------------------------------------------
-            # METHOD 2
-            #--------------------------------------------------
             csv = CSV.new(csv_io, headers: true, return_headers: true, encoding: 'UTF-8')
-            # :encoding
-            # Maybe I should do it with read instead of new
-            # file_contents = CSV.read("csvfile.csv", col_sep: "$", encoding: "ISO8859-1")
             
             headers = csv.first
             validate_headers headers
 
+            line = 1
+            imported = 0
             AutonomousCommunity.transaction do
                 csv.each do |row|
                     line += 1                    
@@ -51,9 +30,7 @@ class AutonomousCommunityImporter
             total_lines = line
             return ImportResults.new(total_lines, imported)
 
-
         rescue ImportError,CountryNotFound => e
-            # message = "Line #{csv.lineno}. " + e.message
             message = "Line #{line}. " + e.message
             raise ImportError.new(message)
         end
@@ -62,7 +39,7 @@ class AutonomousCommunityImporter
     private
 
     def get_io_from_parameter(filename_or_io)
-        if is_a_file_name? filename_or_io
+        if is_a_file_name?(filename_or_io)
             return open_file(filename_or_io)
         else
             return filename_or_io
@@ -98,9 +75,9 @@ class AutonomousCommunityImporter
     def create_autonomous_community(row_data)
         begin
             curated_row = {
-                country_id: get_country_id(FORCE_FUCKING_ENCODING_TO_UTF8(row_data['country_code'])),
-                name: FORCE_FUCKING_ENCODING_TO_UTF8(row_data['name']),
-                code: FORCE_FUCKING_ENCODING_TO_UTF8(row_data['code'])
+                country_id: get_country_id(row_data['country_code']),
+                name: row_data['name'],
+                code: row_data['code']
             }
             ac = AutonomousCommunity.create!(curated_row.to_h)
 
@@ -123,12 +100,6 @@ class AutonomousCommunityImporter
             
             raise ImportError.new(message)
         end
-    end
-
-    def FORCE_FUCKING_ENCODING_TO_UTF8(value)
-        return value
-        # value.encode(value.encoding).force_encoding("utf-8")
-        value.encode("utf-8")
     end
 
     def get_country_id(code)
