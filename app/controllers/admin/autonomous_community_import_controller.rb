@@ -1,18 +1,13 @@
 class Admin::AutonomousCommunityImportController < ApplicationController
 
     def new
-        puts 'ejecutando new'
-        # puts AutonomousCommunityImporter::banana
     end
 
     def import
 
         importer = AutonomousCommunityImporter.new
-        puts 'csv_file:'
-        puts params[:csv_file].inspect
-        puts 'tempfile:'
-        puts params[:csv_file].tempfile.inspect
         csv_file = params[:csv_file].tempfile
+        csv_file.set_encoding 'UTF-8'
 
         begin
             importer.importCSV(csv_file)

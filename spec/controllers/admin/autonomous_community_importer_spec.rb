@@ -27,7 +27,34 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
             {code: '01', name: 'Autonomous Community 1', country: 'GB'}
         ]
         expect(all_autonomous_communities_in_DB).to match_array(expected)
+    end
+
+    it 'redirects to new if all ok' do
+        filename =example_file('correct_example.csv')
+        file = Rack::Test::UploadedFile.new filename, 'text/csv'
+        
+        params = { 
+            csv_file: file 
+        }
+        post :import, params: params
+
         expect(response).to redirect_to(:action => :new)
+    end
+    
+    it 'uploads a csv file containing non-ascii characters' do
+        filename = example_file('unicode_example.csv')
+        file = Rack::Test::UploadedFile.new filename, 'text/csv'
+        
+        params = { 
+            csv_file: file 
+        }
+        post :import, params: params
+
+        expected = [
+            {code: '01', name: 'IIƆS∀ ʇou sᴉ sᴉɥ┴', country: 'ES'},
+            {code: '02', name: 'ʇou IIƆS∀ ʇou sᴉ sᴉɥ┴', country: 'ES'},
+        ]
+        expect(all_autonomous_communities_in_DB).to match_array(expected)
     end
 
     it 'shows an error if csv contains erroneous data' do
@@ -40,21 +67,8 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
         post :import, params: params
 
         expect(flash[:error]).to include "Error in csv file"
-        expect(response).to redirect_to(:admin_import_ac)
     end
 
-    it 'shows errors containing non-ascii characters', focus:true do
-        filename = example_file('unicode_error.csv')
-        file = Rack::Test::UploadedFile.new filename, 'text/csv'
-        
-        params = { 
-            csv_file: file 
-        }
-        post :import, params: params
-
-        expect(flash[:error]).to include "Error in csv file"
-        expect(response).to redirect_to(:admin_import_ac)
-    end
 
     it 'shows an error if csv is malformed' do
         filename = example_file('malformed_csv_example.csv')

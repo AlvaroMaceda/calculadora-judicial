@@ -63,10 +63,8 @@ class AutonomousCommunityImporter
 
     def get_io_from_parameter(filename_or_io)
         if is_a_file_name? filename_or_io
-            puts 'its a filename'
             return open_file(filename_or_io)
         else
-            puts 'its an io'
             return filename_or_io
         end
     end
@@ -77,7 +75,6 @@ class AutonomousCommunityImporter
 
     def open_file(filename)
         begin
-            puts 'opening file'
             return File.open(filename, "r:UTF-8")
         rescue SystemCallError => e
             raise ImportError.new("Imput/Output error: #{e.message}")
