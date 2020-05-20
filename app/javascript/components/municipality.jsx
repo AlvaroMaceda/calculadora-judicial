@@ -5,14 +5,19 @@ import AsyncSelect from 'react-select/async';
 async function searchMunicipalities(text){
   try {
     const response = await fetch('/api/municipality/search/'+text)
+    console.debug(response)
     if (!response.ok) throw Error(response.statusText);
-    let municipalities = await response.json();
+    let municipalities = await response.json()
+    municipalities = municipalities.municipalities
+    console.debug(municipalities)
+    window.foo = municipalities
     municipalities.map( (municipality) => { return {
       value: municipality.code,
       label: municipality.name
     }} )
+    console.debug(municipalities)
   }catch(error) {
-    console.log('Error obtaining municipalities')
+    console.log('Error obtaining municipalities:'+error)
   }  
 }
 
