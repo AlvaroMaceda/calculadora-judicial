@@ -6,6 +6,7 @@ class AutonomousCommunityImporter
         @country_ids = {}
     end
 
+    # This method expects UTF-8 encoded files, but do not validate it
     def importCSV(csv_filename_or_io)
 
         csv_io = get_io_from_parameter(csv_filename_or_io)
