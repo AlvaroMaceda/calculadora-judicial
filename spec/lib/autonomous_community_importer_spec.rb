@@ -52,7 +52,7 @@ describe AutonomousCommunityImporter do
 
     it 'works with a file name' do
 
-        csv_file = File.join(__dir__,'correct_example.csv')        
+        csv_file = File.join(__dir__,'autonomous_community_importer_data','correct_example.csv')        
         expected = [
             {code: '01', name: 'Autonomous Community 1', country: "ES"},
             {code: '02', name: 'Autonomous Community 2', country: "ES"},
@@ -185,12 +185,7 @@ describe AutonomousCommunityImporter do
         end
 
         it 'returns error if file does not exist' do
-            csv_file = File.join(__dir__,'THIS_FILE_DOES_NOT_EXIST.csv')        
-            expected = [
-                {code: '01', name: 'Autonomous Community 1', country: "ES"},
-                {code: '02', name: 'Autonomous Community 2', country: "ES"},
-                {code: '01', name: 'Autonomous Community 1', country: "GB"}
-            ]
+            csv_file = File.join(__dir__,'THIS_FILE_DOES_NOT_EXIST.csv')
     
             expect {importer.importCSV csv_file}.to raise_error(AutonomousCommunityImporter::ImportError)
         end

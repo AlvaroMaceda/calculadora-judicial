@@ -1,5 +1,4 @@
 require 'csv'
-
 class MunicipalityImporter
 
     def initialize()
@@ -31,7 +30,7 @@ class MunicipalityImporter
             total_lines = line
             return ImportResults.new(total_lines, imported)
 
-        rescue ImportError,CountryNotFound => e
+        rescue ImportError,CountryNotFound,AutonomousCommunityNotFound => e
             message = "Line #{line}. " + e.message
             raise ImportError.new(message)
         end
@@ -66,7 +65,7 @@ class MunicipalityImporter
 
         columns = headers
         expected_columns.each do |column|
-            if !columns.include? 'country_code'
+            if !columns.include? column
                 raise HeadersError.new("Missing column '#{column}'")
             end
         end
@@ -75,7 +74,7 @@ class MunicipalityImporter
     def create_municipality(row_data)
         begin
             country_id = get_country_id(row_data['country_code'])
-            ac_id = get_autonomous_community_id(country_id, row_data['country_code'])
+            ac_id = get_autonomous_community_id(country_id, row_data['ac_code'])
             curated_row = {
                 autonomous_community_id: ac_id,
                 name: row_data['name'],
@@ -106,6 +105,7 @@ class MunicipalityImporter
 
     def get_autonomous_community_id(country_id, code)
         ac = AutonomousCommunity.find_by(country_id: country_id, code: code)
+        raise AutonomousCommunityNotFound.new("Autonomous community code: '#{code}'") unless ac
         return ac.id
     end
 
@@ -142,6 +142,9 @@ class MunicipalityImporter
     end
 
     class CountryNotFound < Error
+    end
+
+    class AutonomousCommunityNotFound < Error
     end
 
 end

@@ -2,7 +2,7 @@ require 'rails_helper'
 include My::Matchers
 
 def example_file(filename)
-    File.join(__dir__,'..','..','lib','autonomous_community_importer',filename)
+    File.join(__dir__,'..','..','lib','autonomous_community_importer_data',filename)
 end
 
 describe Admin::AutonomousCommunityImportController, type: :controller do
