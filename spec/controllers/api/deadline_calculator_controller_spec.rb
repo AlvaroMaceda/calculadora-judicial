@@ -4,6 +4,10 @@ include My::Matchers
 describe Api::DeadlineCalculatorController, type: :controller do
 
     render_views
+    
+    def error_message(response)
+        JSON.parse(response.body)['message']
+    end
 
     describe "GET #deadline/" do
 
@@ -19,10 +23,6 @@ describe Api::DeadlineCalculatorController, type: :controller do
                 days: 15
             }
         }
-
-        def error_message(response)
-            JSON.parse(response.body)['message']
-        end
 
         it 'computes a deadline' do
             # See deadline_calculator_spec for examples of deadline calculations

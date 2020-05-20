@@ -5,11 +5,16 @@ describe Api::MunicipalitySearchController, type: :controller do
 
     render_views
     
+    def error_message(response)
+        JSON.parse(response.body)['message']
+    end
+    
     describe "GET #search" do
 
         def expect_hash(municipality)
             return { code: municipality[:code], name:municipality[:name] }
         end
+
         
         before(:each) do
             # This is not processed by DatabaseCleaner
@@ -95,6 +100,13 @@ describe Api::MunicipalitySearchController, type: :controller do
 
             expected = {municipalities: []}.to_json
             expect(response.body).to eq(expected)              
+        end
+
+        it 'returns error if there are less than three characters' do
+            get 'search', as: :json, params: { name: 'po' }
+
+            expect(response).to be_json_error_response
+            expect(error_message(response)).to include "Too few characters to search"
         end
 
     end

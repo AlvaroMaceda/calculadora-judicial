@@ -11,10 +11,6 @@ class Api::DeadlineCalculatorController < ApplicationController
 
     private 
 
-    def json_error(message)
-        render status: :bad_request, json: { message: message}
-    end
-
     def parse_parameters
         @municipality_code = params[:municipality_code]
         @notification_date = Date.parse(params[:notification])
