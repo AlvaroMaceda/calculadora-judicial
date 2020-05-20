@@ -11,11 +11,24 @@ Country.destroy_all
 
 spain = Country.create(name: 'Spain', code: "ES")
 
-def seed_autonomous_communities
+def benchmark
+    start = Time.now
+    yield
+    Time.now - start # Returns time taken to perform func
+end
 
+def seed_autonomous_communities
     filename = File.join(__dir__,'seeds','autonomous_communities.csv')
     ac_importer = AutonomousCommunityImporter.new
     ac_importer.importCSV(filename)
-
 end
-seed_autonomous_communities
+time = benchmark {seed_autonomous_communities}
+puts "Autonomous communities import time: #{time}"
+
+def seed_municipalities
+    filename = File.join(__dir__,'seeds','municipalities.csv')
+    municipality_importer = MunicipalityImporter.new
+    municipality_importer.importCSV(filename)
+end
+time = benchmark {seed_municipalities}
+puts "Municipalities import time: #{time}"

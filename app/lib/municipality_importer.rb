@@ -3,6 +3,7 @@ class MunicipalityImporter
 
     def initialize()
         @country_ids = {}
+        @autonomous_community_ids = {}
     end
 
     # This method expects UTF-8 encoded files, but do not validate it
@@ -104,9 +105,19 @@ class MunicipalityImporter
     end
 
     def get_autonomous_community_id(country_id, code)
+        id = @autonomous_community_ids[{country_id: country_id, code: code}]
+        id || find_autonomous_community_id(country_id, code)
+    end
+
+    def find_autonomous_community_id(country_id, code)
         ac = AutonomousCommunity.find_by(country_id: country_id, code: code)
         raise AutonomousCommunityNotFound.new("Autonomous community code: '#{code}'") unless ac
+        cache_autonomous_community_id(country_id, code, ac.id)
         return ac.id
+    end
+
+    def cache_autonomous_community_id(country_id, code, ac_id)
+        @autonomous_community_ids[{country_id: country_id, code: code}] = ac_id
     end
 
     def get_country_id(code)
