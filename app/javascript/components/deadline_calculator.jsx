@@ -98,26 +98,14 @@ class DeadlineCalculator extends Component {
               
               <div className="form-group">
                 <label htmlFor="municipality" className="lb-lg">Municipio</label>
-                <Municipality />
-                <input id="municipality" type="text" 
-                  className="form-control" required="" autoComplete="on"
-                  value={this.state.municipality}
-                  onChange={e => this.setMunicipality(e.target.value)}
+                <Municipality 
+                  onChange={ (e) => { 
+                    console.log('onChange de deadline_calculator:')
+                    console.log(e)
+                  }}
                 />
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
               </div>
-
-              {/* 
-              <div className="form-group">
-                <label htmlFor="municipality" className="lb-lg">Municipio</label>
-                <input id="municipality" type="text" 
-                  className="form-control" required="" autoComplete="on"
-                  value={this.state.municipality}
-                  onChange={e => this.setMunicipality(e.target.value)}
-                />
-                <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
-              </div>
-              */}
 
               <div className="form-group">
                 <label>Días hábiles</label>
