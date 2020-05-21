@@ -19,8 +19,8 @@ class DeadlineCalculator extends Component {
     super(props);    
     this.state = {
       startDate: new Date(), //CHANGE TO notificationDate
-      municipality: '',
-      workDays: 0,
+      municipality: null,
+      workDays: 20,
       formErrors: {email: '', password: ''},
       formValid: false,
       loading: null,
@@ -34,14 +34,20 @@ class DeadlineCalculator extends Component {
     })
   }
 
-  setStartDate(value) {
-    this.modifyState({startDate:value, loading: null})
+  setStartDate(date) {
+    console.log('set start date:')
+    console.log(date)
+    this.modifyState({startDate:date, loading: null})
   }
-  setMunicipality(value) {
-    this.modifyState({municipality: value, loading: null})
+  setMunicipality(municipality) {
+    console.log('set municipality:')
+    console.log(municipality)
+    this.modifyState({municipality: municipality, loading: null})
   }
-  setworkDays(value) {
-    this.modifyState({workDays: value, loading: null})
+  setworkDays(workDays) {
+    console.log('set workDays:')
+    console.log(workDays)
+    this.modifyState({workDays: workDays, loading: null})
   }
 
   handleSubmit(event){
@@ -99,10 +105,7 @@ class DeadlineCalculator extends Component {
               <div className="form-group">
                 <label htmlFor="municipality" className="lb-lg">Municipio</label>
                 <Municipality 
-                  onChange={ (e) => { 
-                    console.log('onChange de deadline_calculator:')
-                    console.log(e)
-                  }}
+                  onChange={ (municipality) => this.setMunicipality(municipality) }
                 />
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
               </div>
