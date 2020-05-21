@@ -11,7 +11,7 @@ class Admin::AutonomousCommunityImportController < ApplicationController
 
         begin
             importer.importCSV(csv_file)
-        rescue AutonomousCommunityImporter::Error => e
+        rescue CsvBasicImporter::Error => e
             flash[:error] = "Error in csv file:#{e.message}"
             redirect_to action: 'new' and return
         end

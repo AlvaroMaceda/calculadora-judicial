@@ -1,78 +1,21 @@
 require 'csv'
 
-class AutonomousCommunityImporter
+class AutonomousCommunityImporter < CsvBasicImporter
 
     def initialize()
         @country_ids = {}
     end
 
-    # This method expects UTF-8 encoded files, but do not validate it
-    def importCSV(csv_filename_or_io)
-
-        csv_io = get_io_from_parameter(csv_filename_or_io)
-
-        begin
-
-            csv = CSV.new(csv_io, headers: true, return_headers: true, encoding: 'UTF-8')
-            
-            headers = csv.first
-            validate_headers headers
-
-            line = 1
-            imported = 0
-            AutonomousCommunity.transaction do
-                csv.each do |row|
-                    line += 1                    
-                    create_autonomous_community row
-                    imported +=1
-                end
-            end
-        
-            total_lines = line
-            return ImportResults.new(total_lines, imported)
-
-        rescue ImportError,CountryNotFound => e
-            message = "Line #{line}. " + e.message
-            raise ImportError.new(message)
-        end
-    end
-
     private
-
-    def get_io_from_parameter(filename_or_io)
-        if is_a_file_name?(filename_or_io)
-            return open_file(filename_or_io)
-        else
-            return filename_or_io
-        end
+    
+    def process_row(row)
+        create_autonomous_community row
     end
 
-    def is_a_file_name?(parameter)
-        parameter.instance_of? String
+    def expected_headers
+        ['country_code','code','name']
     end
-
-    def open_file(filename)
-        begin
-            return File.open(filename, "r:UTF-8")
-        rescue SystemCallError => e
-            raise ImportError.new("Imput/Output error: #{e.message}")
-        end        
-    end
-
-    def validate_headers(headers)
-        # columns = headers.to_h.keys
-        columns = headers
-        if !columns.include? 'country_code'
-            raise HeadersError.new("Missing column 'country_code'")
-        end        
-        if !columns.include? 'code'
-            raise HeadersError.new("Missing column 'code'")
-        end
-        if !columns.include? 'name'
-            raise HeadersError.new("Missing column 'name'")
-        end
-    end
-
+    
     def create_autonomous_community(row_data)
         begin
             curated_row = {
@@ -90,7 +33,7 @@ class AutonomousCommunityImporter
                 #{e.message}
             HEREDOC
             
-            raise ImportError.new(message)
+            raise CsvBasicImporter::ImportError.new(message)
 
         rescue CountryNotFound => e
             message = <<~HEREDOC
@@ -99,7 +42,7 @@ class AutonomousCommunityImporter
                 #{e.message}
             HEREDOC
             
-            raise ImportError.new(message)
+            raise CsvBasicImporter::ImportError.new(message)
         end
     end
 
@@ -118,24 +61,7 @@ class AutonomousCommunityImporter
         @country_ids[code] = country_id
     end
 
-    class ImportResults
-        attr_reader :lines, :imported
-        def initialize(lines, imported)
-            @lines = lines
-            @imported = imported
-        end
-    end
-
-    class Error < RuntimeError
-    end
-
-    class HeadersError < Error
-    end
-
-    class ImportError < Error
-    end
-
-    class CountryNotFound < Error
+    class CountryNotFound < RuntimeError
     end
 
 end

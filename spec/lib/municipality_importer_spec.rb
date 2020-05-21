@@ -91,7 +91,7 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
 
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::ImportError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::ImportError)
         end
 
         it 'returns errors if autonomous community not exists' do
@@ -102,7 +102,7 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
 
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::ImportError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::ImportError)
         end
         
         it 'must have correct country_code header' do
@@ -113,7 +113,7 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
             
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::HeadersError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::HeadersError)
         end
         
         it 'must have correct ac_code header' do
@@ -124,7 +124,7 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
             
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::HeadersError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::HeadersError)
         end
 
         it 'must have correct code header' do
@@ -135,7 +135,7 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
             
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::HeadersError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::HeadersError)
         end
 
 
@@ -147,7 +147,7 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
             
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::HeadersError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::HeadersError)
         end
 
         it 'imports no records if there is an error' do
@@ -160,14 +160,14 @@ describe MunicipalityImporter do
 
             csv = StringIO.new(csv_data)
 
-            expect {importer.importCSV csv}.to raise_error(MunicipalityImporter::ImportError)
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::ImportError)
             expect(all_municipalities_in_DB).to match_array([])
         end
 
         it 'returns error if file does not exist' do
             csv_file = File.join(__dir__,'THIS_FILE_DOES_NOT_EXIST.csv')        
 
-            expect {importer.importCSV csv_file}.to raise_error(MunicipalityImporter::ImportError)
+            expect {importer.importCSV csv_file}.to raise_error(CsvBasicImporter::ImportError)
         end
 
     end
