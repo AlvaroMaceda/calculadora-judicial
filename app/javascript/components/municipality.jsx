@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import AsyncSelect from 'react-select/async';
 // import {throttle} from '../lib/throttle_bounce'
+// import { debounce, throttle } from "lodash";
+const debounce = require('debounce-promise')
 
-
-function throttle (func, interval) {
+function throttle_LALALA (func, interval) {
 
   let must_wait = false
   let pending_call = null
@@ -14,6 +15,7 @@ function throttle (func, interval) {
       // We must store the context because we don't know if the function
       // will be executed later
       let context = this
+      let res
 
       let wait_and_check = function () {
               // Check every throttle interval
@@ -22,9 +24,13 @@ function throttle (func, interval) {
                   // If a pending call is waiting, call it now
                   // Then we must wait another interval and check if there are
                   // new calls awaiting execution
-                  func.apply(context, pending_call)
+                  res = func.apply(context, pending_call)
                   pending_call = null
                   setTimeout(wait_and_check,interval)
+                  // console.log(func.toString())
+                  // console.log('returning:')
+                  // console.log(res)
+                  return res
               } else {
                 // There are no more pending calls
                 // Next call should not wait
@@ -32,13 +38,15 @@ function throttle (func, interval) {
               }
           };
     
+      console.log('running throttled function '+interval)
       if (!must_wait) {
           // It has been more than 0interval' milliseconds since last call
-          func.apply(context, arguments)
+          res = func.apply(context, arguments)
           // Next call must wait. We will check if there are pending calls
           // after 'interval' milliseconds
           must_wait = true;
           setTimeout(wait_and_check, interval)
+          return res
       } else {
           // This call must wait. Store it and the timeout will launch it.
           // It there was a previous call waiting, is deleted
@@ -50,6 +58,10 @@ function throttle (func, interval) {
 
 const MINIMUM_TEXT_TO_SEARCH = 3 // This should be the same number as MunicipalitySearchController minimum 
 
+function formatDate(d) {
+  return d.getMinutes() + ':' + d.getSeconds() + "." + d.getMilliseconds()
+}
+
 class Municipality extends Component {
 
   constructor (props) {
@@ -57,9 +69,12 @@ class Municipality extends Component {
     this.state = {
       error: null
     }
-    this.setValue = (value) => {
-       this.setState({ ...this.state, value: value})
-    }
+    // this.promiseOptions = inputValue => this.searchMunicipalities(inputValue)
+    this.promiseOptions = debounce(inputValue => { return this.searchMunicipalities(inputValue) },1000)
+  }
+
+  setValue(value) {
+    this.setState({ ...this.state, value: value})
   }
 
   setError(error) {
@@ -67,10 +82,11 @@ class Municipality extends Component {
   }
 
   async searchMunicipalities(text) {
+    console.log('search function')
     this.setError(null)
-    if(text.length < MINIMUM_TEXT_TO_SEARCH ) return
+    if(text.length < MINIMUM_TEXT_TO_SEARCH ) return []
     try {
-      
+      console.log('searching...')
       const response = await fetch('/api/municipality/search/'+text)
       if (!response.ok) throw Error(response.statusText);
       let data = await response.json()
@@ -99,7 +115,7 @@ class Municipality extends Component {
           isClearable
           placeholder = '...'
           defaultOptions={[]} 
-          loadOptions={promiseOptions} 
+          loadOptions={this.promiseOptions} 
           noOptionsMessage={ (_) => {return 'No se ha encontrado el municipio'} }
           onChange={ (item) => this.props.onChange && this.props.onChange(item) }
         />
