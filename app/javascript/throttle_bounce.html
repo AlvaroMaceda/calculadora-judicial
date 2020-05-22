@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    main {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <main id='main'/>
+  <script src='./throttle_bounce.js'></script>
+  <script> 
+    function formatDate(d) {
+      return d.getMinutes() + ':' + d.getSeconds() + "." + d.getMilliseconds()
+    }
+    function mousemove(e) {
+      console.log(formatDate(new Date())+' -- ('+e.clientX+','+e.clientY+')')
+    }
+    window.onload = function exampleFunction() { 
+      document.getElementById('main').addEventListener('mousemove',
+      throttle(mousemove,1000))
+    } 
+  </script> 
+</body>
+</html>
