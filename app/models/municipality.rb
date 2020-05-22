@@ -16,8 +16,9 @@ class Municipality < ApplicationRecord
     NAME_FIELD_WITHOUT_SPACES = "LOWER(REPLACE(`name`, ' ', ''))"
 
     scope :similar_to, ->(name) {
+      name_withouth_spaces = name.delete(' ')      
       where(
-          "#{NAME_FIELD_WITHOUT_SPACES} LIKE ?", "%#{name}%"
+          "#{NAME_FIELD_WITHOUT_SPACES} LIKE ?", "%#{name_withouth_spaces}%"
       )
     }
 

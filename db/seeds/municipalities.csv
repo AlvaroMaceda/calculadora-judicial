@@ -1,0 +1,433 @@
+country_code,ac_code,code,name
+ES,16,ES01002,Amurrio
+ES,16,ES01059,Vitoria-Gasteiz
+ES,08,ES02003,Albacete
+ES,08,ES02008,Alcaraz
+ES,08,ES02009,Almansa
+ES,08,ES02024,Casas-Ibáñez
+ES,08,ES02037,Hellín
+ES,08,ES02069,La Roda
+ES,08,ES02081,Villarrobledo
+ES,10,ES03009,Alcoy/Alcoi
+ES,10,ES03014,Alicante/Alacant
+ES,10,ES03031,Benidorm
+ES,10,ES03063,Dénia
+ES,10,ES03065,Elche/Elx
+ES,10,ES03066,Elda
+ES,10,ES03079,Ibi
+ES,10,ES03093,Novelda
+ES,10,ES03099,Orihuela
+ES,10,ES03122,San Vicente del Raspeig/Sant Vicent del Raspeig
+ES,10,ES03133,Torrevieja
+ES,10,ES03139,la Villajoyosa/Vila Joiosa
+ES,10,ES03140,Villena
+ES,01,ES04013,Almería
+ES,01,ES04029,Berja
+ES,01,ES04053,Huércal-Overa
+ES,01,ES04076,Purchena
+ES,01,ES04079,Roquetas de Mar
+ES,01,ES04099,Vélez-Rubio
+ES,01,ES04100,Vera
+ES,01,ES04902,El Ejido
+ES,07,ES05014,Arenas de San Pedro
+ES,07,ES05016,Arévalo
+ES,07,ES05019,Ávila
+ES,07,ES05186,Piedrahíta
+ES,11,ES06011,Almendralejo
+ES,11,ES06015,Badajoz
+ES,11,ES06036,Castuera
+ES,11,ES06044,Don Benito
+ES,11,ES06050,Fregenal de la Sierra
+ES,11,ES06063,Herrera del Duque
+ES,11,ES06070,Jerez de los Caballeros
+ES,11,ES06074,Llerena
+ES,11,ES06083,Mérida
+ES,11,ES06088,Montijo
+ES,11,ES06095,Olivenza
+ES,11,ES06149,Villafranca de los Barros
+ES,11,ES06153,Villanueva de la Serena
+ES,11,ES06158,Zafra
+ES,04,ES07015,Ciutadella de Menorca
+ES,04,ES07026,Eivissa
+ES,04,ES07027,Inca
+ES,04,ES07032,Maó/Mahón
+ES,04,ES07033,Manacor
+ES,04,ES07040,Palma de Mallorca
+ES,09,ES08006,Arenys de Mar
+ES,09,ES08015,Badalona
+ES,09,ES08019,Barcelona
+ES,09,ES08022,Berga
+ES,09,ES08073,Cornellà de Llobregat
+ES,09,ES08077,Esplugues de Llobregat
+ES,09,ES08089,Gavà
+ES,09,ES08096,Granollers
+ES,09,ES08101,L'Hospitalet de Llobregat
+ES,09,ES08102,Igualada
+ES,09,ES08113,Manresa
+ES,09,ES08114,Martorell
+ES,09,ES08121,Mataró
+ES,09,ES08124,Mollet del Vallès
+ES,09,ES08169,El Prat de Llobregat
+ES,09,ES08184,Rubí
+ES,09,ES08187,Sabadell
+ES,09,ES08200,Sant Boi de Llobregat
+ES,09,ES08211,Sant Feliu de Llobregat
+ES,09,ES08245,Santa Coloma de Gramenet
+ES,09,ES08266,Cerdanyola del Vallès
+ES,09,ES08279,Terrassa
+ES,09,ES08298,Vic
+ES,09,ES08305,Vilafranca del Penedès
+ES,09,ES08307,Vilanova i la Geltrú
+ES,07,ES09018,Aranda de Duero
+ES,07,ES09056,Briviesca
+ES,07,ES09059,Burgos
+ES,07,ES09194,Lerma
+ES,07,ES09219,Miranda de Ebro
+ES,07,ES09330,Salas de los Infantes
+ES,07,ES09903,Villarcayo de Merindad de Castilla la Vieja
+ES,11,ES10037,Cáceres
+ES,11,ES10067,Coria
+ES,11,ES10109,Logrosán
+ES,11,ES10131,Navalmoral de la Mata
+ES,11,ES10148,Plasencia
+ES,11,ES10195,Trujillo
+ES,11,ES10203,Valencia de Alcántara
+ES,01,ES11004,Algeciras
+ES,01,ES11006,Arcos de la Frontera
+ES,01,ES11007,Barbate
+ES,01,ES11012,Cádiz
+ES,01,ES11015,Chiclana de la Frontera
+ES,01,ES11020,Jerez de la Frontera
+ES,01,ES11022,La Línea de la Concepción
+ES,01,ES11027,El Puerto de Santa María
+ES,01,ES11028,Puerto Real
+ES,01,ES11030,Rota
+ES,01,ES11031,San Fernando
+ES,01,ES11032,Sanlúcar de Barrameda
+ES,01,ES11033,San Roque
+ES,01,ES11038,Ubrique
+ES,10,ES12040,Castellón de la Plana/Castelló de la Plana
+ES,10,ES12082,Nules
+ES,10,ES12104,Segorbe
+ES,10,ES12135,Vila-real
+ES,10,ES12138,Vinaròs
+ES,08,ES13005,Alcázar de San Juan
+ES,08,ES13011,Almadén
+ES,08,ES13013,Almagro
+ES,08,ES13034,Ciudad Real
+ES,08,ES13039,Daimiel
+ES,08,ES13053,Manzanares
+ES,08,ES13071,Puertollano
+ES,08,ES13082,Tomelloso
+ES,08,ES13087,Valdepeñas
+ES,08,ES13093,Villanueva de los Infantes
+ES,01,ES14002,Aguilar de la Frontera
+ES,01,ES14007,Baena
+ES,01,ES14013,Cabra
+ES,01,ES14021,Córdoba
+ES,01,ES14038,Lucena
+ES,01,ES14042,Montilla
+ES,01,ES14043,Montoro
+ES,01,ES14052,Peñarroya-Pueblonuevo
+ES,01,ES14053,Posadas
+ES,01,ES14054,Pozoblanco
+ES,01,ES14055,Priego de Córdoba
+ES,01,ES14056,Puente Genil
+ES,12,ES15006,Arzúa
+ES,12,ES15009,Betanzos
+ES,12,ES15019,Carballo
+ES,12,ES15028,Corcubión
+ES,12,ES15030,A Coruña
+ES,12,ES15036,Ferrol
+ES,12,ES15053,Muros
+ES,12,ES15056,Negreira
+ES,12,ES15057,Noia
+ES,12,ES15059,Ordes
+ES,12,ES15061,Ortigueira
+ES,12,ES15065,Padrón
+ES,12,ES15073,Ribeira
+ES,12,ES15078,Santiago de Compostela
+ES,08,ES16078,Cuenca
+ES,08,ES16134,Motilla del Palancar
+ES,08,ES16190,San Clemente
+ES,08,ES16203,Tarancón
+ES,09,ES17022,La Bisbal d'Empordà
+ES,09,ES17023,Blanes
+ES,09,ES17066,Figueres
+ES,09,ES17079,Girona
+ES,09,ES17114,Olot
+ES,09,ES17141,Puigcerdà
+ES,09,ES17147,Ripoll
+ES,09,ES17160,Sant Feliu de Guíxols
+ES,09,ES17180,Santa Coloma de Farners
+ES,01,ES18017,Almuñécar
+ES,01,ES18023,Baza
+ES,01,ES18087,Granada
+ES,01,ES18089,Guadix
+ES,01,ES18098,Huéscar
+ES,01,ES18122,Loja
+ES,01,ES18140,Motril
+ES,01,ES18147,Órgiva
+ES,01,ES18175,Santa Fe
+ES,08,ES19130,Guadalajara
+ES,08,ES19190,Molina de Aragón
+ES,08,ES19257,Sigüenza
+ES,16,ES20018,Azpeitia
+ES,16,ES20030,Eibar
+ES,16,ES20045,Irun
+ES,16,ES20069,Donostia/San Sebastián
+ES,16,ES20071,Tolosa
+ES,16,ES20074,Bergara
+ES,01,ES21007,Aracena
+ES,01,ES21010,Ayamonte
+ES,01,ES21041,Huelva
+ES,01,ES21050,Moguer
+ES,01,ES21054,La Palma del Condado
+ES,01,ES21072,Valverde del Camino
+ES,02,ES22048,Barbastro
+ES,02,ES22066,Boltaña
+ES,02,ES22112,Fraga
+ES,02,ES22125,Huesca
+ES,02,ES22130,Jaca
+ES,02,ES22158,Monzón
+ES,01,ES23002,Alcalá la Real
+ES,01,ES23005,Andújar
+ES,01,ES23009,Baeza
+ES,01,ES23024,La Carolina
+ES,01,ES23028,Cazorla
+ES,01,ES23050,Jaén
+ES,01,ES23055,Linares
+ES,01,ES23060,Martos
+ES,01,ES23092,Úbeda
+ES,01,ES23095,Villacarrillo
+ES,07,ES24008,Astorga
+ES,07,ES24010,La Bañeza
+ES,07,ES24056,Cistierna
+ES,07,ES24089,León
+ES,07,ES24115,Ponferrada
+ES,07,ES24139,Sahagún
+ES,07,ES24202,Villablino
+ES,09,ES25040,Balaguer
+ES,09,ES25072,Cervera
+ES,09,ES25120,Lleida
+ES,09,ES25203,La Seu d'Urgell
+ES,09,ES25207,Solsona
+ES,09,ES25234,Tremp
+ES,09,ES25243,Vielha e Mijaran
+ES,17,ES26036,Calahorra
+ES,17,ES26071,Haro
+ES,17,ES26089,Logroño
+ES,12,ES27006,Becerreá
+ES,12,ES27016,Chantada
+ES,12,ES27018,A Fonsagrada
+ES,12,ES27028,Lugo
+ES,12,ES27030,Mondoñedo
+ES,12,ES27031,Monforte de Lemos
+ES,12,ES27057,Sarria
+ES,12,ES27065,Vilalba
+ES,12,ES27066,Viveiro
+ES,13,ES28005,Alcalá de Henares
+ES,13,ES28006,Alcobendas
+ES,13,ES28007,Alcorcón
+ES,13,ES28013,Aranjuez
+ES,13,ES28014,Arganda del Rey
+ES,13,ES28045,Colmenar Viejo
+ES,13,ES28047,Collado Villalba
+ES,13,ES28049,Coslada
+ES,13,ES28058,Fuenlabrada
+ES,13,ES28065,Getafe
+ES,13,ES28074,Leganés
+ES,13,ES28079,Madrid
+ES,13,ES28080,Majadahonda
+ES,13,ES28092,Móstoles
+ES,13,ES28096,Navalcarnero
+ES,13,ES28106,Parla
+ES,13,ES28115,Pozuelo de Alarcón
+ES,13,ES28131,San Lorenzo de El Escorial
+ES,13,ES28148,Torrejón de Ardoz
+ES,13,ES28151,Torrelaguna
+ES,13,ES28161,Valdemoro
+ES,01,ES29015,Antequera
+ES,01,ES29017,Archidona
+ES,01,ES29042,Coín
+ES,01,ES29051,Estepona
+ES,01,ES29054,Fuengirola
+ES,01,ES29067,Málaga
+ES,01,ES29069,Marbella
+ES,01,ES29084,Ronda
+ES,01,ES29091,Torrox
+ES,01,ES29094,Vélez-Málaga
+ES,01,ES29901,Torremolinos
+ES,14,ES30015,Caravaca de la Cruz
+ES,14,ES30016,Cartagena
+ES,14,ES30019,Cieza
+ES,14,ES30022,Jumilla
+ES,14,ES30024,Lorca
+ES,14,ES30027,Molina de Segura
+ES,14,ES30029,Mula
+ES,14,ES30030,Murcia
+ES,14,ES30035,San Javier
+ES,14,ES30039,Totana
+ES,14,ES30043,Yecla
+ES,15,ES31019,Aoiz/Agoitz
+ES,15,ES31097,Estella/Lizarra
+ES,15,ES31201,Pamplona/Iruña
+ES,15,ES31227,Tafalla
+ES,15,ES31232,Tudela
+ES,12,ES32006,Bande
+ES,12,ES32009,O Barco de Valdeorras
+ES,12,ES32019,O Carballiño
+ES,12,ES32024,Celanova
+ES,12,ES32032,Xinzo de Limia
+ES,12,ES32054,Ourense
+ES,12,ES32063,A Pobra de Trives
+ES,12,ES32069,Ribadavia
+ES,12,ES32085,Verín
+ES,03,ES33004,Avilés
+ES,03,ES33011,Cangas del Narcea
+ES,03,ES33012,Cangas de Onís
+ES,03,ES33017,Castropol
+ES,03,ES33024,Gijón
+ES,03,ES33026,Grado
+ES,03,ES33031,Langreo
+ES,03,ES33032,Laviana
+ES,03,ES33033,Lena
+ES,03,ES33034,Valdés
+ES,03,ES33036,Llanes
+ES,03,ES33037,Mieres
+ES,03,ES33044,Oviedo
+ES,03,ES33049,Piloña
+ES,03,ES33051,Pravia
+ES,03,ES33066,Siero
+ES,03,ES33073,Tineo
+ES,03,ES33076,Villaviciosa
+ES,07,ES34047,Carrión de los Condes
+ES,07,ES34056,Cervera de Pisuerga
+ES,07,ES34120,Palencia
+ES,05,ES35004,Arrecife
+ES,05,ES35006,Arucas
+ES,05,ES35009,Gáldar
+ES,05,ES35016,Las Palmas de Gran Canaria
+ES,05,ES35017,Puerto del Rosario
+ES,05,ES35019,San Bartolomé de Tirajana
+ES,05,ES35023,Santa María de Guía de Gran Canaria
+ES,05,ES35026,Telde
+ES,12,ES36005,Caldas de Reis
+ES,12,ES36006,Cambados
+ES,12,ES36008,Cangas
+ES,12,ES36017,A Estrada
+ES,12,ES36024,Lalín
+ES,12,ES36026,Marín
+ES,12,ES36038,Pontevedra
+ES,12,ES36039,O Porriño
+ES,12,ES36042,Ponteareas
+ES,12,ES36045,Redondela
+ES,12,ES36055,Tui
+ES,12,ES36057,Vigo
+ES,12,ES36060,Vilagarcía de Arousa
+ES,07,ES37046,Béjar
+ES,07,ES37107,Ciudad Rodrigo
+ES,07,ES37246,Peñaranda de Bracamonte
+ES,07,ES37274,Salamanca
+ES,07,ES37376,Vitigudino
+ES,05,ES38006,Arona
+ES,05,ES38017,Granadilla de Abona
+ES,05,ES38020,Güímar
+ES,05,ES38022,Icod de los Vinos
+ES,05,ES38023,San Cristóbal de La Laguna
+ES,05,ES38024,Los Llanos de Aridane
+ES,05,ES38026,La Orotava
+ES,05,ES38028,Puerto de la Cruz
+ES,05,ES38036,San Sebastián de la Gomera
+ES,05,ES38037,Santa Cruz de la Palma
+ES,05,ES38038,Santa Cruz de Tenerife
+ES,05,ES38048,Valverde
+ES,06,ES39020,Castro-Urdiales
+ES,06,ES39035,Laredo
+ES,06,ES39042,Medio Cudeyo
+ES,06,ES39059,Reinosa
+ES,06,ES39075,Santander
+ES,06,ES39079,Santoña
+ES,06,ES39080,San Vicente de la Barquera
+ES,06,ES39087,Torrelavega
+ES,07,ES40063,Cuéllar
+ES,07,ES40185,Santa María la Real de Nieva
+ES,07,ES40194,Segovia
+ES,07,ES40195,Sepúlveda
+ES,01,ES41004,Alcalá de Guadaíra
+ES,01,ES41024,Carmona
+ES,01,ES41032,Cazalla de la Sierra
+ES,01,ES41034,Coria del Río
+ES,01,ES41038,Dos Hermanas
+ES,01,ES41039,Écija
+ES,01,ES41041,Estepa
+ES,01,ES41053,Lebrija
+ES,01,ES41055,Lora del Río
+ES,01,ES41060,Marchena
+ES,01,ES41065,Morón de la Frontera
+ES,01,ES41068,Osuna
+ES,01,ES41087,Sanlúcar la Mayor
+ES,01,ES41091,Sevilla
+ES,01,ES41095,Utrera
+ES,07,ES42020,Almazán
+ES,07,ES42043,Burgo de Osma-Ciudad de Osma
+ES,07,ES42173,Soria
+ES,09,ES43014,Amposta
+ES,09,ES43055,Falset
+ES,09,ES43064,Gandesa
+ES,09,ES43123,Reus
+ES,09,ES43148,Tarragona
+ES,09,ES43155,Tortosa
+ES,09,ES43161,Valls
+ES,09,ES43163,El Vendrell
+ES,02,ES44013,Alcañiz
+ES,02,ES44050,Calamocha
+ES,02,ES44216,Teruel
+ES,08,ES45081,Illescas
+ES,08,ES45121,Ocaña
+ES,08,ES45124,Orgaz
+ES,08,ES45142,Quintanar de la Orden
+ES,08,ES45165,Talavera de la Reina
+ES,08,ES45168,Toledo
+ES,08,ES45173,Torrijos
+ES,10,ES46017,Alzira
+ES,10,ES46085,Carlet
+ES,10,ES46094,Catarroja
+ES,10,ES46102,Quart de Poblet
+ES,10,ES46131,Gandia
+ES,10,ES46145,Xàtiva
+ES,10,ES46147,Llíria
+ES,10,ES46164,Massamagrell
+ES,10,ES46169,Mislata
+ES,10,ES46171,Moncada
+ES,10,ES46184,Ontinyent
+ES,10,ES46190,Paterna
+ES,10,ES46194,Picassent
+ES,10,ES46213,Requena
+ES,10,ES46220,Sagunto/Sagunt
+ES,10,ES46235,Sueca
+ES,10,ES46244,Torrent
+ES,10,ES46250,Valencia/València
+ES,07,ES47085,Medina del Campo
+ES,07,ES47086,Medina de Rioseco
+ES,07,ES47186,Valladolid
+ES,16,ES48013,Barakaldo
+ES,16,ES48020,Bilbao
+ES,16,ES48027,Durango
+ES,16,ES48044,Getxo
+ES,16,ES48046,Gernika-Lumo
+ES,16,ES48090,Balmaseda
+ES,07,ES49021,Benavente
+ES,07,ES49166,Puebla de Sanabria
+ES,07,ES49219,Toro
+ES,07,ES49250,Villalpando
+ES,07,ES49275,Zamora
+ES,02,ES50025,La Almunia de Doña Godina
+ES,02,ES50067,Calatayud
+ES,02,ES50074,Caspe
+ES,02,ES50094,Daroca
+ES,02,ES50095,Ejea de los Caballeros
+ES,02,ES50251,Tarazona
+ES,02,ES50297,Zaragoza
+ES,18,ES51001,Ceuta
+ES,19,ES52001,Melilla
