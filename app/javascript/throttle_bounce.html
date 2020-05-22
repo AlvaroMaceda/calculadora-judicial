@@ -11,18 +11,25 @@
   </style>
 </head>
 <body>
-  <main id='main'/>
-  <script src='./throttle_bounce.js'></script>
+  <main id='main'>
+    <input type='text' id='textInput'></input>
+  </main>
+
+  <script src='./lib/throttle_bounce.js'></script>
   <script> 
+    let element = document.getElementById('textInput')
     function formatDate(d) {
       return d.getMinutes() + ':' + d.getSeconds() + "." + d.getMilliseconds()
     }
     function mousemove(e) {
       console.log(formatDate(new Date())+' -- ('+e.clientX+','+e.clientY+')')
     }
+    function change(e) {
+      console.log(formatDate(new Date())+' -- ('+element.value+')')
+    }
     window.onload = function exampleFunction() { 
-      document.getElementById('main').addEventListener('mousemove',
-      throttle(mousemove,1000))
+      element.addEventListener('input',
+      debounce(change,1000))
     } 
   </script> 
 </body>
