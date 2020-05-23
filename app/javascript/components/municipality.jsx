@@ -2,14 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Component, Fragment } from 'react';
 import Select from 'react-select';
-// import {throttle} from '../lib/throttle_bounce'
 import { throttle } from "lodash";
-// const debounce = require('debounce-promise')
-
-
 
 const MINIMUM_TEXT_TO_SEARCH = 3 // This should be the same number as MunicipalitySearchController minimum 
-
 
 class Municipality extends Component {
 
@@ -20,8 +15,8 @@ class Municipality extends Component {
       error: null,
       loading: false
     }
-    // node_modules/react-select/src/Async.js
     this.throttledSearch = throttle(this.searchMunicipalities.bind(this),1000)
+    this.lastSearch = null
   }
 
   changeState(data) {
@@ -32,43 +27,72 @@ class Municipality extends Component {
     )
   }
 
-  setOptions(options) {
-    this.setState({ ...this.state, options: options})
-  }
-
-  setError(error) {
-    this.setState({ ...this.state, error: error})
-  }
-
+  // TODO: refactor this
   async searchMunicipalities(text) {
-    this.setError(null)
-    if(text.length < MINIMUM_TEXT_TO_SEARCH ) return []
+
+    this.changeState(
+      {
+        error: null,
+        options: [],
+        loading: true
+      }
+    )
+    
+    if(text.length < MINIMUM_TEXT_TO_SEARCH ) {
+      if(text===this.lastSearch) 
+        this.changeState(
+          {
+            error: null,
+            options: [],
+            loading: false
+          }
+        )
+      return
+    }
+
     try {
       const response = await fetch('/api/municipality/search/'+text)
       if (!response.ok) throw Error(response.statusText);
       let data = await response.json()
       
+      if(text!=this.lastSearch) {
+        return // This is not the API call you are waiting for
+      }
+
       let municipalities = data.municipalities
       let items = municipalities.map( (municipality) => { return {
         value: municipality.code,
         label: municipality.name
       }} )
-      this.setOptions(items)
+
+      this.changeState(
+        {
+          options: items,
+          loading: false
+        }
+      )
   
     }catch(error) {
-      this.setError('Error obteniendo datos: '+error)
+
+      this.changeState(
+        {
+          options: [],
+          loading: false,
+          error: 'Error obteniendo datos: '+error
+        }
+      )
+
     }
-  }
+  } //searchMunicipalities
 
   handleInputChange(text) {
-    this.throttledSearch(text).then( (options)=>{
-      this.setOptions(options)
-    })
+    this.lastSearch = text
+    this.throttledSearch(text)
   }
 
   noOptionsMessage({inputValue}) {
-    if(inputValue && this.loading) return 'Cargando municipios...'
-    if(inputValue) return 'No se ha encontrado el municipio'
+    // if(inputValue && this.state.loading) return 'Cargando municipios...'
+    if(inputValue.length >= MINIMUM_TEXT_TO_SEARCH) return 'No se ha encontrado el municipio'
     return 'Introduzca el nombre del municipio'
   }
 
@@ -79,24 +103,22 @@ class Municipality extends Component {
     return(
       <Fragment>        
         {this.state.error && <div className='alert alert-danger'>{ this.state.error }</div>}
-        <button
-          onClick={()=>this.doIt()}
-        >Clickme</button>
         <Select 
-          // cacheOptions 
           isClearable
           placeholder = '...'
-          // defaultOptions={[]}
+          defaultOptions={[]}
+          isLoading={this.state.loading}
+          loadingMessage={()=>'Buscando municipios...'}
           options={this.state.options}
           loadOptions={this.promiseOptions} 
           noOptionsMessage={this.noOptionsMessage.bind(this)}
-          onChange={ (item) => { console.log('onchange'); /*this.props.onChange && this.props.onChange(item)*/ }}
+          onChange={ (item) => this.props.onChange && this.props.onChange(item) }
           onInputChange={this.handleInputChange.bind(this)}
         />
       </Fragment>
     )
 
-  }
+  } // Render
 
 } // Component
 
