@@ -1,77 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Component, Fragment } from 'react';
-import AsyncSelect from 'react-select/async';
 import Select from 'react-select';
 // import {throttle} from '../lib/throttle_bounce'
-import { debounce, throttle } from "lodash";
+import { throttle } from "lodash";
 // const debounce = require('debounce-promise')
 
-console.log(Select)
-
-function throttle_LALALA(func, interval) {
-
-  let must_wait = false
-  let pending_call = null
-
-  return function() {
-      // We must store the context because we don't know if the function
-      // will be executed later
-      let context = this
-      let res
-
-      let wait_and_check = function () {
-              // Check every throttle interval
-              
-              if(pending_call) {
-                  // If a pending call is waiting, call it now
-                  // Then we must wait another interval and check if there are
-                  // new calls awaiting execution
-                  res = func.apply(context, pending_call)
-                  pending_call = null
-                  setTimeout(wait_and_check,interval)
-                  // console.log(func.toString())
-                  // console.log('returning:')
-                  // console.log(res)
-                  return res
-              } else {
-                // There are no more pending calls
-                // Next call should not wait
-                must_wait = false
-              }
-          };
-    
-      console.log('running throttled function '+interval)
-      if (!must_wait) {
-          // It has been more than 0interval' milliseconds since last call
-          res = func.apply(context, arguments)
-          // Next call must wait. We will check if there are pending calls
-          // after 'interval' milliseconds
-          must_wait = true;
-          setTimeout(wait_and_check, interval)
-          return res
-      } else {
-          // This call must wait. Store it and the timeout will launch it.
-          // It there was a previous call waiting, is deleted
-          pending_call = arguments
-      }
-  }
-}
 
 
 const MINIMUM_TEXT_TO_SEARCH = 3 // This should be the same number as MunicipalitySearchController minimum 
 
-function formatDate(d) {
-  return d.getMinutes() + ':' + d.getSeconds() + "." + d.getMilliseconds()
-}
 
 class Municipality extends Component {
 
   constructor (props) {
-    let foo = [
-      {value:1,label:'uno'},
-      {value:2,label:'dos'},
-    ]
     super(props);    
     this.state = {
       options: [],
@@ -79,12 +21,19 @@ class Municipality extends Component {
       loading: false
     }
     // node_modules/react-select/src/Async.js
-    // this.promiseOptions = inputValue => this.searchMunicipalities(inputValue)
     this.throttledSearch = throttle(this.searchMunicipalities.bind(this),1000)
   }
 
-  setValue(value) {
-    this.setState({ ...this.state, value: value})
+  changeState(data) {
+    this.setState({
+        ...this.state,
+        ...data
+      }
+    )
+  }
+
+  setOptions(options) {
+    this.setState({ ...this.state, options: options})
   }
 
   setError(error) {
@@ -92,11 +41,9 @@ class Municipality extends Component {
   }
 
   async searchMunicipalities(text) {
-    console.log('Search function')
     this.setError(null)
     if(text.length < MINIMUM_TEXT_TO_SEARCH ) return []
     try {
-      console.log('searching...')
       const response = await fetch('/api/municipality/search/'+text)
       if (!response.ok) throw Error(response.statusText);
       let data = await response.json()
@@ -106,8 +53,7 @@ class Municipality extends Component {
         value: municipality.code,
         label: municipality.name
       }} )
-      // console.log('returning items:'+items)
-      return items
+      this.setOptions(items)
   
     }catch(error) {
       this.setError('Error obteniendo datos: '+error)
@@ -115,11 +61,8 @@ class Municipality extends Component {
   }
 
   handleInputChange(text) {
-    console.log('handleInputChange:'+text)
     this.throttledSearch(text).then( (options)=>{
-      console.log('recibida la búsqueda')
-      console.log(options)
-      // this.setValue('options',options)
+      this.setOptions(options)
     })
   }
 
