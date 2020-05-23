@@ -4,9 +4,9 @@ import { Component } from 'react';
 import AsyncSelect from 'react-select/async';
 // import {throttle} from '../lib/throttle_bounce'
 // import { debounce, throttle } from "lodash";
-const debounce = require('debounce-promise')
+// const debounce = require('debounce-promise')
 
-function throttle_LALALA (func, interval) {
+function throttle(func, interval) {
 
   let must_wait = false
   let pending_call = null
@@ -69,8 +69,10 @@ class Municipality extends Component {
     this.state = {
       error: null
     }
+    // node_modules/react-select/src/Async.js
     // this.promiseOptions = inputValue => this.searchMunicipalities(inputValue)
-    this.promiseOptions = debounce(inputValue => { return this.searchMunicipalities(inputValue) },1000)
+    this.debouncedSearch = throttle(this.searchMunicipalities,1000)
+    this.promiseOptions = inputValue => this.debouncedSearch(inputValue)
   }
 
   setValue(value) {
@@ -105,7 +107,7 @@ class Municipality extends Component {
 
   render() {
 
-    const promiseOptions = inputValue => this.searchMunicipalities(inputValue)
+    // const promiseOptions = inputValue => this.searchMunicipalities(inputValue)
 
     return(
       <React.Fragment>        
