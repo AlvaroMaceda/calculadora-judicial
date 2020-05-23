@@ -1,128 +1,124 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Component } from 'react';
-import AsyncSelect from 'react-select/async';
-// import {throttle} from '../lib/throttle_bounce'
-// import { debounce, throttle } from "lodash";
-const debounce = require('debounce-promise')
-
-function throttle_LALALA (func, interval) {
-
-  let must_wait = false
-  let pending_call = null
-
-  return function() {
-      // We must store the context because we don't know if the function
-      // will be executed later
-      let context = this
-      let res
-
-      let wait_and_check = function () {
-              // Check every throttle interval
-              
-              if(pending_call) {
-                  // If a pending call is waiting, call it now
-                  // Then we must wait another interval and check if there are
-                  // new calls awaiting execution
-                  res = func.apply(context, pending_call)
-                  pending_call = null
-                  setTimeout(wait_and_check,interval)
-                  // console.log(func.toString())
-                  // console.log('returning:')
-                  // console.log(res)
-                  return res
-              } else {
-                // There are no more pending calls
-                // Next call should not wait
-                must_wait = false
-              }
-          };
-    
-      console.log('running throttled function '+interval)
-      if (!must_wait) {
-          // It has been more than 0interval' milliseconds since last call
-          res = func.apply(context, arguments)
-          // Next call must wait. We will check if there are pending calls
-          // after 'interval' milliseconds
-          must_wait = true;
-          setTimeout(wait_and_check, interval)
-          return res
-      } else {
-          // This call must wait. Store it and the timeout will launch it.
-          // It there was a previous call waiting, is deleted
-          pending_call = arguments
-      }
-  }
-}
-
+import { Component, Fragment } from 'react';
+import Select from 'react-select';
+import { throttle } from "lodash";
 
 const MINIMUM_TEXT_TO_SEARCH = 3 // This should be the same number as MunicipalitySearchController minimum 
-
-function formatDate(d) {
-  return d.getMinutes() + ':' + d.getSeconds() + "." + d.getMilliseconds()
-}
 
 class Municipality extends Component {
 
   constructor (props) {
     super(props);    
     this.state = {
-      error: null
+      options: [],
+      error: null,
+      loading: false
     }
-    // this.promiseOptions = inputValue => this.searchMunicipalities(inputValue)
-    this.promiseOptions = debounce(inputValue => { return this.searchMunicipalities(inputValue) },1000)
+    this.throttledSearch = throttle(this.searchMunicipalities.bind(this),1000)
+    this.lastSearch = null
   }
 
-  setValue(value) {
-    this.setState({ ...this.state, value: value})
+  changeState(data) {
+    this.setState({
+        ...this.state,
+        ...data
+      }
+    )
   }
 
-  setError(error) {
-    this.setState({ ...this.state, error: error})
-  }
-
+  // TODO: refactor this
   async searchMunicipalities(text) {
-    console.log('search function')
-    this.setError(null)
-    if(text.length < MINIMUM_TEXT_TO_SEARCH ) return []
+
+    this.changeState(
+      {
+        error: null,
+        options: [],
+        loading: true
+      }
+    )
+    
+    if(text.length < MINIMUM_TEXT_TO_SEARCH ) {
+      if(text===this.lastSearch) 
+        this.changeState(
+          {
+            error: null,
+            options: [],
+            loading: false
+          }
+        )
+      return
+    }
+
     try {
-      console.log('searching...')
       const response = await fetch('/api/municipality/search/'+text)
       if (!response.ok) throw Error(response.statusText);
       let data = await response.json()
       
+      if(text!=this.lastSearch) {
+        return // This is not the API call you are waiting for
+      }
+
       let municipalities = data.municipalities
       let items = municipalities.map( (municipality) => { return {
         value: municipality.code,
         label: municipality.name
       }} )
-      return items
+
+      this.changeState(
+        {
+          options: items,
+          loading: false
+        }
+      )
   
     }catch(error) {
-      this.setError('Error obteniendo datos: '+error)
+
+      this.changeState(
+        {
+          options: [],
+          loading: false,
+          error: 'Error obteniendo datos: '+error
+        }
+      )
+
     }
+  } //searchMunicipalities
+
+  handleInputChange(text) {
+    this.lastSearch = text
+    this.throttledSearch(text)
+  }
+
+  noOptionsMessage({inputValue}) {
+    // if(inputValue && this.state.loading) return 'Cargando municipios...'
+    if(inputValue.length >= MINIMUM_TEXT_TO_SEARCH) return 'No se ha encontrado el municipio'
+    return 'Introduzca el nombre del municipio'
   }
 
   render() {
 
-    const promiseOptions = inputValue => this.searchMunicipalities(inputValue)
+    // const promiseOptions = inputValue => this.searchMunicipalities(inputValue)
 
     return(
-      <React.Fragment>        
+      <Fragment>        
         {this.state.error && <div className='alert alert-danger'>{ this.state.error }</div>}
-        <AsyncSelect 
-          cacheOptions 
+        <Select 
           isClearable
           placeholder = '...'
-          defaultOptions={[]} 
+          defaultOptions={[]}
+          isLoading={this.state.loading}
+          loadingMessage={()=>'Buscando municipios...'}
+          options={this.state.options}
           loadOptions={this.promiseOptions} 
-          noOptionsMessage={ (_) => {return 'No se ha encontrado el municipio'} }
+          noOptionsMessage={this.noOptionsMessage.bind(this)}
           onChange={ (item) => this.props.onChange && this.props.onChange(item) }
+          onInputChange={this.handleInputChange.bind(this)}
         />
-      </React.Fragment>
+      </Fragment>
     )
 
-  }
+  } // Render
 
 } // Component
 
