@@ -1,15 +1,12 @@
-import React from 'react';
+import React from "react";
 import PropTypes from 'prop-types';
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 import AsyncSelect from 'react-select/async';
-import Select from 'react-select';
 // import {throttle} from '../lib/throttle_bounce'
-import { debounce, throttle } from "lodash";
+// import { debounce, throttle } from "lodash";
 // const debounce = require('debounce-promise')
 
-console.log(Select)
-
-function throttle_LALALA(func, interval) {
+function throttle(func, interval) {
 
   let must_wait = false
   let pending_call = null
@@ -68,19 +65,14 @@ function formatDate(d) {
 class Municipality extends Component {
 
   constructor (props) {
-    let foo = [
-      {value:1,label:'uno'},
-      {value:2,label:'dos'},
-    ]
     super(props);    
     this.state = {
-      options: [],
-      error: null,
-      loading: false
+      error: null
     }
     // node_modules/react-select/src/Async.js
     // this.promiseOptions = inputValue => this.searchMunicipalities(inputValue)
-    this.throttledSearch = throttle(this.searchMunicipalities.bind(this),1000)
+    this.debouncedSearch = throttle(this.searchMunicipalities,1000)
+    this.promiseOptions = inputValue => this.debouncedSearch(inputValue)
   }
 
   setValue(value) {
@@ -92,7 +84,7 @@ class Municipality extends Component {
   }
 
   async searchMunicipalities(text) {
-    console.log('Search function')
+    console.log('search function')
     this.setError(null)
     if(text.length < MINIMUM_TEXT_TO_SEARCH ) return []
     try {
@@ -106,7 +98,6 @@ class Municipality extends Component {
         value: municipality.code,
         label: municipality.name
       }} )
-      // console.log('returning items:'+items)
       return items
   
     }catch(error) {
@@ -114,43 +105,23 @@ class Municipality extends Component {
     }
   }
 
-  handleInputChange(text) {
-    console.log('handleInputChange:'+text)
-    this.throttledSearch(text).then( (options)=>{
-      console.log('recibida la búsqueda')
-      console.log(options)
-      // this.setValue('options',options)
-    })
-  }
-
-  noOptionsMessage({inputValue}) {
-    if(inputValue && this.loading) return 'Cargando municipios...'
-    if(inputValue) return 'No se ha encontrado el municipio'
-    return 'Introduzca el nombre del municipio'
-  }
-
   render() {
 
     // const promiseOptions = inputValue => this.searchMunicipalities(inputValue)
 
     return(
-      <Fragment>        
+      <React.Fragment>        
         {this.state.error && <div className='alert alert-danger'>{ this.state.error }</div>}
-        <button
-          onClick={()=>this.doIt()}
-        >Clickme</button>
-        <Select 
-          // cacheOptions 
+        <AsyncSelect 
+          cacheOptions 
           isClearable
           placeholder = '...'
-          // defaultOptions={[]}
-          options={this.state.options}
+          defaultOptions={[]} 
           loadOptions={this.promiseOptions} 
-          noOptionsMessage={this.noOptionsMessage.bind(this)}
-          onChange={ (item) => { console.log('onchange'); /*this.props.onChange && this.props.onChange(item)*/ }}
-          onInputChange={this.handleInputChange.bind(this)}
+          noOptionsMessage={ (_) => {return 'No se ha encontrado el municipio'} }
+          onChange={ (item) => this.props.onChange && this.props.onChange(item) }
         />
-      </Fragment>
+      </React.Fragment>
     )
 
   }
