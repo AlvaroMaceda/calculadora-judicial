@@ -64,6 +64,7 @@ describe Municipality, type: :model do
         
     end
 
+    # All scope's tests should be here, not in the controller
     context 'similar_to scope' do
 
         before(:each) do
@@ -84,7 +85,7 @@ describe Municipality, type: :model do
             @sal_calada = create(:municipality, @sal_calada_data )
         end
 
-        it 'searches ignoring accents' do
+        xit 'searches ignoring accents' do
             search_text = 'cala'
             expected = [
                 @alcala, @calahorra, @sal_calada

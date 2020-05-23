@@ -19,7 +19,7 @@ class Municipality extends Component {
     this.lastSearch = null
   }
 
-  changeState(data) {
+  modifyState(data) {
     this.setState({
         ...this.state,
         ...data
@@ -30,7 +30,7 @@ class Municipality extends Component {
   // TODO: refactor this
   async searchMunicipalities(text) {
 
-    this.changeState(
+    this.modifyState(
       {
         error: null,
         options: [],
@@ -40,7 +40,7 @@ class Municipality extends Component {
     
     if(text.length < MINIMUM_TEXT_TO_SEARCH ) {
       if(text===this.lastSearch) 
-        this.changeState(
+        this.modifyState(
           {
             error: null,
             options: [],
@@ -65,7 +65,7 @@ class Municipality extends Component {
         label: municipality.name
       }} )
 
-      this.changeState(
+      this.modifyState(
         {
           options: items,
           loading: false
@@ -74,7 +74,7 @@ class Municipality extends Component {
   
     }catch(error) {
 
-      this.changeState(
+      this.modifyState(
         {
           options: [],
           loading: false,
@@ -106,11 +106,9 @@ class Municipality extends Component {
         <Select 
           isClearable
           placeholder = '...'
-          defaultOptions={[]}
           isLoading={this.state.loading}
           loadingMessage={()=>'Buscando municipios...'}
           options={this.state.options}
-          loadOptions={this.promiseOptions} 
           noOptionsMessage={this.noOptionsMessage.bind(this)}
           onChange={ (item) => this.props.onChange && this.props.onChange(item) }
           onInputChange={this.handleInputChange.bind(this)}

@@ -2,7 +2,6 @@ import React from 'react';
 import { Component } from 'react';
 import style from './deadline_calculator.module.scss'
 
-import Autocomplete from "./autocomplete";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,30 +34,54 @@ class DeadlineCalculator extends Component {
   }
 
   setStartDate(date) {
-    console.log('set start date:')
-    console.log(date)
     this.modifyState({startDate:date, loading: null})
   }
   setMunicipality(municipality) {
-    console.log('set municipality:')
-    console.log(municipality)
     this.modifyState({municipality: municipality, loading: null})
   }
   setworkDays(workDays) {
-    console.log('set workDays:')
-    console.log(workDays)
+    if(workDays !== '' && isNaN(Number(workDays))) return
     this.modifyState({workDays: workDays, loading: null})
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(!this.dataHasChanged(prevState,this.state)) return
+    if(this.validForm()) this.launchRequest()
+  }
+
+  dataHasChanged(previous, current) {
+    return (
+      previous.startDate !== current.startDate ||
+      previous.municipality !== current.municipality ||
+      previous.workDays !== current.workDays
+    )
+  }
+
+  validForm() {
+    return this.validStartDate() && this.validMunicipality() && this.validWorkDays()
+  }
+
+  validStartDate() {
+    return this.state.startDate !== null
+  }
+
+  validMunicipality() {
+    return this.state.municipality !== null
+  }
+
+  validWorkDays() {
+    return this.state.workDays!=='' && !isNaN(Number(this.state.workDays))
+  }
+
   handleSubmit(event){
-
     event.preventDefault()
-    this.modifyState({loading: true})
-
-    this.launchRequest()
   }
 
   launchRequest(){
+
+    console.log('should launch request')
+    return
+
     const delay = 1000
     let p = new Promise(function(resolve) {
       setTimeout(resolve, delay);
@@ -84,7 +107,7 @@ class DeadlineCalculator extends Component {
           </div>
 
           <div className={style.body}>
-            <form className="form" role="form" autoComplete="off" id="loginForm" noValidate="" onSubmit={this.handleSubmit.bind(this)}>
+            <form className="form" role="form" autoComplete="off" id="loginForm" noValidate="" onSubmit={(e)=>e.preventDefault()}>
 
             <div className="form-group">
                 <label>Fecha de inicio</label>
@@ -112,7 +135,7 @@ class DeadlineCalculator extends Component {
 
               <div className="form-group">
                 <label>Días hábiles</label>
-                <input id="workDays" type="text" 
+                <input id="workDays" type="text" pattern="[0-9]*"
                   className="form-control" required="" autoComplete="on"
                   value={this.state.workDays}
                   onChange={e => this.setworkDays(e.target.value)}
