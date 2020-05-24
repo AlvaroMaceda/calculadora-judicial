@@ -2,11 +2,11 @@ import React from "react";
 import style from './loading.module.scss'
 
 const Spinner = <div className={style.container}>
-    <div className="spinner-grow spinner-grow-sm text-success"></div>
-    <div className="spinner-grow spinner-grow-sm text-success"></div>
-    <div className="spinner-grow text-success"></div>
-    <div className="spinner-grow spinner-grow-sm text-success"></div>
-    <div className="spinner-grow spinner-grow-sm text-success"></div>
+    <div className={"spinner-grow spinner-grow-sm " + style.loading_spinner}></div>
+    <div className={"spinner-grow spinner-grow-sm " + style.loading_spinner}></div>
+    <div className={"spinner-grow " + style.loading_spinner}></div>
+    <div className={"spinner-grow spinner-grow-sm " + style.loading_spinner}></div>
+    <div className={"spinner-grow spinner-grow-sm " + style.loading_spinner}></div>
 </div>
 
 export default function createLoading(WrappedComponent) {

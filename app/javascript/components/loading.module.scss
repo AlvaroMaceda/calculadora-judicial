@@ -4,3 +4,11 @@
     justify-content: center;
     padding-top: 20px;
 }
+
+.loading_spinner {
+    color: skyblue;
+}
+
+.loading_spinner:not(:last-child) {
+    margin-right:10px;
+}
