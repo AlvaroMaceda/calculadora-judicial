@@ -5,9 +5,9 @@ import style from './deadline_calculator.module.scss'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Subject } from "rxjs";
+import { Subject, asyncScheduler } from "rxjs";
 import { ajax } from 'rxjs/ajax';
-import { switchMap, catchError } from "rxjs/operators";
+import { switchMap, throttleTime, filter, catchError } from "rxjs/operators";
  
 
 import createLoading from './loading'
@@ -16,6 +16,7 @@ import Municipality from './municipality'
 
 const Loading = createLoading(DeadlineResults)
 
+const THROTTLE_TIME = 2000
 
 class FormValidator {
 
@@ -49,35 +50,44 @@ class FormValidator {
   }
 }
 
+const INITIAL_STATE = {
 
-// https://learnetto.com/blog/react-form-validation
+}
+
 class DeadlineCalculator extends Component {
 
   constructor (props) {
+
+    const INITIAL_STATE = {
+      notification: new Date(), //CHANGE TO notificationDate
+      municipality: null,
+      workDays: '',
+      formValid: false,
+      loading: null, // true: loading. false: lodaded. null: no data available
+      results: {},
+      formErrors: {email: '', password: ''},
+    }
+
     super(props);
+
     this.validator = new FormValidator()
 
     this.requests = new Subject()
     this.responses = this.requests.pipe(
-      // switchMap will ignore all requests except last one
-      switchMap( (url) => ajax(url) ),
+      throttleTime(THROTTLE_TIME, asyncScheduler, {trailing:true}), // {trailing: true} is for launching the last request (that's the request we are interested if)    
+      switchMap( (url) => ajax(url) ), // switchMap will ignore all requests except last one
+      filter( () => this.validator.valid), // Ignore responses if form is not valid
       catchError(this.requestError)
     )
     this.responses.subscribe( (data) => this.requestResponse(data))
 
-    this.state = {
-      notification: new Date(), //CHANGE TO notificationDate
-      municipality: null,
-      workDays: 20,
-      formErrors: {email: '', password: ''},
-      formValid: false,
-      loading: null,
-    }
+    this.state = INITIAL_STATE
   }
 
-  launchRequest_LALALA(){
+  launchRequest(){
     console.log('Launching request')
-    console.log(this.state)
+    this.modifyState({loading: true})
+    // console.log(this.state)
     
     let notification = this.state.notification.toISOString().substring(0,10)
     let municipality_code = this.state.municipality.value
@@ -91,14 +101,21 @@ class DeadlineCalculator extends Component {
     console.log(url)
     this.requests.next(url)
   }
+
   requestError(error) {
     console.log('EL REQUEST HA PETAO:')
     console.log(error.response.message)
+    this.modifyState({loading: null})
     return 'BANANA'
   }
+
   requestResponse(data) {
     console.log('Request response')
-    console.log(data)
+    console.log(data.response)
+    this.modifyState({
+      loading: false,
+      results: data.response
+    })
   }
 
   modifyState(changes){
@@ -111,9 +128,11 @@ class DeadlineCalculator extends Component {
   setNotification(date) {
     this.modifyState({notification:date, loading: null})
   }
+
   setMunicipality(municipality) {
     this.modifyState({municipality: municipality, loading: null})
   }
+
   setworkDays(workDays) {
     if(workDays !== '' && isNaN(Number(workDays))) return
     this.modifyState({workDays: workDays, loading: null})
@@ -121,7 +140,7 @@ class DeadlineCalculator extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(!this.dataHasChanged(prevState,this.state)) return
-    if(this.validForm()) this.launchRequest_LALALA()
+    if(this.validForm()) this.launchRequest()
   }
 
   dataHasChanged(previous, current) {
@@ -138,25 +157,6 @@ class DeadlineCalculator extends Component {
 
   handleSubmit(event){
     event.preventDefault()
-  }
-
-  launchRequest(){
-
-    console.log('should launch request')
-    return
-
-    const delay = 1000
-    let p = new Promise(function(resolve) {
-      setTimeout(resolve, delay);
-      });
-    
-    p.then( () => {
-      console.log('resolved')
-      this.modifyState({loading: false})
-    }).catch( () => {
-      this.modifyState({loading: null})
-      console.log('Error tremendo')
-    })
   }
 
   render() {
@@ -207,13 +207,8 @@ class DeadlineCalculator extends Component {
                 <div className="invalid-feedback">Por favor, introduzca un número</div>
               </div> {/*form-group*/}
 
-              {/* <button id="btnLogin" type="submitQUITAR" 
-                className="btn btn-success btn-lg btn-block">
-                Calcular
-              </button> */}
             </form>
-            <h3>Loading: {this.state.loading?'Si':'no'}</h3>
-            <Loading loading={this.state.loading} results={'banana'}/>
+            <Loading loading={this.state.loading} results={this.state.results}/>
 
           </div> {/*body*/}
           

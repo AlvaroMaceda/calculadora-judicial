@@ -93,7 +93,7 @@ class Municipality extends Component {
   noOptionsMessage({inputValue}) {
     // if(inputValue && this.state.loading) return 'Cargando municipios...'
     if(inputValue.length >= MINIMUM_TEXT_TO_SEARCH) return 'No se ha encontrado el municipio'
-    return 'Introduzca el nombre del municipio'
+    return 'Introduzca al menos tres letras'
   }
 
   render() {
