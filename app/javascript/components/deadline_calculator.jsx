@@ -11,11 +11,46 @@ import Municipality from './municipality'
 
 const Loading = createLoading(DeadlineResults)
 
+
+class FormValidator {
+
+  constructor() {
+    this._valid = false
+  }
+
+  get valid() {
+    return this._valid
+  }
+
+  validate(state) {
+    this._valid = (
+      this._validStartDate(state.startDate) && 
+      this._validMunicipality(state.municipality) && 
+      this._validWorkDays(state.workDays)
+    )
+    return this
+  }
+
+  _validStartDate(startDate) {
+    return startDate !== null
+  }
+
+  _validMunicipality(municipality) {
+    return municipality !== null
+  }
+
+  _validWorkDays(workDays) {
+    return workDays!=='' && !isNaN(Number(workDays))
+  }
+}
+
+
 // https://learnetto.com/blog/react-form-validation
 class DeadlineCalculator extends Component {
 
   constructor (props) {
-    super(props);    
+    super(props);
+    this.validator = new FormValidator()
     this.state = {
       startDate: new Date(), //CHANGE TO notificationDate
       municipality: null,
@@ -58,19 +93,7 @@ class DeadlineCalculator extends Component {
   }
 
   validForm() {
-    return this.validStartDate() && this.validMunicipality() && this.validWorkDays()
-  }
-
-  validStartDate() {
-    return this.state.startDate !== null
-  }
-
-  validMunicipality() {
-    return this.state.municipality !== null
-  }
-
-  validWorkDays() {
-    return this.state.workDays!=='' && !isNaN(Number(this.state.workDays))
+    return this.validator.validate(this.state).valid
   }
 
   handleSubmit(event){
@@ -107,9 +130,11 @@ class DeadlineCalculator extends Component {
           </div>
 
           <div className={style.body}>
-            <form className="form" role="form" autoComplete="off" id="loginForm" noValidate="" onSubmit={(e)=>e.preventDefault()}>
+            <form className="form" role="form" autoComplete="off" 
+                  id="loginForm" noValidate="" 
+                  onSubmit={(e)=>e.preventDefault()}>
 
-            <div className="form-group">
+              <div className="form-group">
                 <label>Fecha de inicio</label>
                 <div className="row">
                   <div className="col-md-12">
@@ -122,16 +147,15 @@ class DeadlineCalculator extends Component {
                   </div>
                 </div>
                 <div className="invalid-feedback">Please enter a password</div>
-              </div>
+              </div> {/*form-group*/}
 
-              
               <div className="form-group">
                 <label htmlFor="municipality" className="lb-lg">Municipio</label>
                 <Municipality 
                   onChange={ (municipality) => this.setMunicipality(municipality) }
                 />
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
-              </div>
+              </div> {/*form-group*/}
 
               <div className="form-group">
                 <label>Días hábiles</label>
@@ -141,19 +165,20 @@ class DeadlineCalculator extends Component {
                   onChange={e => this.setworkDays(e.target.value)}
                 />
                 <div className="invalid-feedback">Por favor, introduzca un número</div>
-              </div>
+              </div> {/*form-group*/}
 
-              <button id="btnLogin" type="submitQUITAR" 
+              {/* <button id="btnLogin" type="submitQUITAR" 
                 className="btn btn-success btn-lg btn-block">
                 Calcular
-              </button>
+              </button> */}
             </form>
             <h3>Loading: {this.state.loading?'Si':'no'}</h3>
             <Loading loading={this.state.loading} results={'banana'}/>
-          </div>
+
+          </div> {/*body*/}
           
-        </div>
-      </div>
+        </div> {/*card*/}
+      </div> 
     )
   }
 }
