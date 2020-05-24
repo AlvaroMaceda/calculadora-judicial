@@ -5,6 +5,11 @@ import style from './deadline_calculator.module.scss'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
+import { Subject } from "rxjs";
+import { ajax } from 'rxjs/ajax';
+import { switchMap, catchError } from "rxjs/operators";
+ 
+
 import createLoading from './loading'
 import DeadlineResults from "./deadline_results";
 import Municipality from './municipality'
@@ -24,15 +29,15 @@ class FormValidator {
 
   validate(state) {
     this._valid = (
-      this._validStartDate(state.startDate) && 
+      this._validNotification(state.notification) && 
       this._validMunicipality(state.municipality) && 
       this._validWorkDays(state.workDays)
     )
     return this
   }
 
-  _validStartDate(startDate) {
-    return startDate !== null
+  _validNotification(notification) {
+    return notification !== null
   }
 
   _validMunicipality(municipality) {
@@ -51,14 +56,49 @@ class DeadlineCalculator extends Component {
   constructor (props) {
     super(props);
     this.validator = new FormValidator()
+
+    this.requests = new Subject()
+    this.responses = this.requests.pipe(
+      // switchMap will ignore all requests except last one
+      switchMap( (url) => ajax(url) ),
+      catchError(this.requestError)
+    )
+    this.responses.subscribe( (data) => this.requestResponse(data))
+
     this.state = {
-      startDate: new Date(), //CHANGE TO notificationDate
+      notification: new Date(), //CHANGE TO notificationDate
       municipality: null,
       workDays: 20,
       formErrors: {email: '', password: ''},
       formValid: false,
       loading: null,
     }
+  }
+
+  launchRequest_LALALA(){
+    console.log('Launching request')
+    console.log(this.state)
+    
+    let notification = this.state.notification.toISOString().substring(0,10)
+    let municipality_code = this.state.municipality.value
+    let days = this.state.workDays
+
+    let url = `/api/deadline?` + 
+      `notification=${notification}`+
+      `&municipality_code=${municipality_code}` + 
+      `&days=${days}`
+
+    console.log(url)
+    this.requests.next(url)
+  }
+  requestError(error) {
+    console.log('EL REQUEST HA PETAO:')
+    console.log(error.response.message)
+    return 'BANANA'
+  }
+  requestResponse(data) {
+    console.log('Request response')
+    console.log(data)
   }
 
   modifyState(changes){
@@ -68,8 +108,8 @@ class DeadlineCalculator extends Component {
     })
   }
 
-  setStartDate(date) {
-    this.modifyState({startDate:date, loading: null})
+  setNotification(date) {
+    this.modifyState({notification:date, loading: null})
   }
   setMunicipality(municipality) {
     this.modifyState({municipality: municipality, loading: null})
@@ -81,12 +121,12 @@ class DeadlineCalculator extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(!this.dataHasChanged(prevState,this.state)) return
-    if(this.validForm()) this.launchRequest()
+    if(this.validForm()) this.launchRequest_LALALA()
   }
 
   dataHasChanged(previous, current) {
     return (
-      previous.startDate !== current.startDate ||
+      previous.notification !== current.notification ||
       previous.municipality !== current.municipality ||
       previous.workDays !== current.workDays
     )
@@ -135,14 +175,14 @@ class DeadlineCalculator extends Component {
                   onSubmit={(e)=>e.preventDefault()}>
 
               <div className="form-group">
-                <label>Fecha de inicio</label>
+                <label>Fecha de notificación</label>
                 <div className="row">
                   <div className="col-md-12">
                     <DatePicker
                       className="form-control col-md-12"
                       dateFormat="dd/MM/yyyy"
-                      selected={this.state.startDate}
-                      onChange={date => this.setStartDate(date)}
+                      selected={this.state.notification}
+                      onChange={date => this.setNotification(date)}
                     />
                   </div>
                 </div>
