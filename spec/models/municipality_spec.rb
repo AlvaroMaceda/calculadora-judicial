@@ -80,7 +80,9 @@ describe Municipality, type: :model do
             @la_costa_este = create(:municipality, name: 'La Costa Este' )
             @sal_calada = create(:municipality, name: 'Sal Calada' )
             @rabanos = create(:municipality, name: 'Rábanos')
+            @rabanera = create(:municipality, name: 'Rabanera')
             @pollenca = create(:municipality, name: 'Pollença')
+            @perales = create(:municipality, name:'Pe-/ra\'les')
         end
 
         it 'searches the complete name' do
@@ -152,10 +154,32 @@ describe Municipality, type: :model do
             expect(response).to match_array(expected)
         end
 
-        xit 'searches ignoring accents' do
-            search_text = 'cala'
+        it 'searches ignoring accents' do
+            search_text = 'raba'
             expected = [
-                @alcala, @calahorra, @sal_calada
+                @rabanos, @rabanera
+            ]
+
+            response = Municipality.similar_to(search_text).to_a
+            
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches ignoring special characters on database' do
+            search_text = 'Perales'
+            expected = [
+                @perales
+            ]
+
+            response = Municipality.similar_to(search_text).to_a
+            
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches ignoring special characters on search string' do
+            search_text = 'A-lc/a\'la'
+            expected = [
+                @alcala, @sal_calada
             ]
 
             response = Municipality.similar_to(search_text).to_a
