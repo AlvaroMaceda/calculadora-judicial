@@ -1,7 +1,7 @@
 FactoryBot.define do
   
   sequence :autonomous_community_code do |n|
-    '%02i' % n
+    to_hex_two_digits n
   end
 
   sequence :autonomous_community_name do |n|

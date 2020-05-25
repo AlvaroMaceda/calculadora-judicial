@@ -2,7 +2,7 @@
 FactoryBot.define do
 
   sequence :country_code do |n|
-    '%02i' % n
+    to_hex_two_digits n
   end
   
   sequence :country_name do |n|
