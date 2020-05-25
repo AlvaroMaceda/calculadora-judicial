@@ -22,6 +22,15 @@ const Loading = createLoading(DeadlineResults)
 
 const THROTTLE_TIME = 2000
 
+const zeroPad = (num, places) => String(num).padStart(places, '0')
+function dateToYYYY_MM_DD(date) {
+  return [
+    date.getFullYear(),
+    zeroPad(date.getMonth()+1,2),
+    zeroPad(date.getDate(),2)
+  ].join('-')
+}
+
 class FormValidator {
 
   constructor() {
@@ -63,7 +72,7 @@ class DeadlineCalculator extends Component {
   constructor (props) {
 
     const INITIAL_STATE = {
-      notification: new Date(), //CHANGE TO notificationDate
+      notification: new Date(),
       municipality: null,
       workDays: '',
       formValid: false,
@@ -91,11 +100,8 @@ class DeadlineCalculator extends Component {
   launchRequest(){
     console.log('Launching request')
     this.modifyState({loading: true})
-    // console.log(this.state)
     
-    console.log(`notification:`)
-    console.log(this.state.notification)
-    let notification = this.state.notification.toISOString().substring(0,10)
+    let notification = dateToYYYY_MM_DD(this.state.notification)
     let municipality_code = this.state.municipality.value
     let days = this.state.workDays
 
@@ -132,7 +138,6 @@ class DeadlineCalculator extends Component {
   }
 
   setNotification(date) {
-    console.log(date)
     this.modifyState({notification:date, loading: null})
   }
 
