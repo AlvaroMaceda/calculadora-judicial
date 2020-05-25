@@ -1,5 +1,11 @@
 require 'rails_helper'
 
+def PEPE(reponse)
+    response.each do |m|
+        puts m.name
+    end
+end
+
 describe Municipality, type: :model do
   
     let(:municipality) { create(:municipality) }
@@ -68,21 +74,82 @@ describe Municipality, type: :model do
     context 'similar_to scope' do
 
         before(:each) do
-            @ac1 = create(:autonomous_community)            
-            @ac2 = create(:autonomous_community)
+            @alcala = create(:municipality, name: 'Alcala' )
+            @calahorra = create(:municipality, name: 'Calahorra' )
+            @calcatta = create(:municipality, name: 'Calcatta' )
+            @la_costa_este = create(:municipality, name: 'La Costa Este' )
+            @sal_calada = create(:municipality, name: 'Sal Calada' )
+            @rabanos = create(:municipality, name: 'Rábanos')
+            @pollenca = create(:municipality, name: 'Pollença')
+        end
 
-            @alcala_data = {name: "Alcalá", code: "ES50001", autonomous_community: @ac1 }
-            @calahorra_data = {name: "Calahorra", code: "ES50002", autonomous_community: @ac1}
-            @calcatta_data = {name: "Calcatta", code: "ES50003", autonomous_community: @ac1}
-            @la_costa_este_data = {name: "La Costa Este", code: "ES80001", autonomous_community: @ac2}
-            @sal_calada_data = {name: "Sal calada Pèmera", code: "ES80002", autonomous_community: @ac2}
-            @valencia_de_alcantara_data = {name: "Valencia de Alcántara", code: "ES80003", autonomous_community: @ac2}
-    
-            @alcala = create(:municipality, @alcala_data )
-            @calahorra = create(:municipality, @calahorra_data )
-            @calcatta = create(:municipality, @calcatta_data )
-            @la_costa_este = create(:municipality, @la_costa_este_data )
-            @sal_calada = create(:municipality, @sal_calada_data )
+        it 'searches the complete name' do
+            search_text = 'Calahorra'
+            expected = [
+                @calahorra
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches at the midle of the name' do
+            search_text = 'atta'
+            expected = [
+                @calcatta
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'it\s not case-sensitive' do
+            search_text = 'HoRRa'
+            expected = [
+                @calahorra
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)         
+        end
+
+        it 'works when there are no matches' do
+            search_text = 'non existing municipality'
+            expected = [
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'ignores spaces on database\'s name when searching' do
+            search_text = 'lca'
+            expected = [
+                @alcala,
+                @calcatta,
+                @sal_calada
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'ignores spaces on search string when searching' do
+            search_text = 'l ca'
+            expected = [
+                @alcala,
+                @calcatta,
+                @sal_calada
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
         end
 
         xit 'searches ignoring accents' do
@@ -92,9 +159,6 @@ describe Municipality, type: :model do
             ]
 
             response = Municipality.similar_to(search_text).to_a
-            response.each do |m|
-                puts m.name
-            end
             
             expect(response).to match_array(expected)
         end
