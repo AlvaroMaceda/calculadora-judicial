@@ -8,7 +8,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Subject, asyncScheduler } from "rxjs";
 import { ajax } from 'rxjs/ajax';
 import { switchMap, throttleTime, filter, catchError } from "rxjs/operators";
- 
+
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import es from 'date-fns/locale/es';
+registerLocale('es', es)
+
 
 import createLoading from './loading'
 import DeadlineResults from "./deadline_results";
@@ -89,6 +93,8 @@ class DeadlineCalculator extends Component {
     this.modifyState({loading: true})
     // console.log(this.state)
     
+    console.log(`notification:`)
+    console.log(this.state.notification)
     let notification = this.state.notification.toISOString().substring(0,10)
     let municipality_code = this.state.municipality.value
     let days = this.state.workDays
@@ -126,6 +132,7 @@ class DeadlineCalculator extends Component {
   }
 
   setNotification(date) {
+    console.log(date)
     this.modifyState({notification:date, loading: null})
   }
 
@@ -180,6 +187,7 @@ class DeadlineCalculator extends Component {
                   <div className="col-md-12">
                     <DatePicker
                       className="form-control col-md-12"
+                      locale="es"
                       dateFormat="dd/MM/yyyy"
                       selected={this.state.notification}
                       onChange={date => this.setNotification(date)}
