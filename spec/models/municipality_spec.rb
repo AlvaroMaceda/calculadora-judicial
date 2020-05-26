@@ -1,5 +1,11 @@
 require 'rails_helper'
 
+def PEPE(reponse)
+    response.each do |m|
+        puts m.name
+    end
+end
+
 describe Municipality, type: :model do
   
     let(:municipality) { create(:municipality) }
@@ -62,6 +68,125 @@ describe Municipality, type: :model do
             expect(holidays_found).to eq(expected)
         end
         
+    end
+
+    # All scope's tests should be here, not in the controller
+    context 'similar_to scope' do
+
+        before(:each) do
+            @alcala = create(:municipality, name: 'Alcala' )
+            @calahorra = create(:municipality, name: 'Calahorra' )
+            @calcatta = create(:municipality, name: 'Calcatta' )
+            @la_costa_este = create(:municipality, name: 'La Costa Este' )
+            @sal_calada = create(:municipality, name: 'Sal Calada' )
+            @rabanos = create(:municipality, name: 'Rábanos')
+            @rabanera = create(:municipality, name: 'Rabanera')
+            @pollenca = create(:municipality, name: 'Pollença')
+            @perales = create(:municipality, name:'Pe-/ra\'les')
+        end
+
+        it 'searches the complete name' do
+            search_text = 'Calahorra'
+            expected = [
+                @calahorra
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches at the midle of the name' do
+            search_text = 'atta'
+            expected = [
+                @calcatta
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'it\s not case-sensitive' do
+            search_text = 'HoRRa'
+            expected = [
+                @calahorra
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)         
+        end
+
+        it 'works when there are no matches' do
+            search_text = 'non existing municipality'
+            expected = [
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'ignores spaces on database\'s name when searching' do
+            search_text = 'lca'
+            expected = [
+                @alcala,
+                @calcatta,
+                @sal_calada
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'ignores spaces on search string when searching' do
+            search_text = 'l ca'
+            expected = [
+                @alcala,
+                @calcatta,
+                @sal_calada
+            ]
+            
+            response = Municipality.similar_to(search_text).to_a
+
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches ignoring accents' do
+            search_text = 'raba'
+            expected = [
+                @rabanos, @rabanera
+            ]
+
+            response = Municipality.similar_to(search_text).to_a
+            
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches ignoring special characters on database' do
+            search_text = 'Perales'
+            expected = [
+                @perales
+            ]
+
+            response = Municipality.similar_to(search_text).to_a
+            
+            expect(response).to match_array(expected)
+        end
+
+        it 'searches ignoring special characters on search string' do
+            search_text = 'A-lc/a\'la'
+            expected = [
+                @alcala, @sal_calada
+            ]
+
+            response = Municipality.similar_to(search_text).to_a
+            
+            expect(response).to match_array(expected)
+        end
+
     end
 
 end

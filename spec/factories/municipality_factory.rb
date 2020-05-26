@@ -1,7 +1,7 @@
 FactoryBot.define do
 
   sequence :municipality_code do |n|
-    '%07i' % n
+    to_hex_7_digits n
   end
 
   factory :municipality do

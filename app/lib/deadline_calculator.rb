@@ -37,7 +37,7 @@ class DeadlineCalculator
 
     def apply_holidays(start_date, end_date)
         end_date = sum_holidays_to_end_date(start_date, end_date)
-    end_date = next_working_day(end_date)
+        end_date = next_working_day(end_date)
         end_date
     end
 
@@ -66,6 +66,8 @@ class DeadlineCalculator
         is_weekend?(date) or is_holiday?(date)
     end
 
+    # TODO: This function launches three queries each time is called
+    #       We should reformulate the algorithm to avoid calling this function
     def is_holiday?(date)
         @holidayable.holidays_between(date, date).count > 0
     end
