@@ -184,12 +184,6 @@ describe AutonomousCommunityImporter do
             expect(all_autonomous_communities_in_DB).to match_array([])
         end
 
-        it 'returns error if file does not exist' do
-            csv_file = File.join(__dir__,'THIS_FILE_DOES_NOT_EXIST.csv')
-    
-            expect {importer.importCSV csv_file}.to raise_error(CsvBasicImporter::ImportError)
-        end
-
     end
 
 end

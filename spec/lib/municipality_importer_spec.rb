@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe MunicipalityImporter do
 
-    let(:es) { create(:country,code:"ES") }
-    let(:se) { create(:country,code:"SE") }
     let(:importer) { MunicipalityImporter.new }
-
+    
     before(:each) do
+        es =  create(:country,code:"ES")
+        se =  create(:country,code:"SE")
         create(:autonomous_community,code:"01", country: es)
         create(:autonomous_community,code:"02", country: es)
         create(:autonomous_community,code:"01", country: se)
@@ -162,12 +162,6 @@ describe MunicipalityImporter do
 
             expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::ImportError)
             expect(all_municipalities_in_DB).to match_array([])
-        end
-
-        it 'returns error if file does not exist' do
-            csv_file = File.join(__dir__,'THIS_FILE_DOES_NOT_EXIST.csv')        
-
-            expect {importer.importCSV csv_file}.to raise_error(CsvBasicImporter::ImportError)
         end
 
     end
