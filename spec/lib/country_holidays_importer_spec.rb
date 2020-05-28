@@ -31,7 +31,4 @@ describe CountryHolidaysImporter do
         expect(all_holidays_in_DB_of_type(:Country)).to match_array(expected)
     end
 
-    xit 'additional data is ignored' do
-    end
-
 end

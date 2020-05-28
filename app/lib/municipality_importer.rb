@@ -1,5 +1,7 @@
 
-class MunicipalityImporter < CsvBasicImporter
+class MunicipalityImporter
+
+    include CsvBasicImporter
 
     def initialize()
         @country_ids = {}

@@ -1,5 +1,7 @@
 
-class CountryHolidaysImporter < CsvBasicImporter
+class CountryHolidaysImporter
+
+    include CsvBasicImporter
 
     private
 

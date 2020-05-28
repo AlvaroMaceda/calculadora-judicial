@@ -1,5 +1,7 @@
 
-class AutonomousCommunityImporter < CsvBasicImporter
+class AutonomousCommunityImporter
+
+    include CsvBasicImporter
 
     def initialize()
         @country_ids = {}

@@ -1,10 +1,7 @@
 require 'csv'
 
-class CsvBasicImporter
-
-    def initialize()
-    end
-
+module CsvBasicImporter
+    
     # This method expects UTF-8 encoded files, but do not validate it
     def importCSV(csv_filename_or_io)
 
@@ -21,8 +18,8 @@ class CsvBasicImporter
             imported = 0
             ActiveRecord::Base.transaction do
                 csv.each do |row|
-                    line += 1                    
-                    process_row row
+                    line += 1
+                    call_process_row row
                     imported +=1
                 end
             end
@@ -42,7 +39,17 @@ class CsvBasicImporter
         []
     end
 
+    def filter_expected_headers(row)
+        expected = expected_headers
+        row.slice(*expected) unless expected.empty?
+    end
+
+    def call_process_row(row)
+        process_row filter_expected_headers(row.to_h)
+    end
+
     def process_row(row)
+        raise ImportError.new('You must define process_row method for importer')
     end
 
     def get_io_from_parameter(filename_or_io)
