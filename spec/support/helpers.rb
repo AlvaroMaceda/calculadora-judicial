@@ -22,7 +22,7 @@ def all_municipalities_in_DB()
 end
 
 def all_holidays_in_DB_of_type(type)
-  Holiday.find_by(holidayable_type: type.to_sym).to_a.map do |h|
+  Holiday.where(holidayable_type: type.to_sym).to_a.map do |h|
     {
       type: h.holidayable_type,
       code: h.holidayable.code,
@@ -32,5 +32,11 @@ def all_holidays_in_DB_of_type(type)
 end
 
 def all_holidays_in_DB()
-  # Holidays.
+  Holiday.all.to_a.map do |h|
+    {
+      type: h.holidayable_type,
+      code: h.holidayable.code,
+      date: h.date
+    }
+  end
 end
