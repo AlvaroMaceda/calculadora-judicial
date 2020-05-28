@@ -27,7 +27,7 @@ class MunicipalityImporter
                 name: row_data['name'],
                 code: row_data['code']
             }
-            ac = Municipality.create!(curated_row.to_h)
+            Municipality.create!(curated_row.to_h)
 
         rescue ActiveRecord::RecordInvalid => e
             message = <<~HEREDOC

@@ -24,7 +24,7 @@ class AutonomousCommunityImporter
                 name: row_data['name'],
                 code: row_data['code']
             }
-            ac = AutonomousCommunity.create!(curated_row.to_h)
+            AutonomousCommunity.create!(curated_row.to_h)
 
         rescue ActiveRecord::RecordInvalid => e
             message = <<~HEREDOC
