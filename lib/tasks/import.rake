@@ -1,4 +1,4 @@
-require_relative './import_holidays'
+require_relative './import_holidays_task'
 
 namespace :import do
     desc "This take does something useful!"
