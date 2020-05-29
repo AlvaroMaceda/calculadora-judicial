@@ -11,11 +11,13 @@ module CsvBasicImporter
 
             csv = CSV.new(csv_io, headers: true, return_headers: true, encoding: 'UTF-8')
             
-            headers = csv.first
-            validate_headers headers
-
             line = 1
             imported = 0
+
+            headers = csv.first
+            raise ImportError.new("File is empty.") if headers == nil
+            validate_headers headers
+
             ActiveRecord::Base.transaction do
                 csv.each do |row|
                     line += 1
@@ -72,9 +74,9 @@ module CsvBasicImporter
         end        
     end
 
-    def validate_headers(header)
+    def validate_headers(headers)        
         expected_headers.each do |column|
-            if !header.include? column
+            if !headers.include? column
                 raise HeadersError.new("Missing column '#{column}'")
             end
         end

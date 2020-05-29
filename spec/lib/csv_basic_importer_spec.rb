@@ -110,6 +110,14 @@ describe CsvBasicImporter do
 
     context 'errors' do
 
+        it 'raises an error with empty files' do
+            csv_data = <<~HEREDOC
+            HEREDOC
+            csv = StringIO.new(csv_data)
+
+            expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::ImportError)
+        end
+
         it 'raises an error if process_row is not defined' do
             importer = Class.new do
                 include CsvBasicImporter
