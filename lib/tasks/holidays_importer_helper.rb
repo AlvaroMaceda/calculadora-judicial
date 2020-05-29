@@ -1,3 +1,5 @@
+# require_relative '../../app/lib/country_holidays_importer'
+
 module HolidaysImporterHelper
     
     HOLIDAYS_DIR = File.join('data','holidays')
@@ -5,7 +7,8 @@ module HolidaysImporterHelper
     class << self
         
         def do_import_country
-            do_import 'country',nil
+            importer = CountryHolidaysImporter.new
+            do_import 'country',importer
         end
 
         def do_import_autonomous_community
@@ -14,10 +17,29 @@ module HolidaysImporterHelper
 
         def do_import_municipality
             do_import 'municipality',nil
-        end
-        
+        end        
         
         private
+
+        def delete_all_holidays(type)
+            puts "Deleting all holidays for #{type}..."
+            Holiday.where(holidayable_type: type).destroy_all
+        end
+
+        def delete_year_holidays(type,year)
+            Holiday.where(
+                holidayable_type: type, 
+                date: Date.new(year.to_i,1,1)..Date.new(year.to_i,12,31)
+            ).destroy_all
+        end
+
+        def delete_previous_holidays(type, year)
+            if year == 'ALL'
+                delete_all_holidays type
+            else
+                delete_year_holidays type, year
+            end
+        end
         
         def do_import(type, importer)
             year = get_year_parameter
@@ -29,9 +51,11 @@ module HolidaysImporterHelper
                 return
             end
 
+            delete_previous_holidays :Country, year
             files.each do |filename|
                 puts "Importing #{File.basename(filename)}..."
-                puts 'TODO'
+                res = importer.importCSV filename
+                puts "Imported #{res.imported} #{type} holidays"
             end
         end
 

@@ -14,7 +14,7 @@ namespace :import do
 
     namespace :holidays do
 
-        task :country do |task|
+        task country: :environment do |task|
             begin
                 HolidaysImporterHelper::do_import_country
             rescue HolidaysImporterHelper::InvalidYear => e
@@ -23,7 +23,7 @@ namespace :import do
             end
         end
 
-        task :ac do |task|
+        task ac: :environment do |task|
             begin
                 HolidaysImporterHelper::do_import_autonomous_community
             rescue HolidaysImporterHelper::InvalidYear => e
@@ -32,7 +32,7 @@ namespace :import do
             end
         end
 
-        task :municipality do |task|
+        task municipality: :environment do |task|
             begin
                 HolidaysImporterHelper::do_import_municipality
             rescue HolidaysImporterHelper::InvalidYear => e
