@@ -5,10 +5,7 @@ describe CountryHolidaysImporter do
     
     before(:each) do
         es =  create(:country,code:"ES")
-        se =  create(:country,code:"SE")
-        create(:autonomous_community,code:"A1", country: es)
-        create(:autonomous_community,code:"A2", country: es)
-        create(:autonomous_community,code:"B1", country: se)        
+        se =  create(:country,code:"SE")   
     end
 
     it 'imports country holidays' do

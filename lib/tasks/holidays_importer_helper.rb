@@ -12,7 +12,8 @@ module HolidaysImporterHelper
         end
 
         def do_import_autonomous_community
-            do_import 'autonomous_community',nil
+            importer = AutonomousCommunityHolidaysImporter.new
+            do_import 'autonomous_community',importer
         end
 
         def do_import_municipality
