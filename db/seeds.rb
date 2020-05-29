@@ -7,12 +7,12 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Wipe countries, autonomous communities, municipalities and holidays
-# Holiday.destroy_all
-# Municipality.destroy_all
-# AutonomousCommunity.destroy_all
-# Country.destroy_all
+Holiday.destroy_all
+Municipality.destroy_all
+AutonomousCommunity.destroy_all
+Country.destroy_all
 
-# spain = Country.create(name: 'Spain', code: "ES")
+spain = Country.create(name: 'Spain', code: "ES")
 
 def benchmark
     start = Time.now
@@ -21,23 +21,23 @@ def benchmark
 end
 
 def seed_autonomous_communities
-    filename = File.join(__dir__,'seeds','autonomous_communities.csv')
+    filename = File.join(__dir__,'..','data','autonomous_communities.csv')
     ac_importer = AutonomousCommunityImporter.new
     ac_importer.importCSV(filename)
 end
-# time = benchmark {seed_autonomous_communities}
-# puts "Autonomous communities import time: #{time}"
+time = benchmark {seed_autonomous_communities}
+puts "Autonomous communities import time: #{time}"
 
 def seed_municipalities
-    filename = File.join(__dir__,'seeds','municipalities.csv')
+    filename = File.join(__dir__,'..','data','municipalities.csv')
     municipality_importer = MunicipalityImporter.new
     municipality_importer.importCSV(filename)
 end
-# time = benchmark {seed_municipalities}
-# puts "Municipalities import time: #{time}"
+time = benchmark {seed_municipalities}
+puts "Municipalities import time: #{time}"
 
 def seed_holidays
-    base_glob = File.join(__dir__,'seeds','holidays','**')
+    base_glob = File.join(__dir__,'..','data','holidays','**')
 
     Dir.glob(File.join(base_glob,'*country_*.csv')) do |thefile|
         puts "Importing Country holidays: #{File.basename(thefile)}"

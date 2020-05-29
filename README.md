@@ -23,6 +23,22 @@ Things you may want to cover:
 
 * ...
 
+## Import data
+
+### Autonomous communities and municipalities
+
+You can import the data structure for Spain runing ```rails db:seed```. That task will delete all existing estructure and recreate it again.
+
+The csv with the data was last updated in 2020. It don't change often (but it changes)
+
+### Holidays
+
+Holiday's files are stored in ```data/holidays``` directory. There is a subdirectory for each year.
+
+There are rake tasks to load holidays:
+- ```rails import:holiday:country ENV=2020``` will delete all 2020's holidays and create them again for that year. You can use ```ENV=All``` to process all files.
+- You can use ```rails import:holiday:ac``` and ```rails import:holiday:municipality``` to import data for autonomous communities and municipalities respectively.
+
 ## Development
 
 ### Requirements
