@@ -3,7 +3,7 @@ include My::Matchers
 
 describe Api::MunicipalitySearchController, type: :controller do
     
-    before { skip }
+    # before { skip }
 
     render_views
     
@@ -40,6 +40,17 @@ describe Api::MunicipalitySearchController, type: :controller do
                 expect_hash(@sal_calada)
             ]}.to_json
             expect(response.body).to eq(expected)  
+        end
+
+        it 'only returns municipalities' do
+            no_municipality = create(:territory, kind: :country, name: 'Calahorra')
+
+            get 'search', as: :json, params: { name: 'Calahorra' }
+
+            expected = {municipalities: [
+                expect_hash(@calahorra)
+            ]}.to_json
+            expect(response.body).to eq(expected) 
         end
 
         it 'works when there are no matches' do

@@ -9,7 +9,7 @@ class Territory < ApplicationRecord
         island: 'island', 
         region: 'region', 
         municipality: 'municipality' 
-    }, _prefix: :kind
+    }, _suffix: :kind
 
     include Holidayable
 
