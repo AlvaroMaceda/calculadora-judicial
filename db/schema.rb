@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_155934) do
+ActiveRecord::Schema.define(version: 2020_05_30_162930) do
 
   create_table "holidays", force: :cascade do |t|
     t.date "date"
@@ -31,8 +31,10 @@ ActiveRecord::Schema.define(version: 2020_05_30_155934) do
     t.string "holidayable_type"
     t.integer "holidayable_id"
     t.string "searchable_name"
+    t.string "kind"
     t.index ["code"], name: "index_territories_on_code", unique: true
     t.index ["holidayable_type", "holidayable_id"], name: "index_territories_on_holidable"
+    t.index ["kind"], name: "index_territories_on_kind"
     t.index ["parent_id"], name: "index_territories_on_parent_id"
   end
 

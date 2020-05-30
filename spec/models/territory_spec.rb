@@ -24,6 +24,11 @@ describe Territory, type: :model do
         expect(repeated_territory).not_to be_valid 
     end
 
+    it 'is of a kind' do
+        territory = create(:territory, kind: :municipality)
+        expect(territory).to be_valid
+    end
+
     it "can belong to annother territory" do
         parent_territory = create(:territory)
         child_territory = create(:territory, parent: parent_territory)

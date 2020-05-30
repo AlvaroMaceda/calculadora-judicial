@@ -3,6 +3,14 @@ class Territory < ApplicationRecord
     belongs_to :parent, optional: true, class_name: "Territory"
     has_many :territories, class_name: "Territory", foreign_key: "parent"
 
+    enum kind: {
+        country: 'country', 
+        autonomous_community: 'autonomous_community', 
+        island: 'island', 
+        region: 'region', 
+        municipality: 'municipality' 
+    }, _prefix: :kind
+
     include Holidayable
 
     before_save :calculate_searchable_name
@@ -16,8 +24,13 @@ class Territory < ApplicationRecord
         presence: true, 
         allow_blank: false
 
+    validates :kind, 
+        presence: true, 
+        allow_blank: false
+
+  
     scope :similar_to, ->(name) {
-        searchable_name = Municipality.searchable_string(name)   
+        searchable_name = Territory.searchable_string(name)   
         where(
             "searchable_name LIKE ?", "%#{searchable_name}%"
         )
@@ -41,21 +54,21 @@ class Territory < ApplicationRecord
     private
 
     def calculate_searchable_name
-      self.searchable_name = Territory.searchable_string(name)
+        self.searchable_name = Territory.searchable_string(name)
     end
 
     class << self
-      def searchable_string(str)
-        remove_special_chars(str).delete(' ').downcase
-      end
+        def searchable_string(str)
+            remove_special_chars(str).delete(' ').downcase
+        end
 
-      private 
+        private 
 
-      def remove_special_chars(str)
-        transliterated = I18n.transliterate(str)
-        chars_to_remove = "-/'"
-        transliterated.tr(chars_to_remove,'')
-      end
+        def remove_special_chars(str)
+            transliterated = I18n.transliterate(str)
+            chars_to_remove = "-/'"
+            transliterated.tr(chars_to_remove,'')
+        end
     end
 
 end

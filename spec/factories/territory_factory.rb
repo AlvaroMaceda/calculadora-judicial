@@ -11,6 +11,7 @@ FactoryBot.define do
   factory :territory do
     code { generate(:territory_code) }
     name { generate(:territory_name) }
+    kind { 'municipality' }
   end
   
 end

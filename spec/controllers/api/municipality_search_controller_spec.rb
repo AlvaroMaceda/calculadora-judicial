@@ -11,16 +11,16 @@ describe Api::MunicipalitySearchController, type: :controller do
     
     describe "GET #search" do
 
-        def expect_hash(municipality)
-            return { code: municipality.code, name:municipality.name }
+        def expect_hash(territory)
+            return { code: territory.code, name:territory.name }
         end
 
         before(:each) do
-            @alcala = create(:municipality, name: 'Alcala' )
-            @calahorra = create(:municipality, name: 'Calahorra' )
-            @calcatta = create(:municipality, name: 'Calcatta' )
-            @la_costa_este = create(:municipality, name: 'La Costa Este' )
-            @sal_calada = create(:municipality, name: 'Sal Calada' )
+            @alcala = create(:territory, name: 'Alcala' )
+            @calahorra = create(:territory, name: 'Calahorra' )
+            @calcatta = create(:territory, name: 'Calcatta' )
+            @la_costa_este = create(:territory, name: 'La Costa Este' )
+            @sal_calada = create(:territory, name: 'Sal Calada' )
         end
 
         before :each do
