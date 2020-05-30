@@ -7,8 +7,13 @@ describe Holiday, type: :model do
         expect(h).to be_valid
     end
 
-    it 'has a valid factory for autnomous community' do
+    it 'has a valid factory for autonomous community' do
         h = create(:holiday, :for_autonomous_community, date: Date.parse('21 Oct 2015'))
+        expect(h).to be_valid
+    end
+
+    it 'has a valid factory for territory' do
+        h = create(:holiday, :for_territory, date: Date.parse('21 Oct 2015'))
         expect(h).to be_valid
     end
 

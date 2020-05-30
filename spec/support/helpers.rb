@@ -11,6 +11,15 @@ def to_hex_7_digits(n)
   to_hex_n_digits n,7
 end
 
+def random_date_not_sunday
+  min_date = Time.now - 8.years
+  max_date = Time.now + 8.year
+  begin
+    rand_date = rand(min_date..max_date)
+  end while rand_date.sunday?
+  return rand_date
+end
+
 def all_autonomous_communities_in_DB()
   AutonomousCommunity.all.to_a.map { |ac| 
       { code: ac.code, name: ac.name, country: ac.country.code }

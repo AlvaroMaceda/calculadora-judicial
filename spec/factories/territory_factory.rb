@@ -11,7 +11,6 @@ FactoryBot.define do
   factory :territory do
     code { generate(:territory_code) }
     name { generate(:territory_name) }
-    # country # Equivalent to: association :country, factory: :country
   end
   
 end

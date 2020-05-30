@@ -1,7 +1,7 @@
 FactoryBot.define do
 
     factory :holiday do
-        for_country # default to the :for_photo trait if none is specified
+        date { random_date_not_sunday }
 
         trait :for_country do
             association :holidayable, factory: :country
@@ -11,6 +11,10 @@ FactoryBot.define do
           association :holidayable, factory: :autonomous_community
         end
     
+        trait :for_territory do
+          association :holidayable, factory: :territory
+        end
+
         trait :for_municipality do
           association :holidayable, factory: :municipality
         end

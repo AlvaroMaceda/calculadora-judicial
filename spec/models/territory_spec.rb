@@ -40,18 +40,86 @@ describe Territory, type: :model do
             child_territory_1, child_territory_2
         ]
 
-        expect(parent_territory.territories).to match(expected_childs) 
+        expect(parent_territory.territories).to match_array(expected_childs) 
     end
 
     context 'holidays' do
         
         it 'can have multiple holidays' do
+            holiday_1 = create(:holiday, holidayable: territory)
+            holiday_2 = create(:holiday, holidayable: territory)
             
+            expected_holidays = [holiday_1, holiday_2]
+
+            expect(territory.holidays).to match_array(expected_holidays) 
         end
 
-    end
-  
-    context 'returns its holidays between two dates in order' do
+        context 'returns its holidays between two dates in order' do
+    
+            # Don't know how to resolve this with let
+            before(:each) do
+                @grandparent = create(:territory)
+                @parent = create(:territory, parent: @grandparent)
+                @a_territory = create(:territory, parent: @parent)
+
+                @grandparent_holiday = create(:holiday, holidayable: @grandparent, date: Date.parse('03 Mar 2020'))
+                @parent_holiday = create(:holiday, holidayable: @parent, date: Date.parse('04 Apr 2020'))
+                @territory_holiday_1 = create(:holiday, holidayable: @a_territory, date: Date.parse('02 Mar 2020'))
+                @territory_holiday_2 = create(:holiday, holidayable: @a_territory, date: Date.parse('06 Apr 2020'))
+                @territory_holiday_3 = create(:holiday, holidayable: @a_territory, date: Date.parse('12 Dec 2020'))
+                @territory_holiday_4 = create(:holiday, holidayable: @a_territory, date: Date.parse('15 Dec 2020'))
+            end
+    
+            it 'includes holidays in the interval' do
+                start_date = Date.parse('11 Dec 2020')
+                end_date = Date.parse('16 Dec 2020')
+                expected = [
+                    @territory_holiday_3,
+                    @territory_holiday_4
+                ]
+    
+                holidays_found = @a_territory.holidays_between(start_date, end_date)
+    
+                expect(holidays_found).to eq(expected)
+            end
+    
+            it 'includes start date' do
+                start_date = Date.parse('12 Dec 2020')
+                end_date = Date.parse('13 Dec 2020')
+                expected = [ @territory_holiday_3 ]
+    
+                holidays_found = @a_territory.holidays_between(start_date, end_date)
+    
+                expect(holidays_found).to eq(expected)
+            end
+    
+            it 'includes end date' do 
+                start_date = Date.parse('10 Dec 2020')
+                end_date = Date.parse('12 Dec 2020')
+                expected = [ @territory_holiday_3 ]
+    
+                holidays_found = @a_territory.holidays_between(start_date, end_date)
+    
+                expect(holidays_found).to eq(expected)
+            end
+
+            it 'includes parent\'s holidays recursively' do
+                start_date = Date.parse('1 Mar 2020')
+                end_date = Date.parse('7 Apr 2020')
+                expected = [
+                    @territory_holiday_1,
+                    @grandparent_holiday,
+                    @parent_holiday,
+                    @territory_holiday_2
+                ]
+    
+                holidays_found = @a_territory.holidays_between(start_date, end_date)
+
+                expect(holidays_found).to eq(expected)
+            end
+    
+        end
+
     end
 
 end
