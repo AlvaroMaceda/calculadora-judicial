@@ -1,9 +1,14 @@
+
+def to_hex_n_digits(number, n)
+  ('0'*n+number.to_s(16)).chars.last(n).join
+end
+
 def to_hex_two_digits(n)
-  ('00'+n.to_s(16)).chars.last(2).join
+  to_hex_n_digits n,2
 end
 
 def to_hex_7_digits(n)
-  ('0000000'+n.to_s(16)).chars.last(7).join
+  to_hex_n_digits n,7
 end
 
 def all_autonomous_communities_in_DB()

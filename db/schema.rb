@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_25_170310) do
+ActiveRecord::Schema.define(version: 2020_05_30_102909) do
 
   create_table "autonomous_communities", force: :cascade do |t|
     t.string "name"
@@ -60,6 +60,17 @@ ActiveRecord::Schema.define(version: 2020_05_25_170310) do
     t.index ["holidayable_type", "holidayable_id"], name: "index_municipalities_on_holidable"
   end
 
+  create_table "territories", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "parent_id"
+    t.index ["code"], name: "index_territories_on_code", unique: true
+    t.index ["parent_id"], name: "index_territories_on_parent_id"
+  end
+
   add_foreign_key "autonomous_communities", "countries"
   add_foreign_key "municipalities", "autonomous_communities"
+  add_foreign_key "territories", "territories", column: "parent_id"
 end
