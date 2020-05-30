@@ -41,7 +41,7 @@ class Territory < ApplicationRecord
     private
 
     def calculate_searchable_name
-      self.searchable_name = Municipality.searchable_string(name)
+      self.searchable_name = Territory.searchable_string(name)
     end
 
     class << self
@@ -57,5 +57,5 @@ class Territory < ApplicationRecord
         transliterated.tr(chars_to_remove,'')
       end
     end
-    
+
 end
