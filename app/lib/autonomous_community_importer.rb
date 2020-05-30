@@ -1,9 +1,10 @@
-require 'csv'
 
-class AutonomousCommunityImporter < CsvBasicImporter
+class AutonomousCommunityImporter
+
+    include CsvBasicImporter
 
     def initialize()
-        @country_ids = {}
+        @country_ids = ItemsCache::create { |code| find_country_id(code)}
     end
 
     private
@@ -19,11 +20,11 @@ class AutonomousCommunityImporter < CsvBasicImporter
     def create_autonomous_community(row_data)
         begin
             curated_row = {
-                country_id: get_country_id(row_data['country_code']),
+                country_id: @country_ids[row_data['country_code']],
                 name: row_data['name'],
                 code: row_data['code']
             }
-            ac = AutonomousCommunity.create!(curated_row.to_h)
+            AutonomousCommunity.create!(curated_row.to_h)
 
         rescue ActiveRecord::RecordInvalid => e
             message = <<~HEREDOC
@@ -46,19 +47,10 @@ class AutonomousCommunityImporter < CsvBasicImporter
         end
     end
 
-    def get_country_id(code)
-        @country_ids[code] || find_country_id(code)
-    end
-
     def find_country_id(code)
         country = Country.find_by(code: code)
         raise CountryNotFound.new("Country code: '#{code}'") unless country
-        cache_country_id(code,country.id)
         return country.id
-    end
-
-    def cache_country_id(code, country_id)
-        @country_ids[code] = country_id
     end
 
     class CountryNotFound < RuntimeError
