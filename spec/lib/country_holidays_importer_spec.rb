@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe CountryHolidaysImporter do
+
+    before { skip }
+
     let(:importer) { CountryHolidaysImporter.new }
     
     before(:each) do

@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe AutonomousCommunityImporter do
 
+    before { skip }
+    
     before(:each) do
         create(:country,code:"ES")
         create(:country,code:"FR")
