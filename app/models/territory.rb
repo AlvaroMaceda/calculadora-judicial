@@ -5,6 +5,8 @@ class Territory < ApplicationRecord
 
     include Holidayable
 
+    before_save :calculate_searchable_name
+
     validates :code, 
         presence: true, 
         allow_blank: false,
@@ -13,6 +15,13 @@ class Territory < ApplicationRecord
     validates :name, 
         presence: true, 
         allow_blank: false
+
+    scope :similar_to, ->(name) {
+        searchable_name = Municipality.searchable_string(name)   
+        where(
+            "searchable_name LIKE ?", "%#{searchable_name}%"
+        )
+    }
 
     def holidays_between(start_date, end_date)
         
@@ -28,4 +37,25 @@ class Territory < ApplicationRecord
     
         return my_holidays_unordered.sort_by { |holiday| holiday[:date] }
     end
+
+    private
+
+    def calculate_searchable_name
+      self.searchable_name = Municipality.searchable_string(name)
+    end
+
+    class << self
+      def searchable_string(str)
+        remove_special_chars(str).delete(' ').downcase
+      end
+
+      private 
+
+      def remove_special_chars(str)
+        transliterated = I18n.transliterate(str)
+        chars_to_remove = "-/'"
+        transliterated.tr(chars_to_remove,'')
+      end
+    end
+    
 end
