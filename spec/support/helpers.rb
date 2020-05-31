@@ -12,6 +12,7 @@ def to_hex_7_digits(n)
 end
 
 def random_date_not_sunday
+  # 8 is an arbitrary number
   min_date = Time.now - 8.years
   max_date = Time.now + 8.year
   begin
@@ -20,17 +21,13 @@ def random_date_not_sunday
   return rand_date
 end
 
-def all_autonomous_communities_in_DB()
-  AutonomousCommunity.all.to_a.map { |ac| 
-      { code: ac.code, name: ac.name, country: ac.country.code }
-  }
-end
-
-def all_municipalities_in_DB()
-  Municipality.all.to_a.map do |m| 
-    { code: m.code, name: m.name, 
-      ac: m.autonomous_community.code, 
-      country: m.autonomous_community.country.code 
+def all_territories_in_DB()
+  Territory.all.to_a.map do |t| 
+    { 
+      kind: t.kind, 
+      code: t.code,
+      name: t.name, 
+      parent: (t.parent ? t.parent.code : '') 
     }
   end
 end
