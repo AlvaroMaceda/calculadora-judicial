@@ -8,11 +8,7 @@
 
 # Wipe countries, autonomous communities, municipalities and holidays
 Holiday.destroy_all
-Municipality.destroy_all
-AutonomousCommunity.destroy_all
-Country.destroy_all
-
-spain = Country.create(name: 'Spain', code: "ES")
+Territory.destroy_all
 
 def benchmark
     start = Time.now
@@ -20,21 +16,16 @@ def benchmark
     Time.now - start # Returns time taken to perform func
 end
 
-def seed_autonomous_communities
-    filename = File.join(__dir__,'..','data','autonomous_communities.csv')
-    ac_importer = AutonomousCommunityImporter.new
-    ac_importer.importCSV(filename)
-end
-time = benchmark {seed_autonomous_communities}
-puts "Autonomous communities import time: #{time}"
-
-def seed_municipalities
-    filename = File.join(__dir__,'..','data','municipalities.csv')
-    municipality_importer = MunicipalityImporter.new
-    municipality_importer.importCSV(filename)
+def seed_territories
+    # TO-DO
+    # importer = TerritoryImporter.new
+    # structure = File.join(__dir__,'..','data','territory_structure.csv')
+    # municipalities = File.join(__dir__,'..','data','municipalities.csv')
+    # municipality_importer.importCSV(structure)
+    # municipality_importer.importCSV(municipalities)
 end
 time = benchmark {seed_municipalities}
-puts "Municipalities import time: #{time}"
+puts "Territories import time: #{time}"
 
 def seed_holidays
     base_glob = File.join(__dir__,'..','data','holidays','**')
