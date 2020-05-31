@@ -8,8 +8,6 @@ require 'date'
 #   paste <(ncal -M -C -d 2018-10) <(ncal -M -C -d 2018-11)
 describe DeadlineCalculator do
 
-    # before { skip }
-
     it 'instantiates' do
         calculator = DeadlineCalculator.new(create(:territory))
         expect(calculator).not_to be nil
@@ -147,7 +145,7 @@ describe DeadlineCalculator do
 
     end
 
-    xcontext 'holidays' do 
+    context 'holidays' do 
 
         before(:each) do
             Spain.create!
