@@ -11,9 +11,10 @@ namespace :import do
                 rails #{task} YEAR=All
         HEREDOC
     end
-
+        
     namespace :holidays do
 
+        desc 'DEPRECATED'
         task country: :environment do |task|
             begin
                 HolidaysImporterHelper::do_import_country
@@ -23,6 +24,7 @@ namespace :import do
             end
         end
 
+        desc 'DEPRECATED'
         task ac: :environment do |task|
             begin
                 HolidaysImporterHelper::do_import_autonomous_community
@@ -32,6 +34,7 @@ namespace :import do
             end
         end
 
+        desc 'DEPRECATED'
         task municipality: :environment do |task|
             begin
                 HolidaysImporterHelper::do_import_municipality

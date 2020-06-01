@@ -6,26 +6,32 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# Wipe countries, autonomous communities, municipalities and holidays
-Holiday.destroy_all
-Territory.destroy_all
+# Territories and holidays
+# Holiday.destroy_all
 
-def benchmark
-    start = Time.now
-    yield
-    Time.now - start # Returns time taken to perform func
+
+def destroy_territories
+    puts "Destroying territories..."
+    Territory.destroy_all
 end
+time = benchmark {destroy_territories}
+puts "Territories destroy time: #{time} seconds"
 
 def seed_territories
-    # TO-DO
-    # importer = TerritoryImporter.new
-    # structure = File.join(__dir__,'..','data','territory_structure.csv')
-    # municipalities = File.join(__dir__,'..','data','municipalities.csv')
-    # municipality_importer.importCSV(structure)
-    # municipality_importer.importCSV(municipalities)
+    statistics = nil
+    importer = TerritoryImporter.new
+    
+    puts 'Importing structure...'
+    structure = File.join(__dir__,'..','data','territory_structure.csv')
+    time = benchmark { statistics = importer.importCSV(structure) }
+    puts "Imported #{statistics.imported} structure elements in #{time} seconds"
+
+    puts 'Importing municipalities...'
+    municipalities = File.join(__dir__,'..','data','municipalities.csv')
+    time = benchmark { statistics = importer.importCSV(municipalities) }
+    puts "Imported #{statistics.imported} municipalities in #{time} seconds"
 end
-time = benchmark {seed_municipalities}
-puts "Territories import time: #{time}"
+seed_territories
 
 def seed_holidays
     base_glob = File.join(__dir__,'..','data','holidays','**')

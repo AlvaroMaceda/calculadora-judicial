@@ -1,0 +1,30 @@
+parent_code,kind,code,name
+"",country,CT_ESP,España
+CT_ESP,autonomous_community,AC00001,Andalucía
+CT_ESP,autonomous_community,AC00002,Aragón
+CT_ESP,autonomous_community,AC00003,Asturias
+CT_ESP,autonomous_community,AC00004,Baleares
+CT_ESP,autonomous_community,AC00005,Canarias
+CT_ESP,autonomous_community,AC00006,Cantabria
+CT_ESP,autonomous_community,AC00007,Castilla y León
+CT_ESP,autonomous_community,AC00008,Castilla-La Mancha
+CT_ESP,autonomous_community,AC00009,Cataluña
+CT_ESP,autonomous_community,AC00010,Comunidad Valenciana
+CT_ESP,autonomous_community,AC00011,Extremadura
+CT_ESP,autonomous_community,AC00012,Galicia
+CT_ESP,autonomous_community,AC00013,Madrid
+CT_ESP,autonomous_community,AC00014,Murcia
+CT_ESP,autonomous_community,AC00015,Navarra
+CT_ESP,autonomous_community,AC00016,País Vasco
+CT_ESP,autonomous_community,AC00017,La Rioja
+CT_ESP,autonomous_community,AC00018,Ceuta
+CT_ESP,autonomous_community,AC00019,Melilla
+AC00005,island,IS_HIE,El Hierro
+AC00005,island,IS_PAL,La Palma
+AC00005,island,IS_GOM,La Gomera
+AC00005,island,IS_TEN,Tenerife
+AC00005,island,IS_GRC,Gran Canaria
+AC00005,island,IS_FUE,Fuerteventura
+AC00005,island,IS_LAN,Lanzarote
+AC00009,region,RE_ARAN,Val de l'Aran
+AC00009,region,RE_CATA,Resto de Cataluña
