@@ -1,4 +1,4 @@
-class TerritoryHolidaysImporter
+class HolidaysImporter
 
     include CsvBasicImporter
 

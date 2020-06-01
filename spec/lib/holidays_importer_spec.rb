@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe TerritoryHolidaysImporter do
+describe HolidaysImporter do
 
-    let(:importer) { TerritoryHolidaysImporter.new }
+    let(:importer) { HolidaysImporter.new }
 
     before(:each) do
         create(:territory, kind: :country, code: 'CT_ESP')
