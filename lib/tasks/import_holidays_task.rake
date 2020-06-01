@@ -1,48 +1,51 @@
+require_relative '../helpers'
 require_relative 'holidays_importer_helper'
 
 namespace :import do
 
-    def usage_message(message, task)
+    def usage_message(task)
         puts <<~HEREDOC 
-            #{message}
             Usage:
                 rails #{task} YEAR=<year to import>
             or:
                 rails #{task} YEAR=All
         HEREDOC
     end
+
+    def check_integer(str)
+        begin
+            Integer(str)
+        rescue ArgumentError => e
+            return nil
+        end
+        return str
+    end
+
+    def get_year_parameter
+        year = ENV['YEAR']
+        return nil if !year
         
-    namespace :holidays do
+        year = year.upcase
+        return year if year.upcase == 'ALL'
+        
+        return check_integer(year)
+    end
+    
+    desc 'Import holidays from data/holidays directory. You can speficy a year.'
+    task holidays: :environment do |task|
 
-        desc 'DEPRECATED'
-        task country: :environment do |task|
-            begin
-                HolidaysImporterHelper::do_import_country
-            rescue HolidaysImporterHelper::InvalidYear => e
-                usage_message e.message, task
-                next
-            end
-        end
+        message = <<~HEREDOC
+            WARNING! DESTRUCTIVE ACTION!
+            This will DESTROY current holidays and import new ones from data/holidays directories
+        HEREDOC
+        # next unless confirm(message)
 
-        desc 'DEPRECATED'
-        task ac: :environment do |task|
-            begin
-                HolidaysImporterHelper::do_import_autonomous_community
-            rescue HolidaysImporterHelper::InvalidYear => e
-                usage_message e.message, task
-                next
-            end
+        year = get_year_parameter
+        if !year
+            usage_message(task) 
+            next
         end
-
-        desc 'DEPRECATED'
-        task municipality: :environment do |task|
-            begin
-                HolidaysImporterHelper::do_import_municipality
-            rescue HolidaysImporterHelper::InvalidYear => e
-                usage_message e.message, task
-                next
-            end
-        end
+        HolidaysImporterHelper::do_import(year)
 
     end
 
