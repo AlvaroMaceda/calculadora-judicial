@@ -45,7 +45,6 @@ end
 def all_holidays_in_DB()
   Holiday.all.to_a.map do |h|
     {
-      type: h.holidayable_type,
       code: h.holidayable.code,
       date: h.date
     }
