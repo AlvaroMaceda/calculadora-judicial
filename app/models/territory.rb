@@ -1,7 +1,7 @@
 
 class Territory < ApplicationRecord
     belongs_to :parent, optional: true, class_name: "Territory"
-    has_many :territories, class_name: "Territory", foreign_key: "parent"
+    has_many :territories, class_name: "Territory", foreign_key: "parent", dependent: :destroy 
 
     enum kind: {
         country: 'country', 
