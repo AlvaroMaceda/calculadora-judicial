@@ -56,3 +56,11 @@ def all_holidays_in_DB()
     }
   end
 end
+
+def holiday_api_data(holiday)
+  {
+      date: holiday.date,
+      kind: holiday.holidayable.kind.to_s,
+      territory: holiday.holidayable.name
+  }
+end

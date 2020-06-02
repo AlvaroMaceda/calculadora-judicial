@@ -7,7 +7,10 @@ class Api::DeadlineCalculatorController < ApplicationController
         # sleep 1 # For manual UI testing purposes
         municipality = Territory.municipality_kind.find_by(code: @municipality_code)
         return json_error 'Municipality not found' if municipality.nil?
-        @deadline = DeadlineCalculator.new(municipality).deadline(@notification_date, @days)
+
+        calculator = DeadlineCalculator.new(municipality)
+        @deadline = calculator.deadline(@notification_date, @days)
+        @holidays_affected = calculator.holidays_affected
     end
 
     private 
