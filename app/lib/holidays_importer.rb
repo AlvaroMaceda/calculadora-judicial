@@ -1,37 +1,37 @@
-
-class CountryHolidaysImporter
+class HolidaysImporter
 
     include CsvBasicImporter
 
     def initialize()
-        @countries = ItemsCache::create { |code| find_country(code)}
+        @territories = ItemsCache::create { |code| find_territory(code)}
     end
 
     private
     
     def process_row(row)
-        create_country_holiday row
+        create_holiday row
     end
 
     def expected_headers
         ['code', 'date']
     end
-    
-    def create_country_holiday(row)
+
+    def create_holiday(row)
         begin
-            country = @countries[row['code']]
+            territory = @territories[row['code']]
             date = parse_date(row['date'])
 
-            Holiday.create!(holidayable: country, date: date)
+            Holiday.create!(holidayable: territory, date: date)
 
         rescue ActiveRecord::RecordInvalid => e
-            raise_import_error 'Error creating country\'s holiday', row, e
+            raise_import_error 'Error creating holiday', row, e
 
         rescue InvalidDate => e
             raise_import_error 'Invalid date, expected dd/mm/YYYY', row, e
 
-        rescue CountryNotFound => e
-            raise_import_error 'Country not found',row,e
+        rescue TerritoryNotFound => e
+            raise_import_error 'Territory not found',row,e
+
         end
     end
 
@@ -53,16 +53,18 @@ class CountryHolidaysImporter
         end
     end
 
-    def find_country(code)
-        country = Country.find_by(code: code)
-        raise CountryNotFound.new("Country code: '#{code}'") unless country
-        return country
+    def find_territory(code)
+        return nil if code == ''
+
+        territory = Territory.find_by(code: code)
+        raise TerritoryNotFound.new("Parent territory code: '#{code}'") unless territory
+        return territory
+    end
+
+    class TerritoryNotFound < RuntimeError
     end
 
     class InvalidDate < RuntimeError
-    end
-
-    class CountryNotFound < RuntimeError
     end
 
 end

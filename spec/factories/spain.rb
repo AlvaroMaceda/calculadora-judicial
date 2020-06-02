@@ -4,13 +4,13 @@ class Spain
 
         def create!
 
-            @country = FactoryBot::create(:country, name: 'Spain') 
+            @country = FactoryBot::create(:territory, kind: :country, name: 'Spain') 
 
-            @valencian_community = FactoryBot::create(:autonomous_community, name: 'Comunidad Valenciana', country: @country)
-            @basque_country = FactoryBot::create(:autonomous_community, name: 'País Vasco', country: @country)
+            @valencian_community = FactoryBot::create(:territory, kind: :autonomous_community, name: 'Comunidad Valenciana', parent: @country)
+            @basque_country = FactoryBot::create(:territory, kind: :autonomous_community, name: 'País Vasco', parent: @country)
 
-            @benidorm = FactoryBot::create(:municipality, name: 'Benidorm', autonomous_community: @valencian_community)
-            @javea = FactoryBot::create(:municipality, name: 'Javea', autonomous_community: @valencian_community)
+            @benidorm = FactoryBot::create(:territory, kind: :municipality, name: 'Benidorm', parent: @valencian_community)
+            @javea = FactoryBot::create(:territory, kind: :municipality, name: 'Javea', parent: @valencian_community)
                     
             # Similar but not real holidays
             @holidays = {        

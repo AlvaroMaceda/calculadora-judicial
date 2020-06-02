@@ -4,8 +4,8 @@ class Api::DeadlineCalculatorController < ApplicationController
     before_action :parse_parameters
 
     def deadline()
-        # sleep 1 # For UI testing purposes
-        municipality = Municipality.find_by(code: @municipality_code)
+        # sleep 1 # For manual UI testing purposes
+        municipality = Territory.municipality_kind.find_by(code: @municipality_code)
         return json_error 'Municipality not found' if municipality.nil?
         @deadline = DeadlineCalculator.new(municipality).deadline(@notification_date, @days)
     end

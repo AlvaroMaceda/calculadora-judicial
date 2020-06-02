@@ -2,14 +2,14 @@ require 'rails_helper'
 include My::Matchers
 
 def example_file(filename)
-    File.join(__dir__,'..','..','lib','autonomous_community_importer_data',filename)
+    File.join(__dir__,'..','..','lib','territory_importer_data',filename)
 end
 
-describe Admin::AutonomousCommunityImportController, type: :controller do
-
+describe Admin::TerritoryImportController, type: :controller do
+    
     before(:each) do
-        create(:country, code: 'ES')
-        create(:country, code: 'GB')
+        # create(:country, code: 'ES')
+        # create(:country, code: 'GB')
     end
 
     it 'uploads a csv file' do        
@@ -22,11 +22,13 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
         post :import, params: params
 
         expected = [
-            {code: '01', name: 'Autonomous Community 1', country: 'ES'},
-            {code: '02', name: 'Autonomous Community 2', country: 'ES'},
-            {code: '01', name: 'Autonomous Community 1', country: 'GB'}
+            {kind: "country", code: 'CTES', name: 'Spain', parent: ''},
+            {kind: "autonomous_community", code: 'AC01',  name: 'Andalucía', parent: 'CTES'},
+            {kind: "island", code: 'ISHIE', name: 'El Hierro', parent: 'AC01'},
+            {kind: "region", code: 'REARAN', name: "Val d'Aran", parent: 'ISHIE'},
+            {kind: "municipality", code: 'ES26036', name: 'Calahorra', parent: 'REARAN'},
         ]
-        expect(all_autonomous_communities_in_DB).to match_array(expected)
+        expect(all_territories_in_DB).to match_array(expected)
     end
 
     it 'redirects to new if all ok' do
@@ -49,12 +51,12 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
             csv_file: file 
         }
         post :import, params: params
-
         expected = [
-            {code: '01', name: 'IIƆS∀ ʇou sᴉ sᴉɥ┴', country: 'ES'},
-            {code: '02', name: 'ʇou IIƆS∀ ʇou sᴉ sᴉɥ┴', country: 'ES'},
+            {kind: "country", code: 'CODE1', name: 'IIƆS∀ ʇou sᴉ sᴉɥ┴', parent: ''},
+            {kind: "autonomous_community", code: 'CODE2',  name: 'ʇou IIƆS∀ ʇou sᴉ sᴉɥ┴', parent: 'CODE1'},
         ]
-        expect(all_autonomous_communities_in_DB).to match_array(expected)
+
+        expect(all_territories_in_DB).to match_array(expected)
     end
 
     it 'shows an error if csv contains erroneous data' do
@@ -80,7 +82,7 @@ describe Admin::AutonomousCommunityImportController, type: :controller do
         post :import, params: params
 
         expect(flash[:error]).to include "Error in csv file"
-        expect(response).to redirect_to(:admin_import_ac)
+        expect(response).to redirect_to(:admin_import_territories)
     end
 
 end

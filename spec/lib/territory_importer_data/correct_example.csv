@@ -1,0 +1,6 @@
+parent_code,kind,code,name
+"","country",CTES,"Spain"
+"CTES","autonomous_community",AC01,"Andalucía"
+"AC01","island",ISHIE,"El Hierro"
+"ISHIE","region",REARAN,"Val d'Aran"
+"REARAN","municipality",ES26036,"Calahorra"

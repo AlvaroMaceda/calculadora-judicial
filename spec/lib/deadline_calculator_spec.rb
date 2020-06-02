@@ -9,14 +9,14 @@ require 'date'
 describe DeadlineCalculator do
 
     it 'instantiates' do
-        calculator = DeadlineCalculator.new(create(:country))
+        calculator = DeadlineCalculator.new(create(:territory))
         expect(calculator).not_to be nil
     end
     
     context 'no holidays' do
 
-        let(:country_withouth_holidays) {create(:country)}
-        let(:calculator) { DeadlineCalculator.new(country_withouth_holidays) }
+        let(:territory_withouth_holidays) {create(:territory)}
+        let(:calculator) { DeadlineCalculator.new(territory_withouth_holidays) }
         let(:a_working_week) { 5*1 }
         let(:two_working_weeks) { 5*2 }
         

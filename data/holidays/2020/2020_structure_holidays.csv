@@ -1,0 +1,92 @@
+code,name,date,description
+CT_ESP,España,01/01/2020,Año nuevo
+CT_ESP,España,06/01/2020,Epifanía del Señor
+CT_ESP,España,10/04/2020,Viernes Santo
+CT_ESP,España,01/05/2020,Fiesta del trabtajo
+CT_ESP,España,15/08/2020,Asunción de la Virgen
+CT_ESP,España,12/10/2020,Fiesta Nacional de España
+CT_ESP,España,08/12/2020,Inmaculada Concepción
+CT_ESP,España,25/12/2020,Navidad
+AC00001,Andalucía,28/02/2020,Día de Andalucía
+AC00001,Andalucía,09/04/2020,Jueves Santo
+AC00001,Andalucía,02/11/2020,Traslado de Todos los Santos
+AC00001,Andalucía,07/12/2020,Traslado de día de la Constitución
+AC00002,Aragón,09/04/2020,Jueves Santo
+AC00002,Aragón,23/04/2020,Día de Aragón
+AC00002,Aragón,02/11/2020,Traslado de Todos los Santos
+AC00002,Aragón,07/12/2020,Traslado de día de la Constitución
+AC00003,Asturias,09/04/2020,Jueves Santo
+AC00003,Asturias,09/09/2020,Día de Asturias
+AC00003,Asturias,02/11/2020,Traslado de Todos los Santos
+AC00003,Asturias,07/12/2020,Traslado de día de la Constitución
+AC00004,Baleares,09/04/2020,Jueves Santo
+AC00004,Baleares,13/04/2020,Lunes de Pascua
+AC00004,Baleares,07/12/2020,Traslado de día de la Constitución
+AC00004,Baleares,26/12/2020,Segundo día de Navidad
+AC00005,Canarias,09/04/2020,Jueves Santo
+AC00005,Canarias,30/05/2020,Día de Canarias
+AC00005,Canarias,07/12/2020,Traslado de día de la Constitución
+IS_HIE,El Hierro,24/09/2020,Nuestra Señora de los Reyes
+IS_PAL,La Palma,05/08/2020,Nuestra Señora de las Nieves
+IS_GOM,La Gomera,05/10/2020,Nuestra Señora de Guadalupe
+IS_TEN,Tenerife,07/09/2020,Bajada de la Virgen del Socorro
+IS_GRC,Gran Canaria,08/09/2020,Nuestra Señora del Pino
+IS_FUE,Fuerteventura,18/09/2020,Nuestra Señora de la Peña
+IS_LAN,Lanzarote,15/09/2020,Nuestra Señora de los Dolores
+AC00006,Cantabria,09/04/2020,Jueves Santo
+AC00006,Cantabria,13/04/2020,Lunes de Pascua
+AC00006,Cantabria,28/07/2020,Día de las Instituciones de Cantabria
+AC00006,Cantabria,15/09/2020,Día de la Bien Aparecida
+AC00007,Castilla y León,09/04/2020,Jueves Santo
+AC00007,Castilla y León,23/04/2020,Día de Castilla y León
+AC00007,Castilla y León,02/11/2020,Traslado de Todos los Santos
+AC00007,Castilla y León,07/12/2020,Traslado de día de la Constitución
+AC00008,Castilla-La Mancha,19/03/2020,San José
+AC00008,Castilla-La Mancha,09/04/2020,Jueves Santo
+AC00008,Castilla-La Mancha,13/04/2020,Lunes de Pascua
+AC00008,Castilla-La Mancha,11/09/2020,"Fiesta del Corpus Christi, en sustitución del 6 de diciembre"
+AC00009,Cataluña,13/04/2020,Lunes de Pascua
+AC00009,Cataluña,24/06/2020,San Joan
+AC00009,Cataluña,11/09/2020,Día Nacional de Cataluña
+RE_ARAN,Val de l'Aran,17/06/2020,Fiesta de Arán
+RE_CATA,Resto de Cataluña,26/12/2020,San Esteve
+AC00010,Comunidad Valenciana,19/03/2020,San José
+AC00010,Comunidad Valenciana,13/04/2020,Lunes de Pascua
+AC00010,Comunidad Valenciana,24/09/2020,San Juan
+AC00010,Comunidad Valenciana,09/10/2020,Día de la Comunidad Valenciana
+AC00011,Extremadura,09/04/2020,Jueves Santo
+AC00011,Extremadura,08/09/2020,Día de Extremadura
+AC00011,Extremadura,02/11/2020,Traslado de Todos los Santos
+AC00011,Extremadura,07/12/2020,Traslado de día de la Constitución
+AC00012,Galicia,19/03/2020,San José
+AC00012,Galicia,09/04/2020,Jueves Santo
+AC00012,Galicia,24/06/2020,San Juan
+AC00012,Galicia,25/07/2020,Santiago Apóstol
+AC00013,Madrid,09/04/2020,Jueves Santo
+AC00013,Madrid,02/05/2020,Fiesta de la Comunidad de Madrid
+AC00013,Madrid,02/11/2020,Traslado de Todos los Santos
+AC00013,Madrid,07/12/2020,Traslado de día de la Constitución
+AC00014,Murcia,19/03/2020,San José
+AC00014,Murcia,09/04/2020,Jueves Santo
+AC00014,Murcia,09/06/2020,Día de la Región de Murcia
+AC00014,Murcia,07/12/2020,Traslado de día de la Constitución
+AC00015,Navarra,19/03/2020,San José
+AC00015,Navarra,09/04/2020,Jueves Santo
+AC00015,Navarra,13/04/2020,Lunes de Pascua
+AC00015,Navarra,07/12/2020,Traslado de día de la Constitución
+AC00016,País Vasco,19/03/2020,San José
+AC00016,País Vasco,09/04/2020,Jueves Santo
+AC00016,País Vasco,13/04/2020,Lunes de Pascua
+AC00016,País Vasco,25/07/2020,Santiago Apóstol
+AC00017,La Rioja,09/04/2020,Jueves Santo
+AC00017,La Rioja,13/04/2020,Lunes de Pascua
+AC00017,La Rioja,09/06/2020,Día de La Rioja
+AC00017,La Rioja,07/12/2020,Traslado de día de la Constitución
+AC00018,Ceuta,09/04/2020,Jueves Santo
+AC00018,Ceuta,31/07/2020,Día del Sacrificio / Eidul Adha
+AC00018,Ceuta,02/09/2020,Día de Ceuta
+AC00018,Ceuta,07/12/2020,Traslado de día de la Constitución
+AC00019,Melilla,13/03/2020,Día de la firma del Estatuto de Autonomía
+AC00019,Melilla,09/04/2020,Jueves Santo
+AC00019,Melilla,31/07/2020,Aid El Kebir
+AC00019,Melilla,07/12/2020,Traslado de día de la Constitución

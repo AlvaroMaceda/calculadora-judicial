@@ -1,22 +1,33 @@
+
+def to_hex_n_digits(number, n)
+  ('0'*n+number.to_s(16)).chars.last(n).join
+end
+
 def to_hex_two_digits(n)
-  ('00'+n.to_s(16)).chars.last(2).join
+  to_hex_n_digits n,2
 end
 
 def to_hex_7_digits(n)
-  ('0000000'+n.to_s(16)).chars.last(7).join
+  to_hex_n_digits n,7
 end
 
-def all_autonomous_communities_in_DB()
-  AutonomousCommunity.all.to_a.map { |ac| 
-      { code: ac.code, name: ac.name, country: ac.country.code }
-  }
+def random_date_not_sunday
+  # 8 is an arbitrary number
+  min_date = Time.now - 8.years
+  max_date = Time.now + 8.year
+  begin
+    rand_date = rand(min_date..max_date)
+  end while rand_date.sunday?
+  return rand_date
 end
 
-def all_municipalities_in_DB()
-  Municipality.all.to_a.map do |m| 
-    { code: m.code, name: m.name, 
-      ac: m.autonomous_community.code, 
-      country: m.autonomous_community.country.code 
+def all_territories_in_DB()
+  Territory.all.to_a.map do |t| 
+    { 
+      kind: t.kind, 
+      code: t.code,
+      name: t.name, 
+      parent: (t.parent ? t.parent.code : '') 
     }
   end
 end
@@ -34,7 +45,6 @@ end
 def all_holidays_in_DB()
   Holiday.all.to_a.map do |h|
     {
-      type: h.holidayable_type,
       code: h.holidayable.code,
       date: h.date
     }

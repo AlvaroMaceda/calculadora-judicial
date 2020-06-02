@@ -1,11 +1,11 @@
-class Admin::AutonomousCommunityImportController < ApplicationController
+class Admin::TerritoryImportController < ApplicationController
 
     def new
     end
 
     def import
 
-        importer = AutonomousCommunityImporter.new
+        importer = TerritoryImporter.new
         csv_file = params[:csv_file].tempfile
         csv_file.set_encoding 'UTF-8'
 
