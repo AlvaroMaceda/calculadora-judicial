@@ -8,10 +8,12 @@ class DeadlineCalculator
 
     def initialize(holidayable)
         @holidayable = holidayable
+        @holidays_affected = []
     end
 
     def deadline(notification_date, days)
-    
+        @holidays_affected = []
+
         start_date = adjust_if_friday_or_saturday(notification_date)
 
         whole_weeks = days / WORKING_DAYS_IN_A_WEEK
@@ -26,7 +28,15 @@ class DeadlineCalculator
         return apply_holidays(start_date, end_date_without_holidays)
     end
 
+    def holidays_affected
+        @holidays_affected
+    end
+
     private
+
+    def add_to_affected_holidays(holidays)
+        @holidays_affected.concat(Array(holidays))
+    end
 
     def adjust_if_friday_or_saturday(date)
         # We count from sunday if notified friday or saturday
@@ -44,6 +54,9 @@ class DeadlineCalculator
     def sum_holidays_to_end_date(start_date, end_date)
         holidays = holidays_inside_interval(start_date, end_date)
         holidays = remove_saturdays(holidays)
+        
+        add_to_affected_holidays(holidays)
+
         end_date + holidays.count
     end
 
@@ -69,7 +82,9 @@ class DeadlineCalculator
     # TODO: This function launches three queries each time is called
     #       We should reformulate the algorithm to avoid calling this function
     def is_holiday?(date)
-        @holidayable.holidays_between(date, date).count > 0
+        holiday = @holidayable.holidays_between(date, date)
+        add_to_affected_holidays(holiday)
+        return holiday.count > 0
     end
 
     def is_weekend?(date)
