@@ -44,7 +44,7 @@ namespace :import do
             WARNING! DESTRUCTIVE ACTION!
             This will DESTROY current municipalities and import new ones from data/municipalities.csv file
         HEREDOC
-        # next unless confirm(message)
+        next unless confirm(message)
 
         root_dir = Dir.pwd
         municipalities_file = File.join(root_dir,'data','municipalities.csv')
