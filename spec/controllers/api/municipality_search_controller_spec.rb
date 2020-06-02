@@ -95,7 +95,7 @@ describe Api::MunicipalitySearchController, type: :controller do
             expect(response.body).to eq(expected)
         end
 
-    end
+    end # GET #search
 
 
 end

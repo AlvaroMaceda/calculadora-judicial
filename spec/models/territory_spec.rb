@@ -267,6 +267,20 @@ describe Territory, type: :model do
             expect(response).to match_array(expected)
         end
 
-    end
+        it 'Ignores special characters and spaces' do
+            vall_duixo = create(:territory, name: 'la Vall d\'Uixó' )
+
+            search_text = 'lavalld'
+            expected = [
+                vall_duixo
+            ]
+            
+            response = Territory.similar_to(search_text).to_a
+            p response
+
+            expect(response).to match_array(expected)
+        end
+
+    end # similar_to scope
 
 end
