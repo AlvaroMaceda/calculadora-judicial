@@ -28,10 +28,12 @@ end
 def all_territories_in_DB()
   Territory.all.to_a.map do |t| 
     { 
-      kind: t.kind, 
+      kind: t.kind.to_sym, 
       code: t.code,
       name: t.name, 
-      parent: (t.parent ? t.parent.code : '') 
+      parent: (t.parent ? t.parent.code : ''),
+      population: t.population,
+      court: t.court.to_sym ,
     }
   end
 end

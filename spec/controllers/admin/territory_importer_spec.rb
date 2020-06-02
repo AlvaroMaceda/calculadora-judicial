@@ -7,11 +7,6 @@ end
 
 describe Admin::TerritoryImportController, type: :controller do
     
-    before(:each) do
-        # create(:country, code: 'ES')
-        # create(:country, code: 'GB')
-    end
-
     it 'uploads a csv file' do        
         filename =example_file('correct_example.csv')
         file = Rack::Test::UploadedFile.new filename, 'text/csv'
@@ -22,12 +17,13 @@ describe Admin::TerritoryImportController, type: :controller do
         post :import, params: params
 
         expected = [
-            {kind: "country", code: 'CTES', name: 'Spain', parent: ''},
-            {kind: "autonomous_community", code: 'AC01',  name: 'Andalucía', parent: 'CTES'},
-            {kind: "island", code: 'ISHIE', name: 'El Hierro', parent: 'AC01'},
-            {kind: "region", code: 'REARAN', name: "Val d'Aran", parent: 'ISHIE'},
-            {kind: "municipality", code: 'ES26036', name: 'Calahorra', parent: 'REARAN'},
+            {kind: :country, code: 'CTES', name: 'Spain', parent: '', population: 0, court: :no},
+            {kind: :autonomous_community, code: 'AC01',  name: 'Andalucía', parent: 'CTES', population: 0, court: :no},
+            {kind: :island, code: 'ISHIE', name: 'El Hierro', parent: 'AC01', population: 0, court: :no},
+            {kind: :region, code: 'REARAN', name: "Val d'Aran", parent: 'ISHIE', population: 0, court: :no},
+            {kind: :municipality, code: 'ES26036', name: 'Calahorra', parent: 'REARAN', population: 1234, court: :have},
         ]
+
         expect(all_territories_in_DB).to match_array(expected)
     end
 
@@ -52,8 +48,8 @@ describe Admin::TerritoryImportController, type: :controller do
         }
         post :import, params: params
         expected = [
-            {kind: "country", code: 'CODE1', name: 'IIƆS∀ ʇou sᴉ sᴉɥ┴', parent: ''},
-            {kind: "autonomous_community", code: 'CODE2',  name: 'ʇou IIƆS∀ ʇou sᴉ sᴉɥ┴', parent: 'CODE1'},
+            {kind: :country, code: 'CODE1', name: 'IIƆS∀ ʇou sᴉ sᴉɥ┴', parent: '', population: 0, court: :no},
+            {kind: :autonomous_community, code: 'CODE2',  name: 'ʇou IIƆS∀ ʇou sᴉ sᴉɥ┴', parent: 'CODE1', population: 0, court: :no},
         ]
 
         expect(all_territories_in_DB).to match_array(expected)

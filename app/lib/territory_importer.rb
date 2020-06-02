@@ -13,6 +13,10 @@ private
         ['parent_code', 'code', 'kind', 'name']
     end
 
+    def optional_headers
+        ['population','court']
+    end
+
     def process_row(row)
         create_territory row
     end
@@ -23,8 +27,17 @@ private
             code = row['code']
             name = row['name']
             parent = @territories[row['parent_code']]
+            population = row['population']
+            court = row['court']
 
-            Territory.create!(kind: kind, code: code, name: name, parent: parent)
+            Territory.create!(
+                kind: kind, 
+                code: code, 
+                name: name, 
+                parent: parent, 
+                population: population,
+                court: court
+            )
 
         rescue ActiveRecord::RecordInvalid => e
             raise_import_error 'Error creating territory', row, e
