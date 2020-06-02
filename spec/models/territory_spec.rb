@@ -276,7 +276,6 @@ describe Territory, type: :model do
             ]
             
             response = Territory.similar_to(search_text).to_a
-            p response
 
             expect(response).to match_array(expected)
         end
