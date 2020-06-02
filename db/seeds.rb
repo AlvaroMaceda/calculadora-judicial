@@ -5,17 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-# Territories and holidays
-# Holiday.destroy_all
-
+require_relative '../lib/holidays_importer_helper'
 
 def destroy_territories
-    puts "Destroying territories..."
-    Territory.destroy_all
+    puts "Destroying territories..."    
+    time = benchmark {Territory.destroy_all}
+    puts "Territories destroy time: #{time.round(2)} seconds"
 end
-time = benchmark {destroy_territories}
-puts "Territories destroy time: #{time} seconds"
+destroy_territories
+
 
 def seed_territories
     statistics = nil
@@ -24,30 +22,17 @@ def seed_territories
     puts 'Importing structure...'
     structure = File.join(__dir__,'..','data','territory_structure.csv')
     time = benchmark { statistics = importer.importCSV(structure) }
-    puts "Imported #{statistics.imported} structure elements in #{time} seconds"
+    puts "Imported #{statistics.imported} structure elements in #{time.round(2)} seconds"
 
     puts 'Importing municipalities...'
     municipalities = File.join(__dir__,'..','data','municipalities.csv')
     time = benchmark { statistics = importer.importCSV(municipalities) }
-    puts "Imported #{statistics.imported} municipalities in #{time} seconds"
+    puts "Imported #{statistics.imported} municipalities in #{time.round(2)} seconds"
 end
 seed_territories
 
 def seed_holidays
-    base_glob = File.join(__dir__,'..','data','holidays','**')
-
-    Dir.glob(File.join(base_glob,'*country_*.csv')) do |thefile|
-        puts "Importing Country holidays: #{File.basename(thefile)}"
-        # puts "#{File.basename(thefile)} is at #{File.dirname(thefile)}"  
-    end
-    Dir.glob(File.join(base_glob,'*autonomous_communities_*.csv')) do |thefile| 
-        puts "Importing Autonomous Communities holidays: #{File.basename(thefile)}"
-        # puts "#{File.basename(thefile)} is at #{File.dirname(thefile)}"  
-    end
-    Dir.glob(File.join(base_glob,'*municipalities_*.csv')) do |thefile| 
-        puts "Importing Municipality holidays: #{File.basename(thefile)}"
-        # puts "#{File.basename(thefile)} is at #{File.dirname(thefile)}"  
-    end
+    HolidaysImporterHelper::do_import('ALL')
 end
 time = benchmark {seed_holidays}
-puts "Holidays import time: #{time}"
+puts "Holidays import time: #{time.round(2)} seconds"

@@ -1,5 +1,5 @@
 require_relative '../helpers'
-require_relative 'holidays_importer_helper'
+require_relative '../holidays_importer_helper'
 
 namespace :import do
 
@@ -38,7 +38,7 @@ namespace :import do
             WARNING! DESTRUCTIVE ACTION!
             This will DESTROY current holidays and import new ones from data/holidays directories
         HEREDOC
-        # next unless confirm(message)
+        next unless confirm(message)
 
         year = get_year_parameter
         if !year

@@ -57,7 +57,7 @@ class HolidaysImporter
         return nil if code == ''
 
         territory = Territory.find_by(code: code)
-        raise TerritoryNotFound.new("Parent territory code: '#{code}'") unless territory
+        raise TerritoryNotFound.new("Territory code: '#{code}'") unless territory
         return territory
     end
 

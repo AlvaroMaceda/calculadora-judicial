@@ -6,7 +6,7 @@ namespace :import do
         importer = TerritoryImporter.new
         statistics = nil # to be used in the block
         time = benchmark {statistics = importer.importCSV(filename)}
-        puts "Imported #{statistics.imported} territories in #{time} seconds"
+        puts "Imported #{statistics.imported} territories in #{time.round(2)} seconds"
     end
 
     def clean_structure

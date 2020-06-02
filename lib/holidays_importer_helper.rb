@@ -1,4 +1,3 @@
-# require_relative '../../app/lib/country_holidays_importer'
 
 module HolidaysImporterHelper
     
@@ -7,7 +6,7 @@ module HolidaysImporterHelper
     class << self
         
         def do_import(year)
-            year = year.to_s
+            year = year.to_s.upcase
 
             importer = HolidaysImporter.new
 
