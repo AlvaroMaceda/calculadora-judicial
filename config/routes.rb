@@ -7,16 +7,12 @@ Rails.application.routes.draw do
     root 'static#index'
 
     namespace :admin do
-        get '/import/ac', to: 'autonomous_community_import#new'
-        post '/import/ac', to: 'autonomous_community_import#import'
+        get '/import/territories', to: 'territory_import#new'
+        post '/import/territories', to: 'territory_import#import'
     end
 
     namespace :api, defaults: {format: 'json'} do
-      
-        get 'banana', to: 'banana#index'
-        
         get 'municipality/search/:name', to: 'municipality_search#search'
         get 'deadline', to: 'deadline_calculator#deadline'
-
     end
 end
