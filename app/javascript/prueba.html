@@ -9,27 +9,12 @@
     <main>
         <h1>Ola K ASE</h1>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.5/rxjs.umd.min.js"></script>
+    
+<script>
+</script>
 <script>
 
-    const respuestas = new rxjs.Subject();
-    const piped = respuestas.pipe(
-        rxjs.operators.switchMap( (item) => {
-            // Aqui sería el lanzamiento del fecth
-            return new Promise((resolve, reject) => {
-                setTimeout(() => resolve(item), item)
-            })
-        }),
-        // rxjs.operators.takeLast(1)
-    )
 
-    // Aqui trataría la respuesta
-    piped.subscribe( (data) => console.log(data))
-
-    // Esto sería en el handler del evento
-    respuestas.next(3000)
-    respuestas.next(1000)
-    respuestas.next(2000) // Solo se recibe la última aunque acabe antes
 
 </script>
 </body>

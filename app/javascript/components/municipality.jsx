@@ -3,8 +3,30 @@ import PropTypes from 'prop-types';
 import { Component, Fragment } from 'react';
 import Select from 'react-select';
 import { throttle } from "lodash";
+import transliterate from '../transliterate'
 
 const MINIMUM_TEXT_TO_SEARCH = 3 // This should be the same number as MunicipalitySearchController minimum 
+
+const filterOption = function (option, inputValue) {
+  const label_to_compare = removeSpecialChars(option.label)
+  const input_to_compare = removeSpecialChars(inputValue)
+  return label_to_compare.includes(input_to_compare)
+}
+
+// This function should be equivalent to this ruby code:
+// remove_special_chars(str).delete(' ').downcase
+// Where:
+// def remove_special_chars(str)
+//     transliterated = I18n.transliterate(str)
+//     chars_to_remove = "-/'"
+//     transliterated.tr(chars_to_remove,'')
+// end
+// It's almost impossible to emulate I18n transliterate function, so we
+// use an approximation
+function removeSpecialChars(str) {
+  let transliterated = transliterate(str)
+  return transliterated.replace(/[-\/' ]/ig, '').toLowerCase();
+}
 
 class Municipality extends Component {
 
@@ -112,6 +134,7 @@ class Municipality extends Component {
           noOptionsMessage={this.noOptionsMessage.bind(this)}
           onChange={ (item) => this.props.onChange && this.props.onChange(item) }
           onInputChange={this.handleInputChange.bind(this)}
+          filterOption={filterOption}
         />
       </Fragment>
     )
