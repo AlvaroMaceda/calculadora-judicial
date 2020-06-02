@@ -78,6 +78,37 @@ describe CsvBasicImporter do
         end
     end
 
+    it 'can process optional headers' do
+        importer = Class.new do
+            include CsvBasicImporter
+            def expected_headers
+                ['headerA','headerB']
+            end
+            def optional_headers
+                ['headerD']
+            end
+        end.new        
+
+        csv_data = <<~HEREDOC
+            headerA,headerB,headerD
+            dataA1,dataB1,dataD1
+            dataA2,dataB2,dataD2
+        HEREDOC
+        
+        expected = [
+            {'headerA'=>'dataA1', 'headerB'=>'dataB1', 'headerD'=>'dataD1'},
+            {'headerA'=>'dataA2', 'headerB'=>'dataB2', 'headerD'=>'dataD2'},
+        ]
+        
+        csv = StringIO.new(csv_data)
+        allow(importer).to receive(:process_row)
+        importer.importCSV csv     
+
+        expected.each do |row|
+            expect(importer).to have_received(:process_row).with(row).ordered
+        end        
+    end
+
     it 'works with non-ascii characters' do
         csv_data = <<~HEREDOC
             headerA,headerB,headerC

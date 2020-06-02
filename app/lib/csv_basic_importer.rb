@@ -41,13 +41,17 @@ module CsvBasicImporter
         []
     end
 
-    def filter_expected_headers(row)
-        expected = expected_headers
+    def optional_headers
+        []
+    end
+
+    def filter_headers(row)
+        expected = expected_headers + optional_headers
         row.slice(*expected) unless expected.empty?
     end
 
     def call_process_row(row)
-        process_row filter_expected_headers(row.to_h)
+        process_row filter_headers(row.to_h)
     end
 
     def process_row(row)
