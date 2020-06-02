@@ -11,6 +11,10 @@ def to_hex_7_digits(n)
   to_hex_n_digits n,7
 end
 
+def pick_random(array)
+  array[rand(0..array.length-1)]
+end
+
 def random_date_not_sunday
   # 8 is an arbitrary number
   min_date = Time.now - 8.years

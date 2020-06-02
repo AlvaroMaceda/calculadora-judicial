@@ -29,6 +29,10 @@ describe Territory, type: :model do
         expect(territory).to be_valid
     end
 
+    it 'can\'t have negative population' do
+        expect {create(:territory, population: -100)}.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
     it "can belong to annother territory" do
         parent_territory = create(:territory)
         child_territory = create(:territory, parent: parent_territory)

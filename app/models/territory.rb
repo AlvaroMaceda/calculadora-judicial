@@ -1,5 +1,7 @@
 
 class Territory < ApplicationRecord
+    after_initialize :set_defaults, unless: :persisted?
+
     belongs_to :parent, optional: true, class_name: "Territory"
     has_many :territories, class_name: "Territory", foreign_key: "parent", dependent: :destroy 
 
@@ -10,6 +12,11 @@ class Territory < ApplicationRecord
         region: 'region', 
         municipality: 'municipality' 
     }, _suffix: :kind
+
+    enum court: {
+        have: 'S',
+        no: 'N'
+    }, _suffix: :court
 
     include Holidayable
 
@@ -28,7 +35,14 @@ class Territory < ApplicationRecord
         presence: true, 
         allow_blank: false
 
-  
+    validates :population, 
+        :numericality => { :greater_than_or_equal_to => 0 },
+        presence: true
+
+    validates :court, 
+        presence: true, 
+        allow_blank: false  
+
     scope :similar_to, ->(name) {
         searchable_name = Territory.searchable_string(name)   
         where(
@@ -52,6 +66,11 @@ class Territory < ApplicationRecord
     end
 
     private
+
+    def set_defaults
+        self.population ||= 0
+        self.court ||= :no
+    end
 
     def calculate_searchable_name
         self.searchable_name = Territory.searchable_string(name)

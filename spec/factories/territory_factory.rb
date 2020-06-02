@@ -12,6 +12,8 @@ FactoryBot.define do
     code { generate(:territory_code) }
     name { generate(:territory_name) }
     kind { 'municipality' }
+    population { rand(1..3000000) }
+    court { pick_random(%w[S N])}
   end
   
 end
