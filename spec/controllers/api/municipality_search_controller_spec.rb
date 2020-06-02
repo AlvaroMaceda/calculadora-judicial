@@ -18,11 +18,11 @@ describe Api::MunicipalitySearchController, type: :controller do
         end
 
         before(:each) do
-            @alcala = create(:territory, name: 'Alcala' )
-            @calahorra = create(:territory, name: 'Calahorra' )
-            @calcatta = create(:territory, name: 'Calcatta' )
-            @la_costa_este = create(:territory, name: 'La Costa Este' )
-            @sal_calada = create(:territory, name: 'Sal Calada' )
+            @alcala = create(:territory, name: 'Alcala', population: 0, court: :no )
+            @calahorra = create(:territory, name: 'Calahorra', population: 0, court: :no )
+            @calcatta = create(:territory, name: 'Calcatta', population: 0, court: :no )
+            @la_costa_este = create(:territory, name: 'La Costa Este', population: 0, court: :no )
+            @sal_calada = create(:territory, name: 'Sal Calada', population: 0, court: :no )
         end
 
         before :each do
@@ -76,6 +76,23 @@ describe Api::MunicipalitySearchController, type: :controller do
 
             expect(response).to be_json_error_response
             expect(error_message(response)).to include "Too few characters to search"
+        end
+
+        it 'returns data ordered by court and then population' do
+            municipio_nc2 = create(:territory, name: 'Municipio 4', population: 0, court: :no )
+            municipio_nc1 = create(:territory, name: 'Municipio 3', population: 1000, court: :no )
+            municipio_c2 = create(:territory, name: 'Municipio 2', population: 0, court: :have )
+            municipio_c1 = create(:territory, name: 'Municipio 1', population: 1000, court: :have )
+            
+            expected = {municipalities: [
+                expect_hash(municipio_c1),
+                expect_hash(municipio_c2),
+                expect_hash(municipio_nc1),
+                expect_hash(municipio_nc2)
+            ]}.to_json
+
+            get 'search', as: :json, params: { name: 'Municipio' }
+            expect(response.body).to eq(expected)
         end
 
     end

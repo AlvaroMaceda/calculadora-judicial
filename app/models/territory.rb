@@ -50,6 +50,8 @@ class Territory < ApplicationRecord
         )
     }
 
+    scope :by_relevance, -> { order(court: :desc, population: :desc) }
+
     def holidays_between(start_date, end_date)
         
         if parent

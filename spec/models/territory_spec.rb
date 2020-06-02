@@ -131,6 +131,27 @@ describe Territory, type: :model do
 
     end # context holidays
 
+    context 'order_by_relevance' do
+
+        it 'municipalities with court go first, then by population' do
+
+            municipio_nc2 = create(:territory, name: 'Municipio 4', population: 0, court: :no )
+            municipio_nc1 = create(:territory, name: 'Municipio 3', population: 1000, court: :no )
+            municipio_c2 = create(:territory, name: 'Municipio 2', population: 0, court: :have )
+            municipio_c1 = create(:territory, name: 'Municipio 1', population: 1000, court: :have )
+
+            expected = [
+                municipio_c1,
+                municipio_c2,
+                municipio_nc1,
+                municipio_nc2
+            ]
+
+            expect(Territory.by_relevance).to eq(expected)
+        end
+
+    end
+
     context 'similar_to scope' do
 
         before(:each) do
