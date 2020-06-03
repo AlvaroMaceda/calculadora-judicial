@@ -27,7 +27,14 @@ RUN apk add --update --no-cache \
       postgresql-dev \
       python \
       tzdata \
-      yarn
+      yarn \
+      locales
+
+# Locales
+RUN locale-gen es_ES.UTF-8
+ENV LANG es_ES.UTF-8
+ENV LANGUAGE es_ES:en
+ENV LC_ALL es_ES.UTF-8
 
 
 ENV INSTALL_PATH /app
@@ -35,6 +42,7 @@ RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
 # Gems installation
+# Hacer esto en producción, aquí no
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler
 RUN bundle check || bundle install --jobs 20 --retry 5
@@ -46,15 +54,16 @@ RUN yarn install --check-files
 # COPY . ./
 # COPY . /app
 
+
 # # Application data
 # RUN mkdir /data
 # COPY ./data /data
 
 # # Add a script to be executed every time the container starts.
-# COPY docker_entrypoint.sh /usr/bin/entrypoint.sh
-# RUN chmod +x /usr/bin/entrypoint.sh
-# ENTRYPOINT ["entrypoint.sh"]
+COPY docker_entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 # EXPOSE 3000
 
-# # Start the main process.
-# CMD ["rails", "server", "-b", "0.0.0.0"]
+# Start the main process.
+CMD ["rails", "server", "-b", "0.0.0.0"]

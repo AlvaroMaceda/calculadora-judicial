@@ -21,6 +21,9 @@ services:
 
   database:
     image: postgres:12.1
+    # Temporary
+    ports:
+      - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./docker_init.sql:/docker-entrypoint-initdb.d/init.sql
