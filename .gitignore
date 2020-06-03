@@ -35,5 +35,8 @@
 yarn-debug.log*
 .yarn-integrity
 
+# Environment
+.env
+
 # LibreOffice lock files
 .~lock.*

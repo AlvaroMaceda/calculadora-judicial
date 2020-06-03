@@ -1,14 +1,47 @@
-FROM ruby:2.6.6-alpine
-# RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
-RUN apk update -qq && apk install -y nodejs postgresql-client
+FROM ruby:2.6.3-alpine
+# In ubuntu:
+# postgresql-dev == libpq-dev
+# build-essential == build-base
+# RUN apk update -qq && apk add nodejs yarn postgresql-client postgresql-dev build-base
+RUN apk add --update --no-cache \
+      binutils-gold \
+      build-base \
+      curl \
+      file \
+      g++ \
+      gcc \
+      git \
+      less \
+      libstdc++ \
+      libffi-dev \
+      libc-dev \
+      linux-headers \
+      libxml2-dev \
+      libxslt-dev \
+      libgcrypt-dev \
+      make \
+      netcat-openbsd \
+      nodejs \
+      openssl \
+      pkgconfig \
+      postgresql-dev \
+      python \
+      tzdata \
+      yarn
+
 
 ENV INSTALL_PATH /app
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
+# Gems installation
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install --jobs 20 --retry 5
-RUN bundle install
+RUN gem install bundler
+RUN bundle check || bundle install --jobs 20 --retry 5
+
+# Packages installation
+COPY package.json yarn.lock ./
+RUN yarn install --check-files
 
 # COPY . ./
 # COPY . /app

@@ -1,0 +1,2 @@
+CREATE USER devuser;
+ALTER USER devuser WITH SUPERUSER;
