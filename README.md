@@ -42,8 +42,19 @@ There is a rake tasks to load holidays:
 
 ## Development
 
+### Docker
 
+TO-DO
 
+Run bundle exec task
+docker-compose run -it app "rake test"
+
+docker-compose run app /bin/bash
+    bundle install
+    yarn --check-files
+
+Override entrypoint (if you are not 'bundle exec' something):
+docker-compose run -it --entrypoint="" app "ls -la"
 
 
 ----
