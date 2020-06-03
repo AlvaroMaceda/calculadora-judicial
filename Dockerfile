@@ -9,7 +9,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
   nodejs \ 
   yarn \
   libpq-dev \
-  locales
+  locales \
+  tmux
 
 # Locales
 # Ojo ver esto: https://algodelinux.com/configurar-locales-y-eliminar-el-aviso/
@@ -18,6 +19,11 @@ ENV LANG es_ES.UTF-8
 ENV LANGUAGE es_ES:en
 ENV LC_ALL es_ES.UTF-8
 
+# Overmind installation
+RUN wget https://github.com/DarthSim/overmind/releases/download/v2.1.1/overmind-v2.1.1-linux-amd64.gz -O /tmp/overmind.gz && \
+    gunzip /tmp/overmind.gz && \
+    mv /tmp/overmind /bin && \
+    chmod ugo+x /bin/overmind
 
 ENV INSTALL_PATH /app
 RUN mkdir -p $INSTALL_PATH
@@ -47,7 +53,7 @@ RUN gem install bundler
 # docker-compose run -it app "rake test"
 # You can override it using --entrypoint="", for example:
 # docker-compose run -it --entrypoint="" app "ls -la"
-# ENTRYPOINT ["bundle", "exec"]
+ENTRYPOINT ["bundle", "exec"]
 
 # Start the rails server by default
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

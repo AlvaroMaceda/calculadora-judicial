@@ -12,10 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2020_05_30_162930) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "holidays", force: :cascade do |t|
     t.date "date"
     t.string "holidayable_type", null: false
-    t.integer "holidayable_id", null: false
+    t.bigint "holidayable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["holidayable_type", "holidayable_id", "date"], name: "index_holidays_on_holidayable_type_and_holidayable_id_and_date", unique: true
@@ -27,9 +30,9 @@ ActiveRecord::Schema.define(version: 2020_05_30_162930) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "parent_id"
+    t.bigint "parent_id"
     t.string "holidayable_type"
-    t.integer "holidayable_id"
+    t.bigint "holidayable_id"
     t.string "searchable_name"
     t.string "kind"
     t.index ["code"], name: "index_territories_on_code", unique: true
