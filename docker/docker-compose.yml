@@ -7,20 +7,20 @@ services:
   app:
     # user: ${USER}
     build:
-      context: .      
-      dockerfile: Dockerfile
+      context: ..     
+      dockerfile: docker/Dockerfile
     depends_on:
       - database
     ports:
       - 3000:3000
     volumes:
-      - .:/app
+      - ..:/app
       # These two directories are container-specific, must not polute host files
       # Some gems and modules can be compiled and be different to host
       - gem_cache:/usr/local/bundle/gems
       - gems:/usr/local/bundle/ruby/2.6.0
       - node_modules:/app/node_modules
-    env_file: .env
+    env_file: ../.env
     environment:
       RAILS_ENV: development
       # HOST_USER: ${user}
@@ -34,7 +34,7 @@ services:
       - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./docker/docker_init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker_init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - calculadora_judicial
 

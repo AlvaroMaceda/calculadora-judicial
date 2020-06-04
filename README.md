@@ -46,38 +46,41 @@ There is a rake tasks to load holidays:
 You can develop this project using docker or rvm, as you prefer. These instructions refer to the docker.
 
 #### Preparing
+First you must build the container with:
+- ```docker-compose -f ./docker/docker-compose.yml build```
+
 You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
-- ```docker-compose run --rm --entrypoint "" app bundle install```
-- ```docker-compose run --rm --entrypoint "" app yarn install --check-files```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bundle install```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app yarn install --check-files```
 
 Also you will need to run migrations: 
-- ```docker-compose run --rm app rails db:migrate```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:migrate```
 
 And perhaps import data: 
-- ```docker-compose run --rm app rails db:seed```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:seed```
 
 You can import data later with rake tasks:
-- ```docker-compose run --rm app rake import:structure```
-- ```docker-compose run --rm app rake import:municipalities```
-- ```docker-compose run --rm app rake import:holidays```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:structure```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:municipalities```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:holidays```
 
 ### Launch server
 
 After that you can start the application. It will start with overmind:
-- ```docker-compose up```
+- ```docker-compose -f ./docker/docker-compose.yml up```
 
 You can use -d option if you don't want to see output:
-- ```docker-compose up -d```
+- ```docker-compose -f ./docker/docker-compose.yml up -d```
 
 The project will be available at http://localhost:3000
 
 To stop the application: 
-- CTRL+C or ```docker-compose stop```
+- CTRL+C or ```docker-compose -f ./docker/docker-compose.yml stop```
 
 ### Launch test
 
 To run tests (don't forget the ./bin/ prefix):
-- ```docker-compose run --rm app ./bin/rspec```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app ./bin/rspec```
 
 You can use guard to watch for changes and run tests automatically:
 - ```docker-compose run --rm app guard```
@@ -85,13 +88,13 @@ You can use guard to watch for changes and run tests automatically:
 ### Execute tasks in the container
 
 To open a rails console:
-- ```docker-compose run --rm app rails console```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rails console```
 
 To open a shell on rails container:
-- ```docker-compose run --rm --entrypoint "" app bash```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bash```
 
 To run tasks into the container (if you don't override entrypoint they will be ran with 'bundle exec'): 
-- ```docker-compose run --rm app rake whatever:task```
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake whatever:task```
 
 ### Removing the containers
 
@@ -109,11 +112,11 @@ Then connect to pgadmin with your browser:
 It will ask for a password to connect to the database. Just hit enter.
 
 To stop pgadmin4
-- ```docker-compose -f docker-compose-pgadmin.yml stop```
+- ```docker-compose -f ./docker/docker-compose-pgadmin.yml stop```
 
 If you try to docker-compose down it will notify an error when it tries to delete the network because it's shared with rails application. There is no problem with that, the network will be removed when you run docker-compose down.
 
 To completely remove pgadmin4:
-- ```docker-compose -f docker-compose-pgadmin.yml down -v```
+- ```docker-compose -f ./docker/docker-compose-pgadmin.yml down -v```
 
 Warning: it notifies that there are "orphans", but they are the rails and database container.
