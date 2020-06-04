@@ -1,2 +1,0 @@
-FROM ruby:2.6.6-alpine
-# Maybe we should use multi-stage for production?

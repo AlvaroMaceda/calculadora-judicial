@@ -1,23 +1,41 @@
-FROM ruby:2.6.3
+FROM ruby:2.6.3-alpine
 
 # yarn repository
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - >/dev/null && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+# RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - >/dev/null && \
+#     echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-  build-essential \
+RUN apk --update-cache upgrade && apk add \
+  build-base \
   nodejs \ 
   yarn \
-  libpq-dev \
-  locales \
-  tmux
+  postgresql-dev \
+  tmux \
+  curl \
+  tzdata
+
+# https://github.com/gliderlabs/docker-alpine/issues/144
+# Install language pack
+# RUN apk --no-cache add ca-certificates wget && \
+#     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
+#     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-2.25-r0.apk && \
+#     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-bin-2.25-r0.apk && \
+#     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-i18n-2.25-r0.apk && \
+#     apk add glibc-bin-2.25-r0.apk glibc-i18n-2.25-r0.apk glibc-2.25-r0.apk
+# Iterate through all locale and install it
+# Note that locale -a is not available in alpine linux, use `/usr/glibc-compat/bin/locale -a` instead
+# COPY ./locale.md /locale.md
+# RUN cat locale.md | xargs -i /usr/glibc-compat/bin/localedef -i {} -f UTF-8 {}.UTF-8
+
+# Set the lang, you can also specify it as as environment variable through docker-compose.yml
+ENV LANG=es_ES.UTF-8 \
+    LANGUAGE=es_ES.UTF-8
 
 # Locales
-# Ojo ver esto: https://algodelinux.com/configurar-locales-y-eliminar-el-aviso/
-RUN locale-gen es_ES.UTF-8
-ENV LANG es_ES.UTF-8
-ENV LANGUAGE es_ES:en
-ENV LC_ALL es_ES.UTF-8
+# # Ojo ver esto: https://algodelinux.com/configurar-locales-y-eliminar-el-aviso/
+# RUN locale-gen es_ES.UTF-8
+# ENV LANG es_ES.UTF-8
+# ENV LANGUAGE es_ES:en
+# ENV LC_ALL es_ES.UTF-8
 
 # Overmind installation
 ENV OVERMIND_SOCKET=./.overmind_docker.sock
@@ -50,7 +68,7 @@ RUN gem install bundler
 # docker-compose run --rm --entrypoint "" app "ls -la"
 #
 # entrypoint.sh will run overmind by default do no CMD is needed
-COPY docker_entrypoint.sh /bin
+COPY ./docker/docker_entrypoint.sh /bin
 ENTRYPOINT ["/bin/docker_entrypoint.sh"]
 
 

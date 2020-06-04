@@ -31,7 +31,6 @@ You can import the data structure for Spain runing ```rails db:seed```. That tas
 
 The csv with the data was last updated in 2020. It don't change often (but it changes)
 
-You can also import 
 
 ### Holidays
 
@@ -42,65 +41,79 @@ There is a rake tasks to load holidays:
 
 ## Development
 
-### Running the app with Docker
-You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
-docker-compose run --rm --entrypoint "" app bundle install
-docker-compose run --rm --entrypoint "" app yarn install --check-files
-
-Also you will need to run migrations:
-docker-compose run --rm app rails db:migrate
-
-And perhaps import data:
-docker-compose run --rm app rails db:seed
-
-After that you can start the application. It doesn't use overmind yet:
-docker-compose up
-
-You can use -d option if you don't want to see output:
-docker-compose up -d
-
-To stop the application: CTRL+C or:
-docker-compose stop
-
-To completely remove the application and volumes:
-docker-compose down -v
-
-To run tasks into the container (if you don't override entrypoint they will be ran with 'bundle exec'):
-docker-compose run --rm app rake test
-
-To open a shell on rails container:
-docker-compose run --rm --entrypoint "" app bash
-
-To run tests:
-docker-compose run --rm app ./bin/rspec
-You can use guard to watch for changes and run tests automatically:
-docker-compose run --rm app guard
-
 ### Requirements
 
-TODO: sqlite3 is obsolete
+You can develop this project using docker or rvm, as you prefer. These instructions refer to the docker.
 
-- sqlite3
-- sqlite3-pcre (for regular expressions in sqlite3)
+#### Preparing
+You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
+- ```docker-compose run --rm --entrypoint "" app bundle install```
+- ```docker-compose run --rm --entrypoint "" app yarn install --check-files```
 
-You should put this line into your ~/.sqliterc to load sqlite3-prc if you want to tests the querys using command-line sqlite3:
-```.load /usr/lib/sqlite3/pcre.so```
+Also you will need to run migrations: 
+- ```docker-compose run --rm app rails db:migrate```
 
-Or you can load it in each statement:
-```sqlite3 test.sqlite3 -cmd ".load /usr/lib/sqlite3/pcre.so" "SELECT * FROM municipalities WHERE name REGEXP '.*al.*';"```
+And perhaps import data: 
+- ```docker-compose run --rm app rails db:seed```
 
-### Preparing
-
-If you are using rvm, enter the project gemset with ```rvm use .```
-The first time you should install dependencies with ```bundle install```
+You can import data later with rake tasks:
+- ```docker-compose run --rm app rake import:structure```
+- ```docker-compose run --rm app rake import:municipalities```
+- ```docker-compose run --rm app rake import:holidays```
 
 ### Launch server
 
-Use ```rails server``` to launch the project in development mode. You can speed javascript and css reloading launching webpack in another shell: ```./bin/webpack-dev-server```
+After that you can start the application. It will start with overmind:
+- ```docker-compose up```
+
+You can use -d option if you don't want to see output:
+- ```docker-compose up -d```
 
 The project will be available at http://localhost:3000
 
-Alternatively, you can use [overmind](https://github.com/DarthSim/overmind). Install it and run ```overmind start```
+To stop the application: 
+- CTRL+C or ```docker-compose stop```
 
 ### Launch test
-You can run tests with ```rspec``` or watch for changes using ```guard```
+
+To run tests (don't forget the ./bin/ prefix):
+- ```docker-compose run --rm app ./bin/rspec```
+
+You can use guard to watch for changes and run tests automatically:
+- ```docker-compose run --rm app guard```
+
+### Execute tasks in the container
+
+To open a rails console:
+- ```docker-compose run --rm app rails console```
+
+To open a shell on rails container:
+- ```docker-compose run --rm --entrypoint "" app bash```
+
+To run tasks into the container (if you don't override entrypoint they will be ran with 'bundle exec'): 
+- ```docker-compose run --rm app rake whatever:task```
+
+### Removing the containers
+
+To completely remove the application and volumes: 
+- ```docker-compose down -v```
+
+### Connecting to the database
+
+You can launch pgadmin4 to examinde the database:
+- ```docker-compose -f docker-compose-pgadmin.yml up -d```
+
+Then connect to pgadmin with your browser:
+- http://localhost:8080 (User is "devuser", password "devuser")
+
+It will ask for a password to connect to the database. Just hit enter.
+
+To stop pgadmin4
+- ```docker-compose -f docker-compose-pgadmin.yml stop```
+
+If you try to docker-compose down it will notify an error when it tries to delete the network because it's shared with rails application. There is no problem with that, the network will be removed when you run docker-compose down.
+
+To completely remove pgadmin4:
+- ```docker-compose -f docker-compose-pgadmin.yml down -v```
+
+Warning: it notifies that there are "orphans", but they are the rails and database container.
