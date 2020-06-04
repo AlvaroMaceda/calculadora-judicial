@@ -48,10 +48,7 @@ TO-DO
 Docker is still not running ok for rails container. You 
 
 To open a shell on rails container:
-docker-compose run app /bin/bash
-
-With entrypoint:
-docker-compose run app rails db:seed
+docker-compose run --rm --entrypoint "" app bash
 
 Run bundle exec task
 docker-compose run -it app "rake test"
