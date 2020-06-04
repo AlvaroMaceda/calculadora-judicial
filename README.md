@@ -42,28 +42,41 @@ There is a rake tasks to load holidays:
 
 ## Development
 
-### Docker
+### Running the app with Docker
+You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
+docker-compose run --rm --entrypoint "" app bundle install
+docker-compose run --rm --entrypoint "" app yarn install --check-files
 
-TO-DO
-Docker is still not running ok for rails container. You 
+Also you will need to run migrations:
+docker-compose run --rm app rails db:migrate
+
+And perhaps import data:
+docker-compose run --rm app rails db:seed
+
+After that you can start the application. It doesn't use overmind yet:
+docker-compose up
+
+You can use -d option if you don't want to see output:
+docker-compose up -d
+
+To stop the application: CTRL+C or:
+docker-compose stop
+
+To completely remove the application and volumes:
+docker-compose down -v
+
+To run tasks into the container (if you don't override entrypoint they will be ran with 'bundle exec'):
+docker-compose run --rm app rake test
 
 To open a shell on rails container:
 docker-compose run --rm --entrypoint "" app bash
 
-Run bundle exec task
-docker-compose run -it app "rake test"
 
-docker-compose run app /bin/bash
-    bundle install
-    yarn --check-files
-
-Override entrypoint (if you are not 'bundle exec' something):
-docker-compose run -it --entrypoint="" app "ls -la"
-
-
-----
 
 ### Requirements
+
+TODO: sqlite3 is obsolete
+
 - sqlite3
 - sqlite3-pcre (for regular expressions in sqlite3)
 

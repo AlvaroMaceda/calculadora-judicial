@@ -69,6 +69,6 @@ RUN gem install bundler
 ENTRYPOINT ["bundle", "exec"]
 
 # Start the rails server by default
-# CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
 
 # Start overmind
