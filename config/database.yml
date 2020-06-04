@@ -2,7 +2,6 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: 5
-  database: calculadora_judicial
   host: <%= ENV['DATABASE_HOST'] %>
   port: <%= ENV['DATABASE_PORT'] || '5432' %>
   username: <%= ENV['DATABASE_USER'] %>
@@ -12,36 +11,16 @@ default: &default
 
 development:
   <<: *default
+  username: devuser
+  database: calculadora_judicial_dev
 
 test:
   <<: *default
+  username: testuser
+  database: calculadora_judicial_test
 
 production:
   <<: *default
+  database: calculadora_judicial
 
 
-# # SQLite. Versions 3.8.0 and up are supported.
-# #   gem install sqlite3
-# #
-# #   Ensure the SQLite 3 gem is defined in your Gemfile
-# #   gem 'sqlite3'
-# #
-# default: &default
-#   adapter: sqlite3
-#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#   timeout: 5000
-
-# development:
-#   <<: *default
-#   database: db/development.sqlite3
-
-# # Warning: The database defined as "test" will be erased and
-# # re-generated from your development database when you run "rake".
-# # Do not set this db to the same as development or production.
-# test:
-#   <<: *default
-#   database: db/test.sqlite3
-
-# production:
-#   <<: *default
-#   database: db/production.sqlite3

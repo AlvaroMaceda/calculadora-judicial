@@ -71,7 +71,10 @@ docker-compose run --rm app rake test
 To open a shell on rails container:
 docker-compose run --rm --entrypoint "" app bash
 
-
+To run tests:
+docker-compose run --rm app ./bin/rspec
+You can use guard to watch for changes and run tests automatically:
+docker-compose run --rm app guard
 
 ### Requirements
 

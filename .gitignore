@@ -40,3 +40,6 @@ yarn-debug.log*
 
 # LibreOffice lock files
 .~lock.*
+
+# Overmind socket files
+.overmind*.sock
