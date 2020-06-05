@@ -1,8 +1,7 @@
 FROM ruby:2.6.3-alpine
 
-# yarn repository
-# RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - >/dev/null && \
-#     echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+ARG USER_ID
+ARG GROUP_ID
 
 RUN apk --update-cache upgrade && apk add \
   build-base \
@@ -11,8 +10,44 @@ RUN apk --update-cache upgrade && apk add \
   postgresql-dev \
   tmux \
   curl \
-  tzdata
+  tzdata \
+  sudo
 
+ENV USERNAME=rails
+ENV GROUPNAME=rails
+
+# Add user with host user id and give permissions to required directories
+RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
+    adduser -u ${USER_ID} -D ${USERNAME} && \
+    adduser ${USERNAME} adm && \
+    chgrp rails /usr/local/bin -R && \
+    chmod g+w /usr/local/bin -R \
+;fi
+
+# /usr/local/lib/ruby/gems/2.6.0
+# /app # chgrp rails /usr/local/lib/ruby/gems/2.6.0 -R
+# /app # chmod g+w /usr/local/lib/ruby/gems/2.6.0 -R
+# /app # chmod g+w /usr/local/lib/ruby -R
+# /app # chgrp rails /usr/local/lib/ruby -
+# /app # chmod g+w /usr/local/bin -R
+# /app # chgrp rails /usr/local/bin -R
+
+
+# RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
+#     userdel -f www-data &&\
+#     if getent group www-data ; then groupdel www-data; fi &&\
+#     groupadd -g ${GROUP_ID} www-data &&\
+#     useradd -l -u ${USER_ID} -g www-data www-data &&\
+#     install -d -m 0755 -o www-data -g www-data /home/www-data &&\
+#     chown --changes --silent --no-dereference --recursive \
+#           --from=33:33 ${USER_ID}:${GROUP_ID} \
+#         /home/www-data \
+#         /.composer \
+#         /var/run/php-fpm \
+#         /var/lib/php/sessions \
+# ;fi
+
+# Do I really need language packs?
 # https://github.com/gliderlabs/docker-alpine/issues/144
 # Install language pack
 # RUN apk --no-cache add ca-certificates wget && \

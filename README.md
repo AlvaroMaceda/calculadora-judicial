@@ -47,9 +47,12 @@ You can develop this project using docker or rvm, as you prefer. These instructi
 
 #### Preparing
 First you must build the container with:
+- ./app.sh build
 - ```docker-compose -f ./docker/docker-compose.yml build```
 
 You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
+- ./app.sh exec bundle install
+- ./app.sh exec yarn install --check-files
 - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bundle install```
 - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app yarn install --check-files```
 

@@ -9,6 +9,7 @@ services:
     build:
       context: ..     
       dockerfile: docker/Dockerfile
+    user: "${UID}:${GID}"      
     depends_on:
       - database
     ports:
@@ -29,6 +30,7 @@ services:
 
   database:
     image: postgres:12.1
+    # user: "${UID}:${GID}"
     # Temporary
     ports:
       - 5432:5432

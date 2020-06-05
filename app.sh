@@ -1,5 +1,16 @@
 #!/bin/bash
-echo $*
+
+# For debugging
+# echo $*
+
+# export UID=${UID}
+# export GID=${GID}
+
+export USER_ID=$(id -u ${USER})
+export GROUP_ID=$(id -g ${USER})
+
+
+
 
 # Usage:
 # - Use 'build' for building the container: ./app.sh build
@@ -11,7 +22,11 @@ echo $*
 case $1 in
     build)
         echo 'Building container...'
-        docker-compose -f ./docker/docker-compose.yml build
+        docker-compose \
+            -f ./docker/docker-compose.yml \
+        build \
+            --build-arg USER_ID=$USER_ID \
+            --build-arg GROUP_ID=$GROUP_ID
         ;;
 
     stop)
@@ -38,7 +53,7 @@ case $1 in
 
     *)
         echo 'Executing command in the container with bundle exec...'
-        docker-compose -f ./docker/docker-compose.yml run --rm app $*     
+        docker-compose -f ./docker/docker-compose.yml run --rm app $*
         ;;
 
 esac
