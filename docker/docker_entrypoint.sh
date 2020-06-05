@@ -1,11 +1,5 @@
 #!/bin/sh
 set -e
-echo "Current dir: `pwd`"
-echo "User: `id`"
-
-for i in $*; do 
-   echo $i 
-done
 
 if [ "$#" -eq 0 ]; then
     echo "Running overmind..."

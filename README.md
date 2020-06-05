@@ -43,44 +43,72 @@ There is a rake tasks to load holidays:
 
 ### Requirements
 
-You can develop this project using docker or rvm, as you prefer. These instructions refer to the docker.
+You can develop this project using docker or rvm, as you prefer. These instructions refer to the docker; to use rvm you only need to install it and execute ```rvm use .``` to activate the environment.
+
+The container run as your host user and has complete sudo privileges, so proceed with caution if you mount a bind volume (you don't need to do that anyway)
 
 #### Preparing
-First you must build the container with:
-- ./app.sh build
-- ```docker-compose -f ./docker/docker-compose.yml build```
 
-You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
-- ./app.sh exec bundle install
-- ./app.sh exec yarn install --check-files
-- ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bundle install```
-- ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app yarn install --check-files```
+There is an script to help with application management: ```./app.sh```. That script will execute the appropiate docker-compose orders which could be very verbose. The corresponding docker-compose commands are listed after the app.sh commands.
 
-Also you will need to run migrations: 
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:migrate```
+The script works as follows: if called without parameters it will run the app. If it's called with ```exec SOME_ORDER``` will execute that order into the container. If it's called with ```SOME_ORDER``` it will execute ```bundle exec SOME_ORDER```.
 
-And perhaps import data: 
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:seed```
+To run the app you must follow these steps:
 
-You can import data later with rake tasks:
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:structure```
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:municipalities```
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:holidays```
+1) First you must build the container with:
+    - ```./app.sh build```
+
+    Equivalent docker-compose command: ```docker-compose -f ./docker/docker-compose.yml build```
+
+2) You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
+    - ```./app.sh exec bundle install```
+    - ```./app.sh exec yarn install --check-files```
+
+    Equivalent docker-compose commands: 
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bundle install``` and 
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app yarn install --check-files```
+
+3) Also you will need to run migrations: 
+    - ```./app.sh rails db:migrate```
+
+    Equivalent docker-compose command: 
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:migrate```
+
+4) And perhaps import data: 
+    - ```./app.sh rails db:seed```
+
+    Equivalent docker-compose command: 
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:seed```
+
+    You can import data later with rake tasks:
+    - ```./app.sh rake import:structure```
+    - ```./app.sh rake import:municipalities```
+    - ```./app.sh rake import:holidays```
+
+    Equivalent docker-compose commands:
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:structure```
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:municipalities```
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:holidays```
 
 ### Launch server
 
-After that you can start the application. It will start with overmind:
-- ```docker-compose -f ./docker/docker-compose.yml up```
+After following previous seteps you can start the application. It will start with overmind:
+- ```./app.sh```
 
-You can use -d option if you don't want to see output:
+    Equivalent docker-compose command: ```docker-compose -f ./docker/docker-compose.yml up```
+
+You can use -d option if you don't want to see output. In that case you will need to use docker-compose command directly:
 - ```docker-compose -f ./docker/docker-compose.yml up -d```
 
 The project will be available at http://localhost:3000
 
 To stop the application: 
-- CTRL+C or ```docker-compose -f ./docker/docker-compose.yml stop```
+- CTRL+C or ```./app.sh stop```
+
+    Equivalent docker-compose command: ```docker-compose -f ./docker/docker-compose.yml stop```
 
 ### Launch test
+TO-DO
 
 To run tests (don't forget the ./bin/ prefix):
 - ```docker-compose -f ./docker/docker-compose.yml run --rm app ./bin/rspec```

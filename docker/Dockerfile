@@ -16,44 +16,18 @@ RUN apk --update-cache upgrade && apk add \
 ENV USERNAME=rails
 ENV GROUPNAME=rails
 
-# ENV GEM_HOME="/usr/local/bundle"
-# ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
-
 # Add user with host user id and give permissions to required directories
+# bundle requires to execute cp and mkdir commands with sudo, 
+# so it makes no sense to restrict to some commands: we are screwed anyway
 RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
     adduser -u ${USER_ID} -D ${USERNAME} && \
-    adduser ${USERNAME} adm && \
+    adduser ${USERNAME} adm && \        
     echo cd /app > /etc/profile && \
+    echo 'alias ll=ls -la' > /etc/profile && \
     chgrp rails /usr/local/bin -R && \
-    chmod g+w /usr/local/bin -R \
-    # chgrp rails /usr/local/bundle -R && \
-    # chmod g+w /usr/local/bundle -R && \
-    # chgrp rails /usr/local/lib/ruby -R && \
-    # chmod g+w /usr/local/lib/ruby -R \
+    chmod g+w /usr/local/bin -R && \
+    echo '%adm ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
 ;fi
-
-# /usr/local/lib/ruby/gems/2.6.0
-# /app # chgrp rails /usr/local/lib/ruby/gems/2.6.0 -R
-# /app # chmod g+w /usr/local/lib/ruby/gems/2.6.0 -R
-# /app # chmod g+w /usr/local/lib/ruby -R
-# /app # chgrp rails /usr/local/lib/ruby -
-# /app # chmod g+w /usr/local/bin -R
-# /app # chgrp rails /usr/local/bin -R
-
-
-# RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
-#     userdel -f www-data &&\
-#     if getent group www-data ; then groupdel www-data; fi &&\
-#     groupadd -g ${GROUP_ID} www-data &&\
-#     useradd -l -u ${USER_ID} -g www-data www-data &&\
-#     install -d -m 0755 -o www-data -g www-data /home/www-data &&\
-#     chown --changes --silent --no-dereference --recursive \
-#           --from=33:33 ${USER_ID}:${GROUP_ID} \
-#         /home/www-data \
-#         /.composer \
-#         /var/run/php-fpm \
-#         /var/lib/php/sessions \
-# ;fi
 
 # Do I really need language packs?
 # https://github.com/gliderlabs/docker-alpine/issues/144
@@ -98,14 +72,10 @@ WORKDIR $INSTALL_PATH
 #     apt-get update && \
 #     apt-get install -y rvm
 
+ENV GEM_HOME="/usr/local/bundle"
+ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 RUN gem install bundler
-RUN chgrp rails /usr/local/bundle -R && \
-    chmod g+w /usr/local/bundle -R
-
-# Este directorio se queda sin permisos:
-# /usr/local/bundle/ruby/
-# Por qué?: 
-# quizá porque lo crea bundle install, hay que dar permisos para que herede el grupo del directorio padre
+# RUN chown rails.rails /usr/local/bundle -R
 
 # Configure an entry point, so we don't need to specify
 # "bundle exec" for each of our commands.
