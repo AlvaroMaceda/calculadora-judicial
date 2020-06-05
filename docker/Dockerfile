@@ -22,8 +22,8 @@ ENV GROUPNAME=rails
 RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
     adduser -u ${USER_ID} -D ${USERNAME} && \
     adduser ${USERNAME} adm && \        
-    echo cd /app > /etc/profile && \
-    echo 'alias ll=ls -la' > /etc/profile && \
+    echo cd /app >> /etc/profile && \
+    echo "alias ll='ls -la'" >> /etc/profile && \
     chgrp rails /usr/local/bin -R && \
     chmod g+w /usr/local/bin -R && \
     echo '%adm ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
@@ -61,9 +61,8 @@ RUN wget https://github.com/DarthSim/overmind/releases/download/v2.1.1/overmind-
     mv /tmp/overmind /bin && \
     chmod ugo+x /bin/overmind
 
-ENV INSTALL_PATH /app
-RUN mkdir -p $INSTALL_PATH
-WORKDIR $INSTALL_PATH
+RUN mkdir -p /app
+WORKDIR /app
 
 # rvm installation
 # this was to avoid "bundle exec" everything, but it is not implemented
@@ -77,6 +76,15 @@ ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 RUN gem install bundler
 # RUN chown rails.rails /usr/local/bundle -R
 
+RUN mkdir -p /app/node_modules && \
+    chgrp rails /app/node_modules -R && \
+    chmod g+sw /app/node_modules -R
+
+    #   - gem_cache:/usr/local/bundle/gems
+    #   - gems:/usr/local/bundle/ruby/2.6.0
+    #   - node_modules:/app/node_modules
+VOLUME ["/app/node_modules"]
+
 # Configure an entry point, so we don't need to specify
 # "bundle exec" for each of our commands.
 #
@@ -88,6 +96,7 @@ RUN gem install bundler
 #
 # entrypoint.sh will run overmind by default do no CMD is needed
 COPY ./docker/docker_entrypoint.sh /bin
+RUN chmod ugo+x /bin/docker_entrypoint.sh
 ENTRYPOINT ["/bin/docker_entrypoint.sh"]
 
 

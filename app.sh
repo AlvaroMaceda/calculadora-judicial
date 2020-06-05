@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # For debugging
 # echo $*
@@ -8,9 +9,6 @@
 
 export USER_ID=$(id -u ${USER})
 export GROUP_ID=$(id -g ${USER})
-
-
-
 
 # Usage:
 # - Use 'build' for building the container: ./app.sh build
@@ -38,7 +36,7 @@ case $1 in
     down)
         echo 'Destroying container...'
         shift
-        docker-compose -f ./docker/docker-compose.yml down $*
+        docker-compose -f ./docker/docker-compose.yml down -v $*
         ;;
 
     exec)

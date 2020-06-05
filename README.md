@@ -63,6 +63,7 @@ To run the app you must follow these steps:
 2) You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
     - ```./app.sh exec bundle install```
     - ```./app.sh exec yarn install --check-files```
+    (you can run both commands in parallel to save time, some gems and packages take a long time to compile)
 
     Equivalent docker-compose commands: 
     - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bundle install``` and 
