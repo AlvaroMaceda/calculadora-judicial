@@ -1,5 +1,7 @@
 #!/bin/sh
 set -e
+echo "Current dir: `pwd`"
+echo "User: `id`"
 
 for i in $*; do 
    echo $i 

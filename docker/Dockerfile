@@ -16,12 +16,20 @@ RUN apk --update-cache upgrade && apk add \
 ENV USERNAME=rails
 ENV GROUPNAME=rails
 
+# ENV GEM_HOME="/usr/local/bundle"
+# ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
+
 # Add user with host user id and give permissions to required directories
 RUN if [ ${USER_ID:-0} -ne 0 ] && [ ${GROUP_ID:-0} -ne 0 ]; then \
     adduser -u ${USER_ID} -D ${USERNAME} && \
     adduser ${USERNAME} adm && \
+    echo cd /app > /etc/profile && \
     chgrp rails /usr/local/bin -R && \
     chmod g+w /usr/local/bin -R \
+    # chgrp rails /usr/local/bundle -R && \
+    # chmod g+w /usr/local/bundle -R && \
+    # chgrp rails /usr/local/lib/ruby -R && \
+    # chmod g+w /usr/local/lib/ruby -R \
 ;fi
 
 # /usr/local/lib/ruby/gems/2.6.0
@@ -91,7 +99,13 @@ WORKDIR $INSTALL_PATH
 #     apt-get install -y rvm
 
 RUN gem install bundler
+RUN chgrp rails /usr/local/bundle -R && \
+    chmod g+w /usr/local/bundle -R
 
+# Este directorio se queda sin permisos:
+# /usr/local/bundle/ruby/
+# Por qué?: 
+# quizá porque lo crea bundle install, hay que dar permisos para que herede el grupo del directorio padre
 
 # Configure an entry point, so we don't need to specify
 # "bundle exec" for each of our commands.

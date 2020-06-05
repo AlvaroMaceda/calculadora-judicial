@@ -9,7 +9,7 @@ services:
     build:
       context: ..     
       dockerfile: docker/Dockerfile
-    user: "${UID}:${GID}"      
+    user: "${USER_ID}:${GROUP_ID}"      
     depends_on:
       - database
     ports:
