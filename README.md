@@ -49,7 +49,7 @@ The container run as your host user and has complete sudo privileges, so proceed
 
 #### Preparing
 
-There is an script to help with application management: ```./app.sh```. That script will execute the appropiate docker-compose orders which could be very verbose. The corresponding docker-compose commands are listed after the app.sh commands.
+There is an script to help with application management: ```./app.sh```. That script will execute the appropiate docker-compose orders which could be very verbose. The corresponding docker-compose commands are listed after the app.sh commands. If you want to use the docker-compose commands you should export your user and group id first with ```export USER_ID=$(id -u ${USER}) && export GROUP_ID=$(id -g ${USER})```
 
 The script works as follows: if called without parameters it will run the app. If it's called with ```exec SOME_ORDER``` will execute that order into the container. If it's called with ```SOME_ORDER``` it will execute ```bundle exec SOME_ORDER```.
 
@@ -112,28 +112,43 @@ To stop the application:
 TO-DO
 
 To run tests (don't forget the ./bin/ prefix):
+- ./app.sh test
 - ```docker-compose -f ./docker/docker-compose.yml run --rm app ./bin/rspec```
 
 You can use guard to watch for changes and run tests automatically:
-- ```docker-compose run --rm app guard```
+- ./app.sh guard
+- ```docker-compose -f ./docker/docker-compose.yml run --rm app guard```
 
 ### Execute tasks in the container
 
-To open a rails console:
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rails console```
+- To open a rails console:
+    - ```./app.sh rails console```
 
-To open a shell on rails container:
-- ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bash```
+    Equivalent docker-compose command:
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rails console```
 
-To run tasks into the container (if you don't override entrypoint they will be ran with 'bundle exec'): 
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app rake whatever:task```
+- To open a shell on rails container  
+    - ```./app.sh exec sh```
+
+    Equivalent docker-compose command:
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bash```
+
+- To run tasks into the container:
+    - ```./app.sh rake whatever:task```
+    
+    Equivalent docker-compose command:
+    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake whatever:task```
 
 ### Removing the containers
 
-To completely remove the application and volumes: 
+TO-DO 
+
+To completely remove the application and volumes:
 - ```docker-compose down -v```
 
 ### Connecting to the database
+
+TO-DO
 
 You can launch pgadmin4 to examinde the database:
 - ```docker-compose -f docker-compose-pgadmin.yml up -d```

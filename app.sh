@@ -1,11 +1,4 @@
 #!/bin/bash
-set -x
-
-# For debugging
-# echo $*
-
-# export UID=${UID}
-# export GID=${GID}
 
 export USER_ID=$(id -u ${USER})
 export GROUP_ID=$(id -g ${USER})
@@ -13,7 +6,7 @@ export GROUP_ID=$(id -g ${USER})
 # Usage:
 # - Use 'build' for building the container: ./app.sh build
 # - Call it withouth parameters to run the app: ./app.sh
-# - Call it with a command to execute it with bundle exec: ./app.sh rspec
+# - Call it with a command to execute it with bundle exec: ./app.sh rake 
 # - Add 'exec' for executing an arbitrary command into the container: ./app.sh exec bundle install
 # - You can use 'exec' to open a shell into the container: ./app.sh exec sh
 
@@ -28,15 +21,21 @@ case $1 in
             # --no-cache
         ;;
 
-    stop)
-        echo 'Stopping container...'
-        docker-compose -f ./docker/docker-compose.yml stop
+    "")
+        echo 'Starting the app...'
+        docker-compose -f ./docker/docker-compose.yml up app database
         ;;
 
-    down)
-        echo 'Destroying container...'
+    test)
+        echo 'Executing tests...'
         shift
-        docker-compose -f ./docker/docker-compose.yml down -v $*
+        docker-compose -f ./docker/docker-compose.yml run --rm app ./bin/rspec $*
+        ;;
+
+    guard)
+        echo 'Executing guard...'
+        shift
+        docker-compose -f ./docker/docker-compose.yml run --rm app guard $*
         ;;
 
     exec)
@@ -45,9 +44,15 @@ case $1 in
         docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint '""' app $*
         ;;
 
-    "")
-        echo 'Starting the app...'
-        docker-compose -f ./docker/docker-compose.yml up app database
+    stop)
+        echo 'Stopping container...'
+        docker-compose -f ./docker/docker-compose.yml stop
+        ;;
+
+    down)
+        echo 'Destroying container and volumes...'
+        shift
+        docker-compose -f ./docker/docker-compose.yml down -v $*
         ;;
 
     *)

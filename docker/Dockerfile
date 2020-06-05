@@ -74,15 +74,10 @@ WORKDIR /app
 ENV GEM_HOME="/usr/local/bundle"
 ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 RUN gem install bundler
-# RUN chown rails.rails /usr/local/bundle -R
 
 RUN mkdir -p /app/node_modules && \
     chgrp rails /app/node_modules -R && \
     chmod g+sw /app/node_modules -R
-
-    #   - gem_cache:/usr/local/bundle/gems
-    #   - gems:/usr/local/bundle/ruby/2.6.0
-    #   - node_modules:/app/node_modules
 VOLUME ["/app/node_modules"]
 
 # Configure an entry point, so we don't need to specify
