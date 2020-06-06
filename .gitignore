@@ -35,5 +35,11 @@
 yarn-debug.log*
 .yarn-integrity
 
+# Environment
+.env
+
 # LibreOffice lock files
 .~lock.*
+
+# Overmind socket files
+.overmind*.sock

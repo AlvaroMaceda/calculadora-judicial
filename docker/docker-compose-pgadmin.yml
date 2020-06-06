@@ -1,0 +1,25 @@
+version: '3.4'
+# https://info.crunchydata.com/blog/easy-postgresql-10-and-pgadmin-4-setup-with-docker
+# https://www.pgadmin.org/docs/pgadmin4/development/container_deployment.html
+
+services:
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: devuser
+      PGADMIN_DEFAULT_PASSWORD: devuser
+    ports:
+      - 8080:80
+    volumes:
+      - pga4volume:/var/lib/pgadmin
+      - ./docker/pgadmin4_servers.json:/pgadmin4/servers.json
+    
+      # This is to share network with rails
+    networks:
+      - calculadora_judicial
+
+volumes:
+   pga4volume:
+
+networks:
+  calculadora_judicial:
