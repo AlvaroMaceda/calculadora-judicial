@@ -43,127 +43,74 @@ There is a rake tasks to load holidays:
 
 ### Requirements
 
-You can develop this project using docker or rvm, as you prefer. These instructions refer to the docker; to use rvm you only need to install it and execute ```rvm use .``` to activate the environment.
-
-The container run as your host user and has complete sudo privileges, so proceed with caution if you mount a bind volume (you don't need to do that anyway)
+To run this project you will need a postgressql server. There is a docker container created if you want to use it; in that case you will need to have docker and docker-compose installed in your system.
 
 #### Preparing
 
-There is an script to help with application management: ```./app.sh```. That script will execute the appropiate docker-compose orders which could be very verbose. The corresponding docker-compose commands are listed after the app.sh commands. If you want to use the docker-compose commands you should export your user and group id first with ```export USER_ID=$(id -u ${USER}) && export GROUP_ID=$(id -g ${USER})```
+There are a .ruby-version and .ruby-gemset files in case you want to use rvm. If you are using a gem manager you won't need to prefix commands with ```bundle exec``` when required.
 
-The script works as follows: if called without parameters it will run the app. If it's called with ```exec SOME_ORDER``` will execute that order into the container. If it's called with ```SOME_ORDER``` it will execute ```bundle exec SOME_ORDER```.
+1) As usual, you must install gems and packages before using the app for the first time and each time you change gems or packages
+    - ```bundle install```
+    - ```yarn install --check-files```
 
-To run the app you must follow these steps:
+    you can run both commands in parallel to save time, some gems and packages take a long time to compile.
 
-1) First you must build the container with:
-    - ```./app.sh build```
+2) After that you should configure the databases you will be using for tests and development. If you plan to use the provided docker container to run the database it's enough to copy .env.example file to .env. If not, change .env file with your configuration:
+    - ```cp .env.example .env```
 
-    Equivalent docker-compose command: ```docker-compose -f ./docker/docker-compose.yml build```
+3) Then you must start the database server:
+    - ```docker-compose up database -d```
 
-2) You must install gems and packages before using the app for the first time and each time you change gems or packages. gems and packages are installed into a container's volume, so you won't need to do it again if you don't destroy the volumes:
-    - ```./app.sh exec bundle install```
-    - ```./app.sh exec yarn install --check-files```
-    (you can run both commands in parallel to save time, some gems and packages take a long time to compile)
+    You can remove the -d flag if you want to see container's output
 
-    Equivalent docker-compose commands: 
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bundle install``` and 
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app yarn install --check-files```
+4) Then run the migrations: 
+    - ```rails db:migrate```
 
-3) Also you will need to run migrations: 
-    - ```./app.sh rails db:migrate```
-
-    Equivalent docker-compose command: 
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:migrate```
-
-4) And perhaps import data: 
+4) And maybe you want to import data: 
     - ```./app.sh rails db:seed```
 
-    Equivalent docker-compose command: 
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rails db:seed```
-
     You can import data later with rake tasks:
-    - ```./app.sh rake import:structure```
-    - ```./app.sh rake import:municipalities```
-    - ```./app.sh rake import:holidays```
-
-    Equivalent docker-compose commands:
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:structure```
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:municipalities```
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake import:holidays```
+    - ```rake import:structure```
+    - ```rake import:municipalities```
+    - ```rake import:holidays YEAR=all```
 
 ### Launch server
 
-After following previous seteps you can start the application. It will start with overmind:
-- ```./app.sh```
+After following previous steps you can start the application. You can use [overmind](https://github.com/DarthSim/overmind) if you have it installed in your system:
+- ```overmind start```
 
-    Equivalent docker-compose command: ```docker-compose -f ./docker/docker-compose.yml up```
-
-You can use -d option if you don't want to see output. In that case you will need to use docker-compose command directly:
-- ```docker-compose -f ./docker/docker-compose.yml up -d```
+If not, you can launch rails directly with ```bundle exec rails server --port 3000``` and optionally you can launch webpack dev server concurrently to speed up development: ```./bin/webpack-dev-server```
 
 The project will be available at http://localhost:3000
 
-To stop the application: 
-- CTRL+C or ```./app.sh stop```
-
-    Equivalent docker-compose command: ```docker-compose -f ./docker/docker-compose.yml stop```
-
 ### Launch test
-TO-DO
 
-To run tests (don't forget the ./bin/ prefix):
-- ./app.sh test
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app ./bin/rspec```
+To run tests just:
+- ```bundle exec ./bin/rspec```
 
 You can use guard to watch for changes and run tests automatically:
-- ./app.sh guard
-- ```docker-compose -f ./docker/docker-compose.yml run --rm app guard```
-
-### Execute tasks in the container
-
-- To open a rails console:
-    - ```./app.sh rails console```
-
-    Equivalent docker-compose command:
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rails console```
-
-- To open a shell on rails container  
-    - ```./app.sh exec sh```
-
-    Equivalent docker-compose command:
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm --entrypoint "" app bash```
-
-- To run tasks into the container:
-    - ```./app.sh rake whatever:task```
-    
-    Equivalent docker-compose command:
-    - ```docker-compose -f ./docker/docker-compose.yml run --rm app rake whatever:task```
+- ```bundle exec guard```
 
 ### Removing the containers
 
-TO-DO 
-
-To completely remove the application and volumes:
+To completely remove the containers and volumens:
 - ```docker-compose down -v```
+
+This will delete your application data (you should have it in csv files anyway)
 
 ### Connecting to the database
 
-TO-DO
+The database server is available at standard port 5432 on localhost. You can use whatever posgtresql client you want, but there is a container with pgadmin4 if you want to use it. 
 
-You can launch pgadmin4 to examinde the database:
-- ```docker-compose -f docker-compose-pgadmin.yml up -d```
+You can launch pgadmin4 with:
+- ```docker-compose up pgadmin -d```
 
 Then connect to pgadmin with your browser:
-- http://localhost:8080 (User is "devuser", password "devuser")
+- http://localhost:8080 (User is "devuser", password "devuser". If you know how to configure a pgadmin container without a password a pull request will be wellcomed)
 
 It will ask for a password to connect to the database. Just hit enter.
 
 To stop pgadmin4
-- ```docker-compose -f ./docker/docker-compose-pgadmin.yml stop```
+- ```docker-compose stop pgadmin```
 
-If you try to docker-compose down it will notify an error when it tries to delete the network because it's shared with rails application. There is no problem with that, the network will be removed when you run docker-compose down.
-
-To completely remove pgadmin4:
-- ```docker-compose -f ./docker/docker-compose-pgadmin.yml down -v```
-
-Warning: it notifies that there are "orphans", but they are the rails and database container.
+Alternatively you can just run ```docker-compose up -d``` when you launch the database server; this will start both the postgresql server and pgadmin.
