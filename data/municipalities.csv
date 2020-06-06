@@ -745,7 +745,7 @@ AC00011,municipality,ES06114,Risco,140,N
 AC00011,municipality,ES06115,La Roca de la Sierra,1464,N
 AC00011,municipality,ES06116,Salvaleón,1755,N
 AC00011,municipality,ES06117,Salvatierra de los Barros,1645,N
-AC00011,municipality,ES06118,Sancti-Spíritus,167,N
+AC00011,municipality,ES06118,Sancti-Spíritus (Badajoz),167,N
 AC00011,municipality,ES06119,San Pedro de Mérida,843,N
 AC00011,municipality,ES06120,Santa Amalia,4021,N
 AC00011,municipality,ES06121,Santa Marta,4122,N
@@ -789,7 +789,7 @@ AC00011,municipality,ES06158,Zafra,16797,S
 AC00011,municipality,ES06159,Zahínos,2803,N
 AC00011,municipality,ES06160,Zalamea de la Serena,3555,N
 AC00011,municipality,ES06161,Zarza-Capilla,311,N
-AC00011,municipality,ES06162,La Zarza,3472,N
+AC00011,municipality,ES06162,La Zarza (Badajoz),3472,N
 AC00011,municipality,ES06901,Valdelacalzada,2711,N
 AC00011,municipality,ES06902,Pueblonuevo del Guadiana,2021,N
 AC00004,municipality,ES07001,Alaró,5572,N
@@ -1563,7 +1563,7 @@ AC00011,municipality,ES10019,Almaraz,1744,N
 AC00011,municipality,ES10020,Almoharín,1811,N
 AC00011,municipality,ES10021,Arroyo de la Luz,5811,N
 AC00011,municipality,ES10022,Arroyomolinos de la Vera,443,N
-AC00011,municipality,ES10023,Arroyomolinos,797,N
+AC00011,municipality,ES10023,Arroyomolinos (Barcelona),797,N
 AC00011,municipality,ES10024,Baños de Montemayor,759,N
 AC00011,municipality,ES10025,Barrado,401,N
 AC00011,municipality,ES10026,Belvís de Monroy,725,N
@@ -1693,7 +1693,7 @@ AC00011,municipality,ES10150,Portaje,355,N
 AC00011,municipality,ES10151,Portezuelo,218,N
 AC00011,municipality,ES10152,Pozuelo de Zarzón,475,N
 AC00011,municipality,ES10153,Puerto de Santa Cruz,317,N
-AC00011,municipality,ES10154,Rebollar,214,N
+AC00011,municipality,ES10154,Rebollar (Barcelona),214,N
 AC00011,municipality,ES10155,Riolobos,1231,N
 AC00011,municipality,ES10156,Robledillo de Gata,91,N
 AC00011,municipality,ES10157,Robledillo de la Vera,265,N
@@ -1835,7 +1835,7 @@ AC00010,municipality,ES12028,Benicasim/Benicàssim,18192,N
 AC00010,municipality,ES12029,Benlloch,1033,N
 AC00010,municipality,ES12031,Borriol,5360,N
 AC00010,municipality,ES12032,Borriana/Burriana,34683,N
-AC00010,municipality,ES12033,Cabanes,2958,N
+AC00010,municipality,ES12033,Cabanes (Barcelona),2958,N
 AC00010,municipality,ES12034,Càlig,1950,N
 AC00010,municipality,ES12036,Canet lo Roig,674,N
 AC00010,municipality,ES12037,Castell de Cabres,17,N
@@ -2033,7 +2033,7 @@ AC00008,municipality,ES13089,Villahermosa,1826,N
 AC00008,municipality,ES13090,Villamanrique,1148,N
 AC00008,municipality,ES13091,Villamayor de Calatrava,634,N
 AC00008,municipality,ES13092,Villanueva de la Fuente,2078,N
-AC00008,municipality,ES13093,Villanueva de los Infantes,4935,S
+AC00008,municipality,ES13093,Villanueva de los Infantes (Barcelona),4935,S
 AC00008,municipality,ES13094,Villanueva de San Carlos,290,N
 AC00008,municipality,ES13095,Villar del Pozo,75,N
 AC00008,municipality,ES13096,Villarrubia de los Ojos,9814,N
@@ -2190,12 +2190,12 @@ AC00012,municipality,ES15071,Porto do Son,9171,N
 AC00012,municipality,ES15072,Rianxo,11033,N
 AC00012,municipality,ES15073,Ribeira,26886,S
 AC00012,municipality,ES15074,Rois,4512,N
-AC00012,municipality,ES15075,Sada,15841,N
+AC00012,municipality,ES15075,Sada (Barcelona),15841,N
 AC00012,municipality,ES15076,San Sadurniño,2822,N
 AC00012,municipality,ES15077,Santa Comba,9426,N
 AC00012,municipality,ES15078,Santiago de Compostela,97260,S
 AC00012,municipality,ES15079,Santiso,1584,N
-AC00012,municipality,ES15080,Sobrado,1758,N
+AC00012,municipality,ES15080,Sobrado (Barcelona),1758,N
 AC00012,municipality,ES15081,As Somozas,1098,N
 AC00012,municipality,ES15082,Teo,18579,N
 AC00012,municipality,ES15083,Toques,1124,N
@@ -2271,7 +2271,7 @@ AC00008,municipality,ES16063,Casas de Guijarro,117,N
 AC00008,municipality,ES16064,Casas de Haro,823,N
 AC00008,municipality,ES16065,Casas de los Pinos,440,N
 AC00008,municipality,ES16066,Casasimarro,3084,N
-AC00008,municipality,ES16067,Castejón,144,N
+AC00008,municipality,ES16067,Castejón (Barcelona),144,N
 AC00008,municipality,ES16068,Castillejo de Iniesta,159,N
 AC00008,municipality,ES16070,Castillejo-Sierra,28,N
 AC00008,municipality,ES16071,Castillo-Albaráñez,22,N
@@ -2329,7 +2329,7 @@ AC00008,municipality,ES16131,Monteagudo de las Salinas,129,N
 AC00008,municipality,ES16132,Mota de Altarejos,34,N
 AC00008,municipality,ES16133,Mota del Cuervo,5990,N
 AC00008,municipality,ES16134,Motilla del Palancar,5869,S
-AC00008,municipality,ES16135,Moya,139,N
+AC00008,municipality,ES16135,Moya (Barcelona),139,N
 AC00008,municipality,ES16137,Narboneta,37,N
 AC00008,municipality,ES16139,Olivares de Júcar,325,N
 AC00008,municipality,ES16140,Olmeda de la Cuesta,20,N
@@ -2476,7 +2476,7 @@ RE_CATA,municipality,ES17026,Borrassà,714,N
 RE_CATA,municipality,ES17027,Breda,3740,N
 RE_CATA,municipality,ES17028,Brunyola,383,N
 RE_CATA,municipality,ES17029,Boadella i les Escaules,252,N
-RE_CATA,municipality,ES17030,Cabanes,948,N
+RE_CATA,municipality,ES17030,Cabanes (Barcelona),948,N
 RE_CATA,municipality,ES17031,Cabanelles,279,N
 RE_CATA,municipality,ES17032,Cadaqués,2712,N
 RE_CATA,municipality,ES17033,Caldes de Malavella,7641,N
@@ -2546,7 +2546,7 @@ RE_CATA,municipality,ES17100,Masarac,288,N
 RE_CATA,municipality,ES17101,Massanes,761,N
 RE_CATA,municipality,ES17102,Maçanet de Cabrenys,688,N
 RE_CATA,municipality,ES17103,Maçanet de la Selva,7006,N
-RE_CATA,municipality,ES17105,Mieres,318,N
+RE_CATA,municipality,ES17105,Mieres (Barcelona),318,N
 RE_CATA,municipality,ES17106,Mollet de Peralada,189,N
 RE_CATA,municipality,ES17107,Molló,337,N
 RE_CATA,municipality,ES17109,Montagut i Oix,916,N
@@ -2631,7 +2631,7 @@ RE_CATA,municipality,ES17193,Sils,6093,N
 RE_CATA,municipality,ES17194,Susqueda,101,N
 RE_CATA,municipality,ES17195,La Tallada d'Empordà,463,N
 RE_CATA,municipality,ES17196,Terrades,329,N
-RE_CATA,municipality,ES17197,Torrent,175,N
+RE_CATA,municipality,ES17197,Torrent (Barcelona),175,N
 RE_CATA,municipality,ES17198,Torroella de Fluvià,694,N
 RE_CATA,municipality,ES17199,Torroella de Montgrí,11645,N
 RE_CATA,municipality,ES17200,Tortellà,809,N
@@ -3230,7 +3230,7 @@ AC00001,municipality,ES21014,Bonares,6058,N
 AC00001,municipality,ES21015,Cabezas Rubias,730,N
 AC00001,municipality,ES21016,Cala,1167,N
 AC00001,municipality,ES21017,Calañas,2791,N
-AC00001,municipality,ES21018,El Campillo,2023,N
+AC00001,municipality,ES21018,El Campillo (Barcelona),2023,N
 AC00001,municipality,ES21019,Campofrío,675,N
 AC00001,municipality,ES21020,Cañaveral de León,403,N
 AC00001,municipality,ES21021,Cartaya,19974,N
@@ -3741,7 +3741,7 @@ AC00007,municipality,ES24161,Santiago Millas,338,N
 AC00007,municipality,ES24162,Santovenia de la Valdoncina,2126,N
 AC00007,municipality,ES24163,Sariegos,5050,N
 AC00007,municipality,ES24164,Sena de Luna,383,N
-AC00007,municipality,ES24165,Sobrado,312,N
+AC00007,municipality,ES24165,Sobrado (Araba/Álava),312,N
 AC00007,municipality,ES24166,Soto de la Vega,1529,N
 AC00007,municipality,ES24167,Soto y Amío,783,N
 AC00007,municipality,ES24168,Toral de los Guzmanes,500,N
@@ -4288,7 +4288,7 @@ AC00013,municipality,ES28011,Ambite,592,N
 AC00013,municipality,ES28012,Anchuelo,1271,N
 AC00013,municipality,ES28013,Aranjuez,59607,S
 AC00013,municipality,ES28014,Arganda del Rey,55389,S
-AC00013,municipality,ES28015,Arroyomolinos,31396,N
+AC00013,municipality,ES28015,Arroyomolinos (Madrid),31396,N
 AC00013,municipality,ES28016,El Atazar,89,N
 AC00013,municipality,ES28017,Batres,1684,N
 AC00013,municipality,ES28018,Becerril de la Sierra,5714,N
@@ -4357,7 +4357,7 @@ AC00013,municipality,ES28082,Manzanares el Real,8840,N
 AC00013,municipality,ES28083,Meco,14305,N
 AC00013,municipality,ES28084,Mejorada del Campo,23274,N
 AC00013,municipality,ES28085,Miraflores de la Sierra,6108,N
-AC00013,municipality,ES28086,El Molar,8938,N
+AC00013,municipality,ES28086,El Molar (Madrid),8938,N
 AC00013,municipality,ES28087,Los Molinos,4389,N
 AC00013,municipality,ES28088,Montejo de la Sierra,353,N
 AC00013,municipality,ES28089,Moraleja de Enmedio,5136,N
@@ -4572,7 +4572,7 @@ AC00014,municipality,ES30015,Caravaca de la Cruz,25760,S
 AC00014,municipality,ES30016,Cartagena,214802,S
 AC00014,municipality,ES30017,Cehegín,14983,N
 AC00014,municipality,ES30018,Ceutí,11787,N
-AC00014,municipality,ES30019,Cieza,34988,S
+AC00014,municipality,ES30019,Cieza (Málaga),34988,S
 AC00014,municipality,ES30020,Fortuna,10112,N
 AC00014,municipality,ES30021,Fuente Álamo de Murcia,16583,N
 AC00014,municipality,ES30022,Jumilla,25600,S
@@ -4668,7 +4668,7 @@ AC00015,municipality,ES31066,Cárcar,1069,N
 AC00015,municipality,ES31067,Carcastillo,2495,N
 AC00015,municipality,ES31068,Cascante,3864,N
 AC00015,municipality,ES31069,Cáseda,974,N
-AC00015,municipality,ES31070,Castejón,4163,N
+AC00015,municipality,ES31070,Castejón (Málaga),4163,N
 AC00015,municipality,ES31071,Castillonuevo,16,N
 AC00015,municipality,ES31072,Cintruénigo,7903,N
 AC00015,municipality,ES31073,Ziordia,348,N
@@ -4810,7 +4810,7 @@ AC00015,municipality,ES31208,Ribaforada,3750,N
 AC00015,municipality,ES31209,Romanzado,175,N
 AC00015,municipality,ES31210,Roncal/Erronkari,211,N
 AC00015,municipality,ES31211,Orreaga/Roncesvalles,22,N
-AC00015,municipality,ES31212,Sada,133,N
+AC00015,municipality,ES31212,Sada (Málaga),133,N
 AC00015,municipality,ES31213,Saldías,122,N
 AC00015,municipality,ES31214,Salinas de Oro/Jaitz,109,N
 AC00015,municipality,ES31215,San Adrián,6292,N
@@ -4999,7 +4999,7 @@ AC00003,municipality,ES33033,Lena,10890,S
 AC00003,municipality,ES33034,Valdés,11504,S
 AC00003,municipality,ES33035,Llanera,13702,N
 AC00003,municipality,ES33036,Llanes,13568,S
-AC00003,municipality,ES33037,Mieres,37959,S
+AC00003,municipality,ES33037,Mieres (Málaga),37959,S
 AC00003,municipality,ES33038,Morcín,2594,N
 AC00003,municipality,ES33039,Muros de Nalón,1871,N
 AC00003,municipality,ES33040,Nava,5321,N
@@ -5244,7 +5244,7 @@ IS_GRC,municipality,ES35009,Gáldar,24242,S
 IS_LAN,municipality,ES35010,Haría,5123,N
 IS_GRC,municipality,ES35011,Ingenio,31321,N
 IS_GRC,municipality,ES35012,Mogán,20072,N
-IS_GRC,municipality,ES35013,Moya,7696,N
+IS_GRC,municipality,ES35013,Moya (Palencia),7696,N
 IS_FUE,municipality,ES35014,La Oliva,26580,N
 IS_FUE,municipality,ES35015,Pájara,21093,N
 IS_GRC,municipality,ES35016,Las Palmas de Gran Canaria,379925,S
@@ -5587,7 +5587,7 @@ AC00007,municipality,ES37275,Saldeana,105,N
 AC00007,municipality,ES37276,Salmoral,127,N
 AC00007,municipality,ES37277,Salvatierra de Tormes,79,N
 AC00007,municipality,ES37278,San Cristóbal de la Cuesta,1039,N
-AC00007,municipality,ES37279,Sancti-Spíritus,804,N
+AC00007,municipality,ES37279,Sancti-Spíritus (Salamanca),804,N
 AC00007,municipality,ES37280,Sanchón de la Ribera,80,N
 AC00007,municipality,ES37281,Sanchón de la Sagrada,39,N
 AC00007,municipality,ES37282,Sanchotello,217,N
@@ -5762,7 +5762,7 @@ AC00006,municipality,ES39017,Campoo de Yuso,669,N
 AC00006,municipality,ES39018,Cartes,5747,N
 AC00006,municipality,ES39019,Castañeda,2914,N
 AC00006,municipality,ES39020,Castro-Urdiales,32069,S
-AC00006,municipality,ES39021,Cieza,538,N
+AC00006,municipality,ES39021,Cieza (Santa Cruz de Tenerife),538,N
 AC00006,municipality,ES39022,Cillorigo de Liébana,1305,N
 AC00006,municipality,ES39023,Colindres,8484,N
 AC00006,municipality,ES39024,Comillas,2141,N
@@ -5840,7 +5840,7 @@ AC00006,municipality,ES39095,Val de San Vicente,2728,N
 AC00006,municipality,ES39096,Vega de Liébana,736,N
 AC00006,municipality,ES39097,Vega de Pas,763,N
 AC00006,municipality,ES39098,Villacarriedo,1612,N
-AC00006,municipality,ES39099,Villaescusa,3899,N
+AC00006,municipality,ES39099,Villaescusa (Santa Cruz de Tenerife),3899,N
 AC00006,municipality,ES39100,Villafufre,1003,N
 AC00006,municipality,ES39101,Valle de Villaverde,283,N
 AC00006,municipality,ES39102,Voto,2724,N
@@ -6281,7 +6281,7 @@ AC00007,municipality,ES42144,Quintana Redonda,489,N
 AC00007,municipality,ES42145,Quintanas de Gormaz,146,N
 AC00007,municipality,ES42148,Quiñonería,9,N
 AC00007,municipality,ES42149,Los Rábanos,453,N
-AC00007,municipality,ES42151,Rebollar,42,N
+AC00007,municipality,ES42151,Rebollar (Soria),42,N
 AC00007,municipality,ES42152,Recuerda,79,N
 AC00007,municipality,ES42153,Rello,14,N
 AC00007,municipality,ES42154,Renieblas,104,N
@@ -6425,7 +6425,7 @@ RE_CATA,municipality,ES43081,Maspujols,827,N
 RE_CATA,municipality,ES43082,El Masroig,497,N
 RE_CATA,municipality,ES43083,El Milà,178,N
 RE_CATA,municipality,ES43084,Miravet,691,N
-RE_CATA,municipality,ES43085,El Molar,297,N
+RE_CATA,municipality,ES43085,El Molar (Tarragona),297,N
 RE_CATA,municipality,ES43086,Montblanc,7364,N
 RE_CATA,municipality,ES43088,Montbrió del Camp,2890,N
 RE_CATA,municipality,ES43089,Montferri,387,N
@@ -6612,7 +6612,7 @@ AC00002,municipality,ES44097,Escorihuela,136,N
 AC00002,municipality,ES44099,Escucha,852,N
 AC00002,municipality,ES44100,Estercuel,203,N
 AC00002,municipality,ES44101,Ferreruela de Huerva,56,N
-AC00002,municipality,ES44102,Fonfría,27,N
+AC00002,municipality,ES44102,Fonfría (Teruel),27,N
 AC00002,municipality,ES44103,Formiche Alto,141,N
 AC00002,municipality,ES44105,Fórnoles,80,N
 AC00002,municipality,ES44106,Fortanete,205,N
@@ -7208,7 +7208,7 @@ AC00010,municipality,ES46240,Terrateig,278,N
 AC00010,municipality,ES46241,Titaguas,453,N
 AC00010,municipality,ES46242,Torrebaja,411,N
 AC00010,municipality,ES46243,Torrella,146,N
-AC00010,municipality,ES46244,Torrent,82208,S
+AC00010,municipality,ES46244,Torrent (Valencia/València),82208,S
 AC00010,municipality,ES46245,Torres Torres,637,N
 AC00010,municipality,ES46246,Tous,1263,N
 AC00010,municipality,ES46247,Tuéjar,1116,N
@@ -7261,7 +7261,7 @@ AC00007,municipality,ES47027,Cabezón de Pisuerga,3713,N
 AC00007,municipality,ES47028,Cabezón de Valderaduey,33,N
 AC00007,municipality,ES47029,Cabreros del Monte,62,N
 AC00007,municipality,ES47030,Campaspero,1079,N
-AC00007,municipality,ES47031,El Campillo,222,N
+AC00007,municipality,ES47031,El Campillo (Valladolid),222,N
 AC00007,municipality,ES47032,Camporredondo,157,N
 AC00007,municipality,ES47033,Canalejas de Peñafiel,231,N
 AC00007,municipality,ES47034,Canillas de Esgueva,75,N
@@ -7444,7 +7444,7 @@ AC00007,municipality,ES47217,Villanubla,2713,N
 AC00007,municipality,ES47218,Villanueva de Duero,1184,N
 AC00007,municipality,ES47219,Villanueva de la Condesa,61,N
 AC00007,municipality,ES47220,Villanueva de los Caballeros,175,N
-AC00007,municipality,ES47221,Villanueva de los Infantes,102,N
+AC00007,municipality,ES47221,Villanueva de los Infantes (Valladolid),102,N
 AC00007,municipality,ES47222,Villanueva de San Mancio,87,N
 AC00007,municipality,ES47223,Villardefrades,170,N
 AC00007,municipality,ES47224,Villarmentero de Esgueva,111,N
@@ -7455,7 +7455,7 @@ AC00007,municipality,ES47228,Villaverde de Medina,533,N
 AC00007,municipality,ES47229,Villavicencio de los Caballeros,245,N
 AC00007,municipality,ES47230,Wamba,323,N
 AC00007,municipality,ES47231,Zaratán,6233,N
-AC00007,municipality,ES47232,La Zarza,111,N
+AC00007,municipality,ES47232,La Zarza (Valladolid),111,N
 AC00016,municipality,ES48001,Abadiño,7599,N
 AC00016,municipality,ES48002,Abanto y Ciérvana-Abanto Zierbena,9444,N
 AC00016,municipality,ES48003,Amorebieta-Etxano,19339,N
@@ -7632,7 +7632,7 @@ AC00007,municipality,ES49066,Ferreras de Abajo,499,N
 AC00007,municipality,ES49067,Ferreras de Arriba,365,N
 AC00007,municipality,ES49068,Ferreruela,466,N
 AC00007,municipality,ES49069,Figueruela de Arriba,332,N
-AC00007,municipality,ES49071,Fonfría,756,N
+AC00007,municipality,ES49071,Fonfría (Zamora),756,N
 AC00007,municipality,ES49075,Fresno de la Polvorosa,138,N
 AC00007,municipality,ES49076,Fresno de la Ribera,377,N
 AC00007,municipality,ES49077,Fresno de Sayago,167,N
@@ -7784,7 +7784,7 @@ AC00007,municipality,ES49237,Videmala,147,N
 AC00007,municipality,ES49238,Villabrázaro,252,N
 AC00007,municipality,ES49239,Villabuena del Puente,675,N
 AC00007,municipality,ES49240,Villadepera,198,N
-AC00007,municipality,ES49241,Villaescusa,249,N
+AC00007,municipality,ES49241,Villaescusa (Zamora),249,N
 AC00007,municipality,ES49242,Villafáfila,478,N
 AC00007,municipality,ES49243,Villaferrueña,110,N
 AC00007,municipality,ES49244,Villageriz,56,N
