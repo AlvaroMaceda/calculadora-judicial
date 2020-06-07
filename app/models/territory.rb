@@ -10,7 +10,8 @@ class Territory < ApplicationRecord
         autonomous_community: 'autonomous_community', 
         island: 'island', 
         region: 'region', 
-        municipality: 'municipality' 
+        municipality: 'municipality',
+        local_entity: 'local_entity'
     }, _suffix: :kind
 
     enum court: {
@@ -60,6 +61,10 @@ class Territory < ApplicationRecord
             parent_holidays = []
         end
 
+        if self.local_entity_kind?
+            parent_holidays = remove_holidays_of_municipalities(parent_holidays)
+        end
+
         self_holidays = holidays.between(start_date, end_date).to_a
 
         my_holidays_unordered = self_holidays + parent_holidays
@@ -90,6 +95,10 @@ class Territory < ApplicationRecord
             chars_to_remove = "-/'"
             transliterated.tr(chars_to_remove,'')
         end
+    end
+
+    def remove_holidays_of_municipalities(holidays)
+        holidays.select { |h| !h.holidayable.municipality_kind? }
     end
 
 end

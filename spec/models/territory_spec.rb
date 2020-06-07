@@ -70,6 +70,7 @@ describe Territory, type: :model do
                 @grandparent = create(:territory)
                 @parent = create(:territory, parent: @grandparent)
                 @territory = create(:territory, parent: @parent)
+                @local_entity = create(:territory, parent: @territory, kind: :local_entity)
 
                 @grandparent_holiday = create(:holiday, holidayable: @grandparent, date: Date.parse('03 Mar 2020'))
                 @parent_holiday = create(:holiday, holidayable: @parent, date: Date.parse('04 Apr 2020'))
@@ -77,6 +78,7 @@ describe Territory, type: :model do
                 @territory_holiday_2 = create(:holiday, holidayable: @territory, date: Date.parse('06 Apr 2020'))
                 @territory_holiday_3 = create(:holiday, holidayable: @territory, date: Date.parse('12 Dec 2020'))
                 @territory_holiday_4 = create(:holiday, holidayable: @territory, date: Date.parse('15 Dec 2020'))
+                @local_entity_holiday_1 = create(:holiday, holidayable: @local_entity, date: Date.parse('14 Dec 2020'))
             end
     
             it 'includes holidays in the interval' do
@@ -123,6 +125,16 @@ describe Territory, type: :model do
                 ]
     
                 holidays_found = @territory.holidays_between(start_date, end_date)
+
+                expect(holidays_found).to eq(expected)
+            end
+
+            it 'local entities do not return parent municipality holidays' do
+                start_date = Date.parse('10 Dec 2020')
+                end_date = Date.parse('16 Dec 2020')
+                expected = [ @local_entity_holiday_1 ]
+
+                holidays_found = @local_entity.holidays_between(start_date, end_date)
 
                 expect(holidays_found).to eq(expected)
             end
