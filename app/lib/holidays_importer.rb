@@ -9,7 +9,13 @@ class HolidaysImporter
     private
     
     def process_row(row)
-        create_holiday row
+        # We skip holidays without date because we may not have all data
+        # and we want to use a template with all municipalities
+        create_holiday row if not empty_date? row
+    end
+
+    def empty_date?(row)
+        row['date'].to_s.empty?
     end
 
     def expected_headers
@@ -48,7 +54,7 @@ class HolidaysImporter
     def parse_date(date)
         begin
             Date.strptime(date, '%d/%m/%Y')
-        rescue ArgumentError => e
+        rescue ArgumentError,TypeError => e
             raise InvalidDate.new(e.message)
         end
     end

@@ -32,6 +32,26 @@ describe HolidaysImporter do
         expect(all_holidays_in_DB).to match_array(expected)
     end
 
+    it 'skip rows without date' do
+        csv_data = <<~HEREDOC
+            code,date
+            CT_ESP,03/03/2020
+            AC00001,
+            ES26036,""
+            ES26036,04/04/2020
+        HEREDOC
+
+        expected = [
+            {code: 'CT_ESP', date: Date.parse('2020-03-03') },
+            {code: 'ES26036', date: Date.parse('2020-04-04') }
+        ]
+
+        csv = StringIO.new(csv_data)
+        importer.importCSV csv
+
+        expect(all_holidays_in_DB).to match_array(expected)
+    end
+
     context 'errors' do
 
         it 'returns errors if territory does not exist' do
@@ -74,7 +94,7 @@ describe HolidaysImporter do
                 CT_ESP,03/03/2020
                 AC00001,03/03/2020
                 ES26036,03/03/2020
-                THIS SHOULD FAIL
+                THIS SHOULD FAIL,BADLY
             HEREDOC
 
             csv = StringIO.new(csv_data)
