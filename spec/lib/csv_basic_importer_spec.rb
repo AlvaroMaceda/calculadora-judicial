@@ -198,7 +198,7 @@ describe CsvBasicImporter do
                     @counter += 1
                 end
                 def do_insert()
-                    insert_record = "INSERT INTO some_data_for_tests VALUES ('#{@counter}')"
+                    insert_record = "INSERT INTO some_data_for_tests VALUES (#{@counter})"
                     ActiveRecord::Base.connection.execute(insert_record)
                 end
             end.new
@@ -214,14 +214,14 @@ describe CsvBasicImporter do
             # Some DB do not allow nested transactions, so we create and delete the table here
             create_table = <<~HEREDOC
                 CREATE TABLE some_data_for_tests ( 
-                    some_data STRING NOT NULL
+                    some_data INTEGER NOT NULL
                 );
             HEREDOC
             ActiveRecord::Base.connection.execute(create_table)
 
             expect {importer.importCSV csv}.to raise_error(CsvBasicImporter::ImportError)
             records = ActiveRecord::Base.connection.execute('SELECT * FROM some_data_for_tests')
-            expect(records).to eq([])
+            expect(records.count).to eq(0)
             
             drop_table = "DROP TABLE some_data_for_tests;"
             ActiveRecord::Base.connection.execute(drop_table)
