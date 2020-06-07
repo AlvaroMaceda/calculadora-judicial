@@ -110,6 +110,8 @@ Then connect to pgadmin with your browser:
 
 It will ask for a password to connect to the database. Just hit enter.
 
+Logs are disabled by default. If you need to see logs, comment the logging key for the service in docker-compose.yml.
+
 To stop pgadmin4
 - ```docker-compose stop pgadmin```
 

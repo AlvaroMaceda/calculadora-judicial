@@ -26,6 +26,8 @@ services:
       - ./docker/pgadmin4_servers.json:/pgadmin4/servers.json
     networks:
       - calculadora_judicial
+    logging:
+        driver: none
 
 volumes:
   db_data:
