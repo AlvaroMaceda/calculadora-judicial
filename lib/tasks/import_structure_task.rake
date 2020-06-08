@@ -39,7 +39,7 @@ namespace :import do
         end
 
         clean_structure
-        do_territory_import structure_file
+    do_territory_import structure_file
     end
 
     desc "DESTROYS municipalities and imports new data (structure shold exists in DB)"
