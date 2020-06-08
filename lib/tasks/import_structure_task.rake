@@ -42,7 +42,7 @@ namespace :import do
     task municipalities: :environment do |task|
         message = <<~HEREDOC
             WARNING! DESTRUCTIVE ACTION!
-            This will DESTROY current municipalities and import new ones from data/municipalities.csv file
+            This will DESTROY current municipalities and import new ones from data/municipalities.csv and data/local_entities.csv file
         HEREDOC
         next unless confirm(message)
 
@@ -55,7 +55,17 @@ namespace :import do
         end
 
         clean_municipalities
-        do_territory_import municipalities_file        
+        do_territory_import municipalities_file      
+        
+        local_entities_file = File.join(root_dir,'data','local_entities.csv')
+
+        if !File.file?(municilocal_entities_filepalities_file)
+            puts 'Local entities file does not exist'
+            next
+        else
+            do_territory_import local_entities_file 
+        end
+
     end
 
 end

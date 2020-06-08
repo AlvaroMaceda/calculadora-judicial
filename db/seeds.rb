@@ -28,6 +28,16 @@ def seed_territories
     municipalities = File.join(__dir__,'..','data','municipalities.csv')
     time = benchmark { statistics = importer.importCSV(municipalities) }
     puts "Imported #{statistics.imported} municipalities in #{time.round(2)} seconds"
+
+    puts 'Importing local entities...'
+    local_entities = File.join(__dir__,'..','data','local_entities.csv')
+    if File.file?(local_entities)
+        time = benchmark { statistics = importer.importCSV(local_entities) }
+        puts "Imported #{statistics.imported} local entities in #{time.round(2)} seconds"
+    else
+        puts 'No local entities file found'
+    end
+
 end
 seed_territories
 
