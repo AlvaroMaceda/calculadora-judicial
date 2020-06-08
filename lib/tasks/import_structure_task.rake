@@ -10,11 +10,15 @@ namespace :import do
     end
 
     def clean_structure
-        Territory.where.not(kind: [:municipality]).destroy_all
+        puts "Deleting previous data..."
+        time = benchmark { Territory.where.not(kind: [:municipality, :local_entity]).destroy_all }
+        puts "Data deleted in #{time.round(2)} seconds"
     end
 
     def clean_municipalities
-        Territory.where(kind: [:municipality]).destroy_all
+        puts "Deleting previous data..."
+        time = benchmark { Territory.where(kind: [:municipality, :local_entity]).destroy_all }
+        puts "Data deleted in #{time.round(2)} seconds"
     end
 
     desc "DESTROYS structure and imports a new one (country, autonomous community, regions, islands)"
@@ -59,7 +63,7 @@ namespace :import do
         
         local_entities_file = File.join(root_dir,'data','local_entities.csv')
 
-        if !File.file?(municilocal_entities_filepalities_file)
+        if !File.file?(local_entities_file)
             puts 'Local entities file does not exist'
             next
         else
