@@ -77,6 +77,8 @@ class Territory < ApplicationRecord
     private
     
     def have_self_holidays_for?(year)
+        # We are assuming that it MUST have at least one holiday per year. 
+        # No holidays for a year means that the data is still not recorder into the DB
         self_holidays_between(Date.new(year.to_i,1,1), Date.new(year.to_i,12,31)).count > 0
     end
 

@@ -24,10 +24,12 @@ class DeadlineCalculator
         days_to_add += DAYS_IN_A_WEEKEND if extra_weekend?(start_date,single_days)
 
         end_date_without_holidays = start_date+days_to_add
+        deadline = apply_holidays(start_date, end_date_without_holidays)
 
         return DeadlineCalculatorResult.new(
-            deadline: apply_holidays(start_date, end_date_without_holidays),
-            holidays_affected: @holidays_affected
+            deadline: deadline,
+            holidays_affected: @holidays_affected,
+            missing_holidays_for: missing_holidays_between(notification_date, deadline)
         )
     end
 
@@ -122,6 +124,24 @@ class DeadlineCalculator
     """
     def extra_weekend?(date, shift)
         shift > ( 5 - date.wday )
+    end
+
+    def missing_holidays_between(start_date, end_date)
+        missing_holidays = []
+
+        years_in_interval(start_date, end_date).each do |year|
+            missing_for_year = @holidayable.holidays_missing_for(year).map do |territory| 
+                MissingHolidaysInfo.new(territory,year) 
+            end
+            
+            missing_holidays.concat missing_for_year
+        end
+        
+        return missing_holidays
+    end
+
+    def years_in_interval(start_date, end_date)
+        start_date.year..end_date.year
     end
 
 end

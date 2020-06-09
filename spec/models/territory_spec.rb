@@ -298,17 +298,13 @@ describe Territory, type: :model do
 
         before(:each) do
             @grandparent = create(:territory, name: 'Grandparent')
-            # grandparent_2018 = create(:holiday, holidayable: @grandparent, date: Date.parse('15 Jan 2018'))
             grandparent_2019 = create(:holiday, holidayable: @grandparent, date: Date.parse('15 Jan 2019'))
             grandparent_2020 = create(:holiday, holidayable: @grandparent, date: Date.parse('15 Jan 2020'))
 
             @parent = create(:territory, parent: @grandparent, name: 'Parent')
             parent_2019 = create(:holiday, holidayable: @parent, date: Date.parse('15 Jan 2019'))
-            # parent_2020 = create(:holiday, holidayable: @parent, date: Date.parse('15 Jan 2020'))
 
             @territory = create(:territory, parent: @parent, name: 'Territory')
-            # territory_2018 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2018'))
-            # territory_2020 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2020'))
             territory_2021 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2021'))
         end
 
