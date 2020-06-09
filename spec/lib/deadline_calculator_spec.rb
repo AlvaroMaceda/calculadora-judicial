@@ -352,9 +352,8 @@ describe DeadlineCalculator do
 
             calculator = DeadlineCalculator.new(@child_territory)
             
-            deadline = calculator.deadline(notification_date,days)
+            holidays = calculator.deadline(notification_date,days).holidays_affected
             
-            holidays = calculator.holidays_affected
             expected = [
                 @holiday_6Jan, @holiday_7Jan
             ]
@@ -378,9 +377,8 @@ describe DeadlineCalculator do
 
             calculator = DeadlineCalculator.new(@child_territory)
             
-            deadline = calculator.deadline(notification_date,days)
+            holidays = calculator.deadline(notification_date,days).holidays_affected
             
-            holidays = calculator.holidays_affected
             expected = [
                 @holiday_6Jan, @holiday_7Jan
             ]

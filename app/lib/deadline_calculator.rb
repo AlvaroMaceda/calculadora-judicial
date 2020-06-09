@@ -25,11 +25,10 @@ class DeadlineCalculator
 
         end_date_without_holidays = start_date+days_to_add
 
-        return apply_holidays(start_date, end_date_without_holidays)
-    end
-
-    def holidays_affected
-        @holidays_affected
+        return DeadlineCalculatorResult.new(
+            deadline: apply_holidays(start_date, end_date_without_holidays),
+            holidays_affected: @holidays_affected
+        )
     end
 
     private
