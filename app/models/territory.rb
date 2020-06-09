@@ -72,6 +72,9 @@ class Territory < ApplicationRecord
         return my_holidays_unordered.sort_by { |holiday| holiday[:date] }
     end
 
+    def holidays_missing_for(year)
+    end
+
     private
 
     def set_defaults

@@ -294,4 +294,25 @@ describe Territory, type: :model do
 
     end # similar_to scope
 
+    context 'holidays missing' do
+
+        before(:each) do
+            @grandparent = create(:territory)
+            @parent = create(:territory, parent: @grandparent)
+            @territory = create(:territory, parent: @parent)
+            territory_2020 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2020'))
+            territory_2019 = create(:holiday, holidayable: @territory, date: Date.parse('15 May 2019'))
+        end
+
+        it 'return true if has holidays' do
+            expect(@territory.has_holidays_for?(2019)).to be(true)
+            expect(@territory.has_holidays_for?(2020)).to be(true)
+        end
+
+        it 'return false if doesn\'t has holidays' do
+            expect(@territory.has_holidays_for?(2021)).to be(false)
+        end
+
+    end # has holidays for scope
+
 end
