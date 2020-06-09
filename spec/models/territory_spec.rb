@@ -297,20 +297,39 @@ describe Territory, type: :model do
     context 'holidays missing' do
 
         before(:each) do
-            @grandparent = create(:territory)
-            @parent = create(:territory, parent: @grandparent)
-            @territory = create(:territory, parent: @parent)
-            territory_2020 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2020'))
-            territory_2019 = create(:holiday, holidayable: @territory, date: Date.parse('15 May 2019'))
+            @grandparent = create(:territory, name: 'Grandparent')
+            # grandparent_2018 = create(:holiday, holidayable: @grandparent, date: Date.parse('15 Jan 2018'))
+            grandparent_2019 = create(:holiday, holidayable: @grandparent, date: Date.parse('15 Jan 2019'))
+            grandparent_2020 = create(:holiday, holidayable: @grandparent, date: Date.parse('15 Jan 2020'))
+
+            @parent = create(:territory, parent: @grandparent, name: 'Parent')
+            parent_2019 = create(:holiday, holidayable: @parent, date: Date.parse('15 Jan 2019'))
+            # parent_2020 = create(:holiday, holidayable: @parent, date: Date.parse('15 Jan 2020'))
+
+            @territory = create(:territory, parent: @parent, name: 'Territory')
+            # territory_2018 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2018'))
+            # territory_2020 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2020'))
+            territory_2021 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2021'))
         end
 
-        it 'return true if has holidays' do
-            expect(@territory.has_holidays_for?(2019)).to be(true)
-            expect(@territory.has_holidays_for?(2020)).to be(true)
+        it 'returns itself if missing holidays for that year' do
+            expect(@territory.holidays_missing_for(2019)).to match_array([@territory])
         end
 
-        it 'return false if doesn\'t has holidays' do
-            expect(@territory.has_holidays_for?(2021)).to be(false)
+        it 'returns missing parent holidays' do
+            expected = [
+                @parent,
+                @territory
+            ]
+            expect(@territory.holidays_missing_for(2020)).to match_array(expected)
+        end
+
+        it 'returns missing holidays in the chain' do
+            expected = [
+                @grandparent,
+                @parent
+            ]
+            expect(@territory.holidays_missing_for(2021)).to match_array(expected)
         end
 
     end # has holidays for scope

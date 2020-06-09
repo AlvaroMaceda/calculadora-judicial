@@ -55,17 +55,13 @@ class Territory < ApplicationRecord
 
     def holidays_between(start_date, end_date)
         
-        if parent
-            parent_holidays = parent.holidays_between(start_date, end_date).to_a 
-        else
-            parent_holidays = []
-        end
+        parent_holidays = parent ? parent.holidays_between(start_date, end_date).to_a : []
 
         if self.local_entity_kind?
             parent_holidays = remove_holidays_of_municipalities(parent_holidays)
         end
 
-        self_holidays = holidays.between(start_date, end_date).to_a
+        self_holidays = self_holidays_between(start_date, end_date)
 
         my_holidays_unordered = self_holidays + parent_holidays
     
@@ -73,9 +69,20 @@ class Territory < ApplicationRecord
     end
 
     def holidays_missing_for(year)
+        self_missing_holidays =  have_self_holidays_for?(year) ? [] : [self]
+        parent_missing_holidays = parent ? parent.holidays_missing_for(year) : []
+        return self_missing_holidays+parent_missing_holidays 
+    end
+    
+    private
+    
+    def have_self_holidays_for?(year)
+        self_holidays_between(Date.new(year.to_i,1,1), Date.new(year.to_i,12,31)).count > 0
     end
 
-    private
+    def self_holidays_between(start_date, end_date)
+        holidays.between(start_date, end_date).to_a
+    end
 
     def set_defaults
         self.population ||= 0
