@@ -1,6 +1,7 @@
 default: &default
-  adapter: <%= ENV['DATABASE_ADAPTER'] %>
+  adapter: postgresql
   encoding: unicode
+  pool: 5
   host: <%= ENV['DATABASE_HOST'] %>
   port: <%= ENV['DATABASE_PORT'] || '5432' %>
   username: <%= ENV['DATABASE_USER'] %>
@@ -11,15 +12,15 @@ default: &default
 development:
   <<: *default
   username: devuser
-  database: <%= ENV['DATABASE_DATABASE_DEVELOPMENT'] %>
+  database: calculadora_judicial_dev
 
 test:
   <<: *default
   username: testuser
-  database: <%= ENV['DATABASE_DATABASE_TEST'] %>
+  database: calculadora_judicial_test
 
 production:
   <<: *default
-  database: <%= ENV['DATABASE_DATABASE_PRODUCTION'] %>
+  database: calculadora_judicial
 
 
