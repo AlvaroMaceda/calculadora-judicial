@@ -2,32 +2,6 @@
 
 module JsonUtilities
 
-
-    class ComparisonResult
-        attr_reader :result, :error_path
-
-        def initialize(result,error_path='')
-            @result = result
-            @error_path = error_path
-        end
-
-        def ==(other)
-            return @result==other if is_boolean?(other)
-            return @result==other.result && @error_path==other.error_path if other.instance_of?(ComparisonResult)
-            return false
-        end
-        alias_method :eql?, :==
-
-    private
-
-        def is_boolean?(value)
-            [true, false].include? value
-        end
-    end
-
-    class ComparisonError < RuntimeError
-    end
-
     # compares two json objects (Array, Hash, or String to be parsed) for equality
     def compare_json(json1, json2)
 
@@ -52,7 +26,7 @@ module JsonUtilities
     
     private
     
-    def do_compare_json(json1,json2,path="")
+    def do_compare_json(json1,json2,path="$")
         # It raises an error if finds a difference
         
         if(json1.is_a?(Array))
@@ -77,7 +51,7 @@ module JsonUtilities
             raise ComparisonError.new(path) unless json2.respond_to?(:has_key?) && json2.has_key?(key)
             json1_val, json2_val = value, json2[key]
 
-            path = path + "/#{key}"
+            path = path + ".#{key}"
 
             if(json1_val.is_a?(Array) || json1_val.is_a?(Hash))
                 do_compare_json(json1_val, json2_val, path)
@@ -86,6 +60,31 @@ module JsonUtilities
             end
             
         end
+    end
+
+    class ComparisonResult
+        attr_reader :result, :error_path
+
+        def initialize(result,error_path='')
+            @result = result
+            @error_path = error_path
+        end
+
+        def ==(other)
+            return @result==other if is_boolean?(other)
+            return @result==other.result && @error_path==other.error_path if other.instance_of?(ComparisonResult)
+            return false
+        end
+        alias_method :eql?, :==
+
+    private
+
+        def is_boolean?(value)
+            [true, false].include? value
+        end
+    end
+
+    class ComparisonError < RuntimeError
     end
 
 end

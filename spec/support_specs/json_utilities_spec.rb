@@ -32,7 +32,6 @@ describe JsonUtilities do
           e22: "e22"
         }
       ]
-      
       expect(compare_json(json1,json2).result).to be(true)
     end
 
@@ -52,15 +51,13 @@ describe JsonUtilities do
       
       comparison = compare_json(json1,json2)
 
-      expect(comparison.error_path).to eql('[2]/e21/e211')
+      expect(comparison.error_path).to eql('$[2].e21.e211')
       expect(comparison.result).to be(false)
     end
-
 
     it 'fails when order different' do
 
       json2 = [
-        [1,2,3],
         {e11: 1, e12: "2"},
         {
           e21: {
@@ -69,11 +66,12 @@ describe JsonUtilities do
           },
           e22: "e22"
         },
+        [1,2,3],
       ]
       
       comparison = compare_json(json1,json2)
       
-      expect(comparison.error_path).to eql('[0]')
+      expect(comparison.error_path).to eql('$[1][0]')
       expect(comparison.result).to be(false)
     end
 
