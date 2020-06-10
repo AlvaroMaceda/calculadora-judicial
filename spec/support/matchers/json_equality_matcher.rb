@@ -19,7 +19,7 @@ module My
             # We won't check json schema if response code is not the expected
             def matches?(received_json)
                 @comparison_result = JSON.compare(@expected_json, received_json)
-                return false 
+                return @comparison_result.result
             end
     
             def failure_message

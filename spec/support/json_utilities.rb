@@ -4,7 +4,14 @@ module JSON
 
     extend self
 
-    # compares two json objects (Array, Hash, or String to be parsed) for equality
+    # Compares two json objects (Array, Hash, or String to be parsed) for equality
+    # when the order of arrays doesn't matter. For example:
+    # 
+    #  json1 = [ {a:2}, 3, 4]
+    #  json2 = [ 3, {a:2}, 4]
+    #  JSON.compare(json1,json2) => (true,'')
+    #
+    # If the order of arrays matter, just use regular == on hashes
     def compare(json1, json2)
 
         raise ComparisonError.new('Can only compare JSON strings, Arrays or Hashes') unless  (json1.is_a?(String) || json1.is_a?(Hash) || json1.is_a?(Array))
@@ -27,8 +34,7 @@ module JSON
     private
     
     def do_compare_json(json1,json2,path="$")
-        # It raises an error if finds a difference
-        
+        # It raises an error if finds a difference        
         if(json1.is_a?(Array))
             do_compare_json_array(json1,json2,path)
         elsif(json1.is_a?(Hash))
@@ -39,10 +45,28 @@ module JSON
     end
 
     def do_compare_json_array(json1,json2,path)
-        json1.each_with_index do |obj, index|
-            json1_obj, json2_obj = obj, json2[index]
-            do_compare_json(json1_obj, json2_obj,path+"[#{index}]")
+        raise ComparisonError.new(path) unless json1.is_a?(Array) && json2.is_a?(Array)
+        
+        json2_remaining_elements = json2.dup
+        
+        json1.each_with_index do |json1_obj, index_j1|
+            new_path = path+"[#{index_j1}]"
+            error_path = new_path
+            found = false
+            json2_remaining_elements.each_with_index do |json2_obj, index_j2|
+                begin
+                    do_compare_json(json1_obj, json2_obj,new_path)
+                    found = true
+                    json2_remaining_elements.delete_at(index_j2)
+                    break
+                rescue ComparisonError => e
+                    error_path = e.message
+                end
+            end
+            raise ComparisonError.new(error_path) unless found
         end
+        
+        raise ComparisonError.new(path) unless json2_remaining_elements.empty?
     end
 
     def do_compare_json_hash(json1,json2,path)
