@@ -1,9 +1,11 @@
 # Modified from https://gist.github.com/binarydev/aeb35977a2ad22eeaea1
 
-module JsonUtilities
+module JSON
+
+    extend self
 
     # compares two json objects (Array, Hash, or String to be parsed) for equality
-    def compare_json(json1, json2)
+    def compare(json1, json2)
 
         # return false if classes mismatch or don't match our allowed types
         unless((json1.class == json2.class) && (json1.is_a?(String) || json1.is_a?(Hash) || json1.is_a?(Array))) 
@@ -51,12 +53,10 @@ module JsonUtilities
             raise ComparisonError.new(path) unless json2.respond_to?(:has_key?) && json2.has_key?(key)
             json1_val, json2_val = value, json2[key]
 
-            path = path + ".#{key}"
-
             if(json1_val.is_a?(Array) || json1_val.is_a?(Hash))
-                do_compare_json(json1_val, json2_val, path)
+                do_compare_json(json1_val, json2_val, path+ ".#{key}")
             else
-                raise ComparisonError.new(path) unless (json1_val == json2_val)
+                raise ComparisonError.new(path+".#{key}") unless (json1_val == json2_val)
             end
             
         end
@@ -77,6 +77,10 @@ module JsonUtilities
         end
         alias_method :eql?, :==
 
+        def true?
+            @result
+        end
+
     private
 
         def is_boolean?(value)
@@ -84,7 +88,7 @@ module JsonUtilities
         end
     end
 
-    class ComparisonError < RuntimeError
+    class ComparisonError < JSONError
     end
 
 end
