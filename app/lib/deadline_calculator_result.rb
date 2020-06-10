@@ -1,12 +1,12 @@
 
 class DeadlineCalculatorResult
 
-    attr_reader :deadline, :holidays_affected, :missing_holidays_for
+    attr_reader :deadline, :holidays_affected, :missing_holidays
 
-    def initialize(deadline:,holidays_affected:, missing_holidays_for: [])
+    def initialize(deadline:,holidays_affected:, missing_holidays: [])
         @deadline = deadline
         @holidays_affected = holidays_affected.clone.freeze
-        @missing_holidays_for = missing_holidays_for.clone.freeze
+        @missing_holidays = missing_holidays.clone.freeze
     end
 
     def ==(other)
@@ -21,7 +21,7 @@ private
     def compare_contents(other)
         @deadline == other.deadline && 
         @holidays_affected == other.holidays_affected &&
-        @missing_holidays_for == other.missing_holidays_for
+        @missing_holidays == other.missing_holidays
     end
 
     def compare_date(date)

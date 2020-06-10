@@ -7,3 +7,7 @@ json.holidays(@holidays_affected) do |holiday|
     json.kind holiday.holidayable.kind
     json.territory holiday.holidayable.name
 end
+json.missing_holidays(@missing_holidays) do |miss|
+    json.territory miss.territory.name
+    json.year miss.year
+end

@@ -405,7 +405,7 @@ describe DeadlineCalculator do
             notification_date = Date.parse('15 Jan 2021')
             days = 1
 
-            missing_holidays = calculator.deadline(notification_date,days).missing_holidays_for
+            missing_holidays = calculator.deadline(notification_date,days).missing_holidays
             expected_missing = [
                 MissingHolidaysInfo.new(@parent_territory,2021),
                 MissingHolidaysInfo.new(@child_territory,2021)
@@ -419,7 +419,7 @@ describe DeadlineCalculator do
             notification_date = Date.parse('15 Jan 2020')
             days = 1
 
-            missing_holidays = calculator.deadline(notification_date,days).missing_holidays_for
+            missing_holidays = calculator.deadline(notification_date,days).missing_holidays
             expected_missing = []
 
             expect(missing_holidays).to match_array(expected_missing)            
@@ -429,7 +429,7 @@ describe DeadlineCalculator do
             notification_date = Date.parse('5 Jan 2019')
             days = 365 * 2 # This will take 2019, 2020 and 2021
 
-            missing_holidays = calculator.deadline(notification_date,days).missing_holidays_for
+            missing_holidays = calculator.deadline(notification_date,days).missing_holidays
             expected_missing = [
                 MissingHolidaysInfo.new(@parent_territory,2019),
                 MissingHolidaysInfo.new(@child_territory,2019),

@@ -11,13 +11,13 @@ describe DeadlineCalculatorResult do
         ]
     }
 
-    let(:missing_holidays_for) { [create(:territory), create(:territory)] }
+    let(:missing_holidays) { [create(:territory), create(:territory)] }
 
     let(:result) {
         DeadlineCalculatorResult.new(
             deadline: result_deadline,
             holidays_affected: result_holidays,
-            missing_holidays_for: missing_holidays_for
+            missing_holidays: missing_holidays
         )
     }
 
@@ -30,7 +30,7 @@ describe DeadlineCalculatorResult do
     end
 
     it 'has missing holidays' do
-        expect(result.missing_holidays_for).to eq(missing_holidays_for)
+        expect(result.missing_holidays).to eq(missing_holidays)
     end
 
     context 'compares with another result' do
@@ -39,7 +39,7 @@ describe DeadlineCalculatorResult do
             another_result = DeadlineCalculatorResult.new(
                 deadline: result_deadline,
                 holidays_affected: result_holidays,
-                missing_holidays_for: missing_holidays_for
+                missing_holidays: missing_holidays
             )
 
             expect(result).to eql(another_result)
@@ -49,7 +49,7 @@ describe DeadlineCalculatorResult do
             another_result = DeadlineCalculatorResult.new(
                 deadline: result_deadline + 1,
                 holidays_affected: result_holidays,
-                missing_holidays_for: missing_holidays_for
+                missing_holidays: missing_holidays
             )
 
             expect(result).not_to eql(another_result)            
@@ -59,7 +59,7 @@ describe DeadlineCalculatorResult do
             another_result = DeadlineCalculatorResult.new(
                 deadline: result_deadline,
                 holidays_affected: nil,
-                missing_holidays_for: missing_holidays_for
+                missing_holidays: missing_holidays
             )
 
             expect(result).not_to eql(another_result) 
@@ -69,7 +69,7 @@ describe DeadlineCalculatorResult do
             another_result = DeadlineCalculatorResult.new(
                 deadline: result_deadline,
                 holidays_affected: result_holidays,
-                missing_holidays_for: [create(:territory)]
+                missing_holidays: [create(:territory)]
             )
 
             expect(result).not_to eql(another_result) 

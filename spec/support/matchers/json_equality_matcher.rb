@@ -1,4 +1,5 @@
-# require 
+require 'json'
+
 module My
     module Matchers
 
@@ -17,16 +18,12 @@ module My
     
             # We won't check json schema if response code is not the expected
             def matches?(received_json)
-                begin
-                    comparison_result = JsonUtilities.compare_json(expected_json, received_json)
-                rescue # This is to get the key with the error
-                end
-                # return comparison_result
+                @comparison_result = JSON.compare(@expected_json, received_json)
                 return false 
             end
     
             def failure_message
-                'TO-DO'
+                "JSON differs at path #{@comparison_result.error_path}"
             end        
         end
         

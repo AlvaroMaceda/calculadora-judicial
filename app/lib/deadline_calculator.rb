@@ -29,7 +29,7 @@ class DeadlineCalculator
         return DeadlineCalculatorResult.new(
             deadline: deadline,
             holidays_affected: @holidays_affected,
-            missing_holidays_for: missing_holidays_between(notification_date, deadline)
+            missing_holidays: missing_holidays_between(notification_date, deadline)
         )
     end
 

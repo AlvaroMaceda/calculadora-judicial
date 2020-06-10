@@ -11,6 +11,7 @@ class Api::DeadlineCalculatorController < ApplicationController
         result = DeadlineCalculator.new(municipality).deadline(@notification_date, @days)
         @deadline = result.deadline 
         @holidays_affected = result.holidays_affected
+        @missing_holidays = result.missing_holidays
     end
 
     private 

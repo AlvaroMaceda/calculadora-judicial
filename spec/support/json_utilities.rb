@@ -7,10 +7,8 @@ module JSON
     # compares two json objects (Array, Hash, or String to be parsed) for equality
     def compare(json1, json2)
 
-        # return false if classes mismatch or don't match our allowed types
-        unless((json1.class == json2.class) && (json1.is_a?(String) || json1.is_a?(Hash) || json1.is_a?(Array))) 
-            return false
-        end
+        raise ComparisonError.new('Can only compare JSON strings, Arrays or Hashes') unless  (json1.is_a?(String) || json1.is_a?(Hash) || json1.is_a?(Array))
+        raise ComparisonError.new('Expected same class for both parameters') unless json1.class == json2.class
             
         # Parse objects to JSON if Strings
         json1,json2 = [json1,json2].map! do |json|
@@ -49,14 +47,15 @@ module JSON
 
     def do_compare_json_hash(json1,json2,path)
         json1.each do |key,value|
-        
-            raise ComparisonError.new(path) unless json2.respond_to?(:has_key?) && json2.has_key?(key)
+            current_path = path+".#{key}"
+
+            raise ComparisonError.new(current_path) unless json2.respond_to?(:has_key?) && json2.has_key?(key)
             json1_val, json2_val = value, json2[key]
 
             if(json1_val.is_a?(Array) || json1_val.is_a?(Hash))
-                do_compare_json(json1_val, json2_val, path+ ".#{key}")
+                do_compare_json(json1_val, json2_val,current_path)
             else
-                raise ComparisonError.new(path+".#{key}") unless (json1_val == json2_val)
+                raise ComparisonError.new(current_path) unless (json1_val == json2_val)
             end
             
         end
