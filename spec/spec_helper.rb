@@ -95,4 +95,9 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 
+  # Max output length of "expected..." and "got..." when there is an error
+  config.expect_with :rspec do |c|    
+    c.max_formatted_output_length = nil
+  end
+
 end
