@@ -1,8 +1,8 @@
-require 
+# require 
 module My
     module Matchers
 
-        def same_json_as(expected_json)
+        def be_same_json_as(expected_json)
             BeSameJSon.new expected_json
         end
   
@@ -21,10 +21,12 @@ module My
                     comparison_result = JsonUtilities.compare_json(expected_json, received_json)
                 rescue # This is to get the key with the error
                 end
-                return comparison_result      
+                # return comparison_result
+                return false 
             end
     
             def failure_message
+                'TO-DO'
             end        
         end
         

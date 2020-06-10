@@ -61,7 +61,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
             expect(response.body).to eq(expected) 
         end
 
-        it 'returns missing holidays',focus: true do
+        it 'returns missing holidays' do
             params = {
                 municipality_code: Spain.benidorm.code,
                 notification: '2019-02-04',
@@ -82,7 +82,7 @@ describe Api::DeadlineCalculatorController, type: :controller do
                 ]
             }).to_json
 
-            expect(response.body).to eq(expected) 
+            expect(response.body).to be_same_json_as(expected) 
         end
 
         context 'missing parameters' do

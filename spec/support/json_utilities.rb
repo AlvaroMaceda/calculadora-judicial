@@ -2,6 +2,32 @@
 
 module JsonUtilities
 
+
+    class ComparisonResult
+        attr_reader :result, :error_path
+
+        def initialize(result,error_path='')
+            @result = result
+            @error_path = error_path
+        end
+
+        def ==(other)
+            return @result==other if is_boolean?(other)
+            return @result==other.result && @error_path==other.error_path if other.instance_of?(ComparisonResult)
+            return false
+        end
+        alias_method :eql?, :==
+
+    private
+
+        def is_boolean?(value)
+            [true, false].include? value
+        end
+    end
+
+    class ComparisonError < RuntimeError
+    end
+
     # compares two json objects (Array, Hash, or String to be parsed) for equality
     def compare_json(json1, json2)
 
@@ -9,49 +35,57 @@ module JsonUtilities
         unless((json1.class == json2.class) && (json1.is_a?(String) || json1.is_a?(Hash) || json1.is_a?(Array))) 
             return false
         end
-
-        # initializing result var in the desired scope
-        result = false
-
+            
         # Parse objects to JSON if Strings
         json1,json2 = [json1,json2].map! do |json|
             json.is_a?(String) ? JSON.parse(json) : json
         end
-
-        # If an array, loop through each subarray/hash within the array and recursively call self with these objects for traversal
-        if(json1.is_a?(Array))
-            json1.each_with_index do |obj, index|
-            json1_obj, json2_obj = obj, json2[index]
-            result = compare_json(json1_obj, json2_obj)
-            # End loop once a false match has been found
-            break unless result # Raise exception here
-            end
-        elsif(json1.is_a?(Hash))
-
-            # If a hash, check object1's keys and their values object2's keys and values
-
-            # created_at and updated_at can create false mismatches due to occasional millisecond differences in tests
-            [json1,json2].each { |json| json.delete_if {|key,value| ["created_at", "updated_at"].include?(key)} }
-
-            json1.each do |key,value|
-
-            # both objects must have a matching key to pass
-            return false unless json2.has_key?(key) # Raise exception here
-
-            json1_val, json2_val = value, json2[key]
-
-            if(json1_val.is_a?(Array) || json1_val.is_a?(Hash))
-                # If value of key is an array or hash, recursively call self with these objects to traverse deeper
-                result = compare_json(json1_val, json2_val)
-            else
-                result = (json1_val == json2_val)
-            end
-
-            # End loop once a false match has been found
-            break unless result # Raise exception here
-            end
+        
+        begin
+            do_compare_json(json1,json2)
+        rescue ComparisonError => e
+            return ComparisonResult.new(false, e.message)
         end
 
-        return result ? true : false
+        return ComparisonResult.new(true)
     end
+    
+    private
+    
+    def do_compare_json(json1,json2,path="")
+        # It raises an error if finds a difference
+        
+        if(json1.is_a?(Array))
+            do_compare_json_array(json1,json2,path)
+        elsif(json1.is_a?(Hash))
+            do_compare_json_hash(json1,json2,path)
+        else
+            raise ComparisonError.new(path) unless (json1==json2)
+        end
+    end
+
+    def do_compare_json_array(json1,json2,path)
+        json1.each_with_index do |obj, index|
+            json1_obj, json2_obj = obj, json2[index]
+            do_compare_json(json1_obj, json2_obj,path+"[#{index}]")
+        end
+    end
+
+    def do_compare_json_hash(json1,json2,path)
+        json1.each do |key,value|
+        
+            raise ComparisonError.new(path) unless json2.respond_to?(:has_key?) && json2.has_key?(key)
+            json1_val, json2_val = value, json2[key]
+
+            path = path + "/#{key}"
+
+            if(json1_val.is_a?(Array) || json1_val.is_a?(Hash))
+                do_compare_json(json1_val, json2_val, path)
+            else
+                raise ComparisonError.new(path) unless (json1_val == json2_val)
+            end
+            
+        end
+    end
+
 end

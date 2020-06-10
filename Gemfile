@@ -34,6 +34,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # gem 'sqlite3_ar_regexp' # For REGEX to work with SQLite3
   gem 'dotenv-rails'
+  # For debugging with vscode
+  gem 'readapt'
 end
 
 group :development do
