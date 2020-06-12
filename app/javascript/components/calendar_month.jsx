@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { Component } from 'react'
 import moment from 'moment'
 import classNames from 'classnames'
 import style from './calendar_month.module.scss'
@@ -83,20 +83,25 @@ function renderCells(year, month) {
   return <div className={style.body}>{rows}</div>
 } // renderCells
 
-function CalendarMonth({year, month}) {
+class CalendarMonth extends Component {
 
-  month = month -1 // Adjust to javascript months
-  const monthDate = moment([year,month,1])
-  const monthLabel = `${monthDate.format('MMMM')} ${monthDate.format('Y')}`
+  render(){
+    let year = this.props.year
+    let month = this.props.month 
+    month = month -1 // Adjust to javascript months
 
-  return (
-    <div className={style.calendar}>
-      <div className={style.header}>{monthLabel}</div>
-      { renderDayNames() }
-      { renderCells(year, month) }
-    </div>
-
-  )
+    const monthDate = moment([year,month,1])
+    const monthLabel = `${monthDate.format('MMMM')} ${monthDate.format('Y')}`
+  
+    return (
+      <div className={style.calendar}>
+        <div className={style.header}>{monthLabel}</div>
+        { renderDayNames() }
+        { renderCells(year, month) }
+      </div>
+  
+    )
+  }
 
 }
 
