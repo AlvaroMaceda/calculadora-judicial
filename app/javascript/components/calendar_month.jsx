@@ -10,6 +10,12 @@ import style from './calendar_month.module.scss'
 
 moment.locale('es')
 
+const SATURDAY = 6
+const SUNDAY = 7
+
+function isWeekend(day) {
+  return day.isoWeekday() == SATURDAY || day.isoWeekday() == SUNDAY
+}
 
 // I don't like this, it abreviates as "lu ma mi ju vi sá do"
 function renderDayNames_i18n() {
@@ -61,11 +67,15 @@ function renderCells(year, month) {
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
+
+      let dayStyles;
+      if(!day.isSame(monthStart,'month')) 
+        dayStyles = style.disabled
+      else if(isWeekend(day)) dayStyles = style.weekend
+
       days.push(
         <div
-          className={classNames(style.col,style.cell,
-              !day.isSame(monthStart,'month') ? style.disabled : style.enabled
-          )}
+          className={classNames(style.col,style.cell,dayStyles)}
           key={day}
         >
           <span className={style.number}>{day.format('D')}</span>

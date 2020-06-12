@@ -7,10 +7,13 @@
     --text-color: #777;
     // --text-color: red;
     --text-color-light: #ccc;
-    // --border-color: #eee;
-    --border-color: red;
+    --border-color: #eee;
+    // --border-color: red;
     --bg-color: #f9f9f9;
+    --bg-color: SkyBlue;
     --neutral-color: #fff;
+    --weekend-background: salmon;
+    --weekend-text-color: white;
 }
   
 
@@ -59,16 +62,20 @@
     flex-grow: 0;
     display: block;
     position: relative;
-    // width: 100%;
     background: var(--neutral-color);
-    border: 1px solid var(--border-color);
+    // border: 1px solid var(--border-color);
 
     .header {
-        text-transform: uppercase;
+        // text-transform: uppercase;
         font-weight: 700;
-        font-size: 115%;
+        font-size: 90%;
         padding: 0.5em;
-        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5em;
+        // padding-left: 1
+        // color: var(--text-color);
+        display: flex;
+        justify-content: left;
+        // border-bottom: 1px solid var(--border-color);
     }
 
     .days {
@@ -77,15 +84,18 @@
         color: var(--text-color);
         font-size: 70%;
         padding: .75em 0;
-        border-bottom: 1px solid var(--border-color);
+        padding-top: 0px
+        // border-bottom: 1px solid var(--border-color);
     }
 
     .body {
 
+        border: 1px solid var(--border-color);
+
         .cell {
             position: relative;
             height: 2em;
-            border-right: 1px solid var(--border-color);
+            // border-right: 1px solid var(--border-color);
             overflow: hidden;
             cursor: pointer;
             background: var(--neutral-color);
@@ -104,7 +114,7 @@
           }
     
           .row {
-            border-bottom: 1px solid var(--border-color);
+            // border-bottom: 1px solid var(--border-color);
           }
     
           .row:last-child {
@@ -131,9 +141,12 @@
 
           .disabled {
             color: var(--text-color-light);
-            pointer-events: none;
-            // color: red;
           }
+
+          .weekend {
+            background-color: var(--weekend-background);
+            color: var(--weekend-text-color);
+          }          
     
           .col {
             flex-grow: 0;
