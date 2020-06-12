@@ -17,6 +17,7 @@ registerLocale('es', es)
 import createLoading from './loading'
 import DeadlineResults from "./deadline_results";
 import Municipality from './municipality'
+import Calendar from './calendar'
 
 const Loading = createLoading(DeadlineResults)
 
@@ -226,6 +227,26 @@ class DeadlineCalculator extends Component {
           </div> {/*body*/}
           
         </div> {/*card*/}
+
+        <Calendar
+          from='2020-12'
+          to='2021-05'
+          highlight= {[
+            {'2020-12-07': {background: 'salmon', color: 'white'}},
+            {'2020-12-25': {background: 'salmon', color: 'white'}},
+            {'2021-01-01': {background: 'teal', color: 'red'}},
+            {'2021-01-06': {background: 'yellow', color: 'purple'}}
+          ]}
+          />
+        {/* <Calendar
+          from='2020-12'
+          to='2021-04'
+          highlight= {[
+            '2020-12-25': {background: 'salmon', color: 'white'},
+            '2021-01-01': {background: 'teal', color: 'red'},
+            '2021-01-06': {background: 'yellow', color: 'purple'}
+          ]}
+        /> */}
       </div> 
     )
   }

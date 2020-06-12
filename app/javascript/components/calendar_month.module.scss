@@ -12,8 +12,8 @@
     --bg-color: #f9f9f9;
     --bg-color: SkyBlue;
     --neutral-color: #fff;
-    --weekend-background: salmon;
-    --weekend-text-color: white;
+    // --weekend-background: salmon;
+    --weekend-text-color: salmon;
 }
   
 
@@ -68,7 +68,7 @@
     .header {
         // text-transform: uppercase;
         font-weight: 700;
-        font-size: 90%;
+        // font-size: 90%;
         padding: 0.5em;
         padding-bottom: 0.5em;
         // padding-left: 1
@@ -123,15 +123,16 @@
     
           .cell:last-child {
             border-right: none;
+            flex-grow: 100; // To avoid a blank pixel after the cells in some situations
           }
     
           .cell .number {
             position: absolute;
-            font-size: 82.5%;
+            // font-size: 82.5%;
             line-height: 1;
             top: .75em;
             right: .75em;
-            font-weight: 700;
+            font-weight: 500;
             // color: var(--text-color);
           }
     
@@ -144,7 +145,7 @@
           }
 
           .weekend {
-            background-color: var(--weekend-background);
+            // background-color: var(--weekend-background);
             color: var(--weekend-text-color);
           }          
     

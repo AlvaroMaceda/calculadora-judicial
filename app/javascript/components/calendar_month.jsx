@@ -36,64 +36,88 @@ function renderDayNames_i18n() {
   return <div className="days row">{days}</div>
 } // renderDayNames_i18n
 
+// Can't be a functional component because we need a ref to the content
+// to compute how many months we will draw in each row
+class CalendarMonth extends Component {
 
-function renderDayNames() {
-
-  const days = ['L','M','X','J','V','S','D']
-  let cells = []
-
-  days.forEach( (day, i) => {
-    cells.push(
-      <div className={classNames(style.col,style.col_center)} key={i}>
-        { day }
-      </div>
+  getHighlightedStyle(day) {
+    // TO-DO: define methods to extract the relevant data for an highlighted day
+    // (don't use Object.keys and Object.entries)
+    let highlightprops = this.props.highlight.filter(      
+      (highlighted) => {
+        let highlightedDay = moment(Object.keys(highlighted)[0])
+        return highlightedDay.isSame(day,'day')
+      }
     )
-  })
+    let computed = {}
+    if(highlightprops.length > 0) {
+      // This is a ugly form of obtaining the value of first key
+      computed = Object.entries(highlightprops[0])[0][1]
+    }
+    return computed
+  }
 
-  return <div className={classNames(style.days,style.row)}>{cells}</div>
-} // renderDayNames
+  renderDayNames() {
 
-function renderCells(year, month) {
-  const monthStart = moment([year,month,1])
-  const monthEnd = moment(monthStart).endOf('month')
-
-  const startDate = moment(monthStart).startOf('week')
-  const endDate = moment(monthEnd).endOf('week')
-
-  const rows = []
-
-  let days = []
-  let day = startDate
-
-  while (day <= endDate) {
-    for (let i = 0; i < 7; i++) {
-
-      let dayStyles;
-      if(!day.isSame(monthStart,'month')) 
-        dayStyles = style.disabled
-      else if(isWeekend(day)) dayStyles = style.weekend
-
-      days.push(
-        <div
-          className={classNames(style.col,style.cell,dayStyles)}
-          key={day}
-        >
-          <span className={style.number}>{day.format('D')}</span>
+    const days = ['L','M','X','J','V','S','D']
+    let cells = []
+  
+    days.forEach( (day, i) => {
+      cells.push(
+        <div className={classNames(style.col,style.col_center)} key={i}>
+          { day }
         </div>
       )
-      day.add(1, 'd')
-    }
-    rows.push(
-      <div className={style.row} key={day}>
-        {days}
-      </div>
-    )
-    days = []
-  }
-  return <div className={style.body}>{rows}</div>
-} // renderCells
+    })
+  
+    return <div className={classNames(style.days,style.row)}>{cells}</div>
+  } // renderDayNames
 
-class CalendarMonth extends Component {
+  renderCells(year, month) {
+    const monthStart = moment([year,month,1])
+    const monthEnd = moment(monthStart).endOf('month')
+  
+    const startDate = moment(monthStart).startOf('week')
+    const endDate = moment(monthEnd).endOf('week')
+  
+    const rows = []
+  
+    let days = []
+    let day = startDate
+  
+    while (day <= endDate) {
+      for (let i = 0; i < 7; i++) {
+  
+        // TO-DO: refactor this
+        let dayStyle = {}
+        let dayClasses;
+        if(day.isSame(monthStart,'month')) {
+          if(isWeekend(day)) dayClasses = style.weekend
+          dayStyle = this.getHighlightedStyle(day)
+        } else {
+          dayClasses = style.disabled
+        }  
+  
+        days.push(
+          <div
+            className={classNames(style.col,style.cell,dayClasses)}
+            style={dayStyle}
+            key={day}
+          >
+            <span className={style.number}>{day.format('D')}</span>
+          </div>
+        )
+        day.add(1, 'd')
+      }
+      rows.push(
+        <div className={style.row} key={day}>
+          {days}
+        </div>
+      )
+      days = []
+    }
+    return <div className={style.body}>{rows}</div>
+  } // renderCells
 
   render(){
     let year = this.props.year
@@ -105,9 +129,10 @@ class CalendarMonth extends Component {
   
     return (
       <div className={style.month}>
+        {/* {JSON.stringify(this.props.highlight)} */}
         <div className={style.header}>{monthLabel}</div>
-        { renderDayNames() }
-        { renderCells(year, month) }
+        { this.renderDayNames() }
+        { this.renderCells(year, month) }
       </div>
   
     )

@@ -140,13 +140,15 @@ class Calendar extends Component {
   }
 
   renderMonths(months) {
-    return months.map(month => 
-      <Month key={`${month.year}${month.month}`}
+    return months.map(month => {
+      // We should filter here highlights to pass only the highlights for that month
+      return (<Month key={`${month.year}${month.month}`}
              year={month.year} 
              month={month.month}
              ref={r => this.monthRef = r}
-      />
-    )
+             highlight={this.props.highlight}
+      />)
+    })
   }
 
   render() {
@@ -156,6 +158,7 @@ class Calendar extends Component {
       <div className={style.calendar}
            ref={element => {this.container = element;}}
       >
+        {JSON.stringify(this.props.highlight)}
         <div className={style.monthsContainer} style={this.state.monthStyle}>
           { this.renderMonths(months) }
         </div>
