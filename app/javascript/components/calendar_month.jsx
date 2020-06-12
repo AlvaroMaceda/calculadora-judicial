@@ -1,6 +1,5 @@
 
 import React from 'react'
-import * as dateFns from "date-fns"; // Change to moment.js, it seems better for working with locales
 import moment from 'moment'
 import classNames from 'classnames'
 import style from './calendar_month.module.scss'
