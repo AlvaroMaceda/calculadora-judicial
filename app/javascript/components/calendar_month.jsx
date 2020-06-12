@@ -94,7 +94,7 @@ class CalendarMonth extends Component {
     const monthLabel = `${monthDate.format('MMMM')} ${monthDate.format('Y')}`
   
     return (
-      <div className={style.calendar}>
+      <div className={style.month}>
         <div className={style.header}>{monthLabel}</div>
         { renderDayNames() }
         { renderCells(year, month) }

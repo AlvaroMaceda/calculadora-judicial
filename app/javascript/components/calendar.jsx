@@ -27,9 +27,6 @@ function getMonthsToDraw(from, to) {
   return months
 }
 
-
-
-
 function measureElement(element) {
   const DOMNode = ReactDOM.findDOMNode(element);
 
@@ -41,35 +38,60 @@ function measureElement(element) {
     right: parseInt(style.marginRight) || 0
   }
   let padding = {
-
+    top: parseInt(style.paddingTop) || 0,
+    left: parseInt(style.paddingLeft) || 0,
+    bottom: parseInt(style.paddingBottom) || 0,
+    right: parseInt(style.paddingRight) || 0
   }
   return {
-    width: DOMNode.offsetWidth, // Este sería el total
-    height: DOMNode.offsetHeight,
-    // Me falta el de la parte cliente (clientWidth sin padding)
-    // width: DOMNode.width,
-    // height: DOMNode.height,
-    margin: margin
-  };
+    // The item will occupy: offsetWidth + margin
+    spaceOccupied: {
+      width: DOMNode.offsetWidth + margin.left + margin.right,
+      height: DOMNode.offsetHeight + margin.top + margin.bottom
+    },
+    // We will have available for content: clientWidth - padding
+    availableForContent: {
+      width: DOMNode.clientWidth - padding.left - padding.right,
+      height: DOMNode.clientHeight - padding.top - padding.bottom
+    }
+  }
 }
 
 class Calendar extends Component {
 
   constructor(props){
     super(props)
+    this.state = { 
+      monthStyle: {width: '100%'}
+    }
+    this.currentMonthsPerRow = 0
   }
 
   updateDimensions() {
     this.containerSize = measureElement(this.container)
     this.monthSize = measureElement(this.monthRef)
-    console.log('container size:',this.containerSize)
-    console.log('month size:',this.monthSize)
+    this.setMonthsContainerWidth()
+  }
+
+  setMonthsContainerWidth() {
+    let monthsPerRow = this.monthsPerRow()
+
+    if(monthsPerRow !== this.currentMonthsPerRow) {
+      this.currentMonthsPerRow = monthsPerRow
+
+      const JUST_IN_CASE=5;
+      let monthContainerWidth = monthsPerRow * this.monthSize.spaceOccupied.width + JUST_IN_CASE 
+
+      this.setState({
+        ...this.state,
+        monthStyle: {width: `${monthContainerWidth}px`}
+      })
+    }
   }
 
   componentDidMount() {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions.bind(this));
-    // this.setState({random: Math.random()})
   }
 
   componentWillUnmount() {
@@ -79,6 +101,42 @@ class Calendar extends Component {
   componentDidUpdate(){
     console.log('componentDidUpdate')
     this.updateDimensions();
+  }
+
+  maxMonthsPerRow() {
+    return Math.floor(
+      this.containerSize.availableForContent.width / this.monthSize.spaceOccupied.width
+      )
+  }
+
+  monthsPerRow() {
+    /*
+    The idea is to place the months in a "pretty" layout. For example, if 
+    we have 5 monts (1 2 3 4 5)
+    
+    If max per row = 3 we should place:
+    1 2 3
+    4 5
+
+    this will be a ugly layout:
+    1 2
+    3 4
+    5
+
+    If max per row = 4 we should place:
+    1 2 3
+    4 5
+
+    this will be a ugly layout:
+    1 2 3 4
+    5
+
+    If max per row = 5 we should place all in the same row
+    1 2 3 4 5
+
+    */
+    // Return the max until we have the algorithm
+    return this.maxMonthsPerRow()
   }
 
   renderMonths(months) {
@@ -98,7 +156,9 @@ class Calendar extends Component {
       <div className={style.calendar}
            ref={element => {this.container = element;}}
       >
-        { this.renderMonths(months) }
+        <div className={style.monthsContainer} style={this.state.monthStyle}>
+          { this.renderMonths(months) }
+        </div>
       </div>
     )
   }
