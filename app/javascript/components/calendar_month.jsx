@@ -36,6 +36,10 @@ function renderDayNames_i18n() {
   return <div className="days row">{days}</div>
 } // renderDayNames_i18n
 
+function isString(x) {
+  return Object.prototype.toString.call(x) == '[object String]';
+}
+
 // Can't be a functional component because we need a ref to the content
 // to compute how many months we will draw in each row
 class CalendarMonth extends Component {
@@ -43,7 +47,7 @@ class CalendarMonth extends Component {
   getHighlightedStyle(day) {
     // TO-DO: define methods to extract the relevant data for an highlighted day
     // (don't use Object.keys and Object.entries)
-    let highlightprops = this.props.highlight.filter(      
+    let highlightprops = this.props.markDays.filter(      
       (highlighted) => {
         let highlightedDay = moment(Object.keys(highlighted)[0])
         return highlightedDay.isSame(day,'day')
@@ -53,6 +57,8 @@ class CalendarMonth extends Component {
     if(highlightprops.length > 0) {
       // This is a ugly form of obtaining the value of first key
       computed = Object.entries(highlightprops[0])[0][1]
+      // Here we should lookup markStyles
+      if(isString(computed)) computed = {color: 'yellow'}
     }
     return computed
   }
@@ -129,7 +135,7 @@ class CalendarMonth extends Component {
   
     return (
       <div className={style.month}>
-        {/* {JSON.stringify(this.props.highlight)} */}
+        {/* {JSON.stringify(this.props.markDays)} */}
         <div className={style.header}>{monthLabel}</div>
         { this.renderDayNames() }
         { this.renderCells(year, month) }

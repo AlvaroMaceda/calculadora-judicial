@@ -146,7 +146,8 @@ class Calendar extends Component {
              year={month.year} 
              month={month.month}
              ref={r => this.monthRef = r}
-             highlight={this.props.highlight}
+             markStyles={this.props.markStyles}
+             markDays={this.props.markDays}
       />)
     })
   }
@@ -158,7 +159,7 @@ class Calendar extends Component {
       <div className={style.calendar}
            ref={element => {this.container = element;}}
       >
-        {JSON.stringify(this.props.highlight)}
+        {JSON.stringify(this.props.markDays)}
         <div className={style.monthsContainer} style={this.state.monthStyle}>
           { this.renderMonths(months) }
         </div>

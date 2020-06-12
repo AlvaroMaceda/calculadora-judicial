@@ -231,8 +231,13 @@ class DeadlineCalculator extends Component {
         <Calendar
           from='2020-12'
           to='2021-05'
-          highlight= {[
-            {'2020-12-07': {background: 'salmon', color: 'white'}},
+          markStyles={{
+            foo: {background: 'red', color: 'yellow'},
+            bar: { background: 'orange', color: 'green'},
+            tee: {background: 'salmon', color: 'white'}
+          }}
+          markDays= {[
+            {'2020-12-07': 'tee'},
             {'2020-12-25': {background: 'salmon', color: 'white'}},
             {'2021-01-01': {background: 'teal', color: 'red'}},
             {'2021-01-06': {background: 'yellow', color: 'purple'}}
