@@ -113,35 +113,43 @@ class CalendarMonth extends Component {
     return <div className={classNames(style.days,style.row)}>{cells}</div>
   } // renderDayNames
 
+  renderDay(day) {
+    return (
+      <div
+        className={ classNames(style.col, style.cell, this.dayClass(day)) }
+        style={ this.dayStyle(day) }
+        key={ day }
+      >
+        <span className={style.number}>{day.format('D')}</span>
+      </div>
+    )
+  }
+
+  renderWeek(startOfWeek) {
+    let days = []
+    let day = moment(startOfWeek)
+
+    for (let i = 0; i < 7; i++) {
+      days.push(this.renderDay(day))
+      day.add(1, 'd')
+    }
+    return (
+      <div className={style.row} key={day}>
+        {days}
+      </div>
+    )
+  }
+
   renderCells() {
     const startDate = this.firstDayToRender()
-    const endDate = this.lastDayToRender() 
+    const endDate = this.lastDayToRender()
   
-    const rows = []
-  
-    let days = []
     let day = startDate
-  
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        days.push(
-          <div
-            className={ classNames(style.col, style.cell, this.dayClass(day)) }
-            style={ this.dayStyle(day) }
-            key={ day }
-          >
-            <span className={style.number}>{day.format('D')}</span>
-          </div>
-        )
+    const rows = []
 
-        day.add(1, 'd')
-      }
-      rows.push(
-        <div className={style.row} key={day}>
-          {days}
-        </div>
-      )
-      days = []
+    while (day <= endDate) {
+      rows.push(this.renderWeek(day))
+      day.add(7, 'd')
     }
     return <div className={style.body}>{rows}</div>
   } // renderCells
