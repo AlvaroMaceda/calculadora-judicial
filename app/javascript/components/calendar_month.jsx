@@ -12,6 +12,8 @@ moment.locale('es')
 
 const SATURDAY = 6
 const SUNDAY = 7
+const NO_CLASS = ''
+const NO_STYLE = {}
 
 function isWeekend(day) {
   return day.isoWeekday() == SATURDAY || day.isoWeekday() == SUNDAY
@@ -44,6 +46,12 @@ function isString(x) {
 // to compute how many months we will draw in each row
 class CalendarMonth extends Component {
 
+  constructor(props){
+    super(props)
+    this.month = moment([this.props.year,this.props.month-1,1])
+    // Here: adjust markdays index
+  }
+
   getHighlightedStyle(day) {
     // TO-DO: define methods to extract the relevant data for an highlighted day
     // (don't use Object.keys and Object.entries)
@@ -63,6 +71,32 @@ class CalendarMonth extends Component {
     return computed
   }
 
+  firstDayToRender(){
+    // Start of week of first week of month
+    return moment(this.month).startOf('week')
+  }
+
+  lastDayToRender() {
+    // End of week of last week of month
+    return moment(this.month).endOf('month').endOf('week')
+  }
+
+  dayStyle(day) {
+    if(!day.isSame(this.month,'month')) return NO_STYLE
+    return this.getHighlightedStyle(day)
+  }
+
+  dayClass(day) {
+    if(!day.isSame(this.month,'month')) return style.disabled
+    if(isWeekend(day)) return style.weekend
+    return NO_CLASS
+  }
+
+  renderMonthLabel() {
+    const monthLabel = `${this.month.format('MMMM')} ${this.month.format('Y')}`
+    return <div className={style.header}>{monthLabel}</div>
+  }
+
   renderDayNames() {
 
     const days = ['L','M','X','J','V','S','D']
@@ -79,12 +113,9 @@ class CalendarMonth extends Component {
     return <div className={classNames(style.days,style.row)}>{cells}</div>
   } // renderDayNames
 
-  renderCells(year, month) {
-    const monthStart = moment([year,month,1])
-    const monthEnd = moment(monthStart).endOf('month')
-  
-    const startDate = moment(monthStart).startOf('week')
-    const endDate = moment(monthEnd).endOf('week')
+  renderCells() {
+    const startDate = this.firstDayToRender()
+    const endDate = this.lastDayToRender() 
   
     const rows = []
   
@@ -93,26 +124,16 @@ class CalendarMonth extends Component {
   
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-  
-        // TO-DO: refactor this
-        let dayStyle = {}
-        let dayClasses;
-        if(day.isSame(monthStart,'month')) {
-          if(isWeekend(day)) dayClasses = style.weekend
-          dayStyle = this.getHighlightedStyle(day)
-        } else {
-          dayClasses = style.disabled
-        }  
-  
         days.push(
           <div
-            className={classNames(style.col,style.cell,dayClasses)}
-            style={dayStyle}
-            key={day}
+            className={ classNames(style.col, style.cell, this.dayClass(day)) }
+            style={ this.dayStyle(day) }
+            key={ day }
           >
             <span className={style.number}>{day.format('D')}</span>
           </div>
         )
+
         day.add(1, 'd')
       }
       rows.push(
@@ -126,21 +147,12 @@ class CalendarMonth extends Component {
   } // renderCells
 
   render(){
-    let year = this.props.year
-    let month = this.props.month 
-    month = month -1 // Adjust to javascript months
-
-    const monthDate = moment([year,month,1])
-    const monthLabel = `${monthDate.format('MMMM')} ${monthDate.format('Y')}`
-  
     return (
       <div className={style.month}>
-        {/* {JSON.stringify(this.props.markDays)} */}
-        <div className={style.header}>{monthLabel}</div>
+        { this.renderMonthLabel() }
         { this.renderDayNames() }
-        { this.renderCells(year, month) }
+        { this.renderCells() }
       </div>
-  
     )
   }
 
