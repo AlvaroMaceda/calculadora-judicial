@@ -19,6 +19,12 @@ function isWeekend(day) {
   return day.isoWeekday() == SATURDAY || day.isoWeekday() == SUNDAY
 }
 
+function objKeysToMoment(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).map( ([key, value] ) => [moment(key), value])
+  );
+}
+
 // I don't like this, it abreviates as "lu ma mi ju vi sá do"
 function renderDayNames_i18n() {
 
@@ -49,26 +55,20 @@ class CalendarMonth extends Component {
   constructor(props){
     super(props)
     this.month = moment([this.props.year,this.props.month-1,1])
-    // Here: adjust markdays index
+    this.markDays = objKeysToMoment(this.props.markDays)
   }
 
+  getMarkStyle(styleName){
+    return this.props.markStyles[styleName] || {}
+  }
+  
   getHighlightedStyle(day) {
-    // TO-DO: define methods to extract the relevant data for an highlighted day
-    // (don't use Object.keys and Object.entries)
-    let highlightprops = this.props.markDays.filter(      
-      (highlighted) => {
-        let highlightedDay = moment(Object.keys(highlighted)[0])
-        return highlightedDay.isSame(day,'day')
-      }
-    )
-    let computed = {}
-    if(highlightprops.length > 0) {
-      // This is a ugly form of obtaining the value of first key
-      computed = Object.entries(highlightprops[0])[0][1]
-      // Here we should lookup markStyles
-      if(isString(computed)) computed = {color: 'yellow'}
-    }
-    return computed
+    let style = this.markDays[day]
+    if(!style) return {}
+
+    return isString(style) ? 
+        this.getMarkStyle(style) :
+        style
   }
 
   firstDayToRender(){

@@ -184,12 +184,18 @@ class DeadlineCalculator extends Component {
               bar: { background: 'orange', color: 'green'},
               tee: {background: 'salmon', color: 'white'}
             }}
-            markDays= {[
-              {'2020-12-07': 'tee'},
-              {'2020-12-25': {background: 'salmon', color: 'white'}},
-              {'2021-01-01': {background: 'teal', color: 'red'}},
-              {'2021-01-06': {background: 'yellow', color: 'purple'}}
-            ]}
+            markDays= {{
+              '2020-12-07': 'tee',
+              '2020-12-25': {background: 'salmon', color: 'white'},
+              '2021-01-01': {background: 'teal', color: 'red'},
+              '2021-01-06': {background: 'yellow', color: 'purple'}
+            }}
+            // markDays= {[
+            //   {'2020-12-07': 'tee'},
+            //   {'2020-12-25': {background: 'salmon', color: 'white'}},
+            //   {'2021-01-01': {background: 'teal', color: 'red'}},
+            //   {'2021-01-06': {background: 'yellow', color: 'purple'}}
+            // ]}
           />
 
         <div className={style.card}>
