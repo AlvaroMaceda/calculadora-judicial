@@ -4,9 +4,6 @@ import ReactDOM from "react-dom";
 import Month from './calendar_month'
 import style from './calendar.module.scss'
 import moment from 'moment'
-moment.locale('es');
-
-// https://blog.flowandform.agency/create-a-custom-calendar-in-react-3df1bfd0b728
 
 function getMonthsToDraw(from, to) {
 
@@ -61,6 +58,7 @@ class Calendar extends Component {
 
   constructor(props){
     super(props)
+    props.locale && moment.locale(props.locale)
     this.state = { 
       monthStyle: {width: '100%'}
     }
@@ -159,7 +157,6 @@ class Calendar extends Component {
       <div className={style.calendar}
            ref={element => {this.container = element;}}
       >
-        {JSON.stringify(this.props.markDays)}
         <div className={style.monthsContainer} style={this.state.monthStyle}>
           { this.renderMonths(months) }
         </div>

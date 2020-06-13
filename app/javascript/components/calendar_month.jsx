@@ -3,19 +3,15 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import classNames from 'classnames'
 import style from './calendar_month.module.scss'
-//https://til.hashrocket.com/posts/cxd9yl95ip--get-beginning-and-end-of-week-with-momentjs
-//https://stackoverflow.com/questions/17493309/how-do-i-change-the-language-of-moment-js
 
-// https://blog.flowandform.agency/create-a-custom-calendar-in-react-3df1bfd0b728
 
-moment.locale('es')
-
-const SATURDAY = 6
-const SUNDAY = 7
 const NO_CLASS = ''
 const NO_STYLE = {}
 
+// Duplicate function
 function isWeekend(day) {
+  const SATURDAY = 6
+  const SUNDAY = 7
   return day.isoWeekday() == SATURDAY || day.isoWeekday() == SUNDAY
 }
 
@@ -54,6 +50,7 @@ class CalendarMonth extends Component {
 
   constructor(props){
     super(props)
+    props.locale && moment.locale(props.locale)
     this.month = moment([this.props.year,this.props.month-1,1])
     this.markDays = objKeysToMoment(this.props.markDays)
   }

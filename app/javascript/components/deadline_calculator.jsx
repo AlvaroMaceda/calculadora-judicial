@@ -17,7 +17,7 @@ registerLocale('es', es)
 import createLoading from './loading'
 import DeadlineResults from "./deadline_results";
 import Municipality from './municipality'
-import Calendar from './calendar'
+
 
 const Loading = createLoading(DeadlineResults)
 
@@ -91,9 +91,9 @@ class DeadlineCalculator extends Component {
       throttleTime(THROTTLE_TIME, asyncScheduler, {trailing:true}), // {trailing: true} is for launching the last request (that's the request we are interested if)    
       switchMap( (url) => ajax(url) ), // switchMap will ignore all requests except last one
       filter( () => this.validator.valid), // Ignore responses if form is not valid
-      catchError(this.requestError)
+      catchError(this.calculationError)
     )
-    this.responses.subscribe( (data) => this.requestResponse(data))
+    this.responses.subscribe( (data) => this.calculationResponse(data))
 
     this.state = INITIAL_STATE
   }
@@ -115,14 +115,14 @@ class DeadlineCalculator extends Component {
     this.requests.next(url)
   }
 
-  requestError(error) {
+  calculationError(error) {
     console.log('EL REQUEST HA PETAO:')
     console.log(error.response.message)
     this.modifyState({loading: null})
     return 'BANANA'
   }
 
-  requestResponse(data) {
+  calculationResponse(data) {
     console.log('Request response')
     console.log(data.response)
     this.modifyState({
@@ -176,27 +176,7 @@ class DeadlineCalculator extends Component {
     return (
       <div className={style.container}>
 
-          <Calendar
-            from='2020-12'
-            to='2021-05'
-            markStyles={{
-              foo: {background: 'red', color: 'yellow'},
-              bar: { background: 'orange', color: 'green'},
-              tee: {background: 'salmon', color: 'white'}
-            }}
-            markDays= {{
-              '2020-12-07': 'tee',
-              '2020-12-25': {background: 'salmon', color: 'white'},
-              '2021-01-01': {background: 'teal', color: 'red'},
-              '2021-01-06': {background: 'yellow', color: 'purple'}
-            }}
-            // markDays= {[
-            //   {'2020-12-07': 'tee'},
-            //   {'2020-12-25': {background: 'salmon', color: 'white'}},
-            //   {'2021-01-01': {background: 'teal', color: 'red'}},
-            //   {'2021-01-06': {background: 'yellow', color: 'purple'}}
-            // ]}
-          />
+
 
         <div className={style.card}>
 
@@ -244,13 +224,34 @@ class DeadlineCalculator extends Component {
               </div> {/*form-group*/}
 
             </form>
-            <Loading loading={this.state.loading} results={this.state.results}/>
+            {/* <Loading loading={this.state.loading} results={this.state.results}/> */}
+            <DeadlineResults 
+              results={
+                // Los datos son inventados
+                {
+                  "municipality_code":"ES46250",
+                  "notification":"2020-03-17",
+                  "days":5,
+                  "deadline":"2020-04-06",
+                  "holidays":[
+                    {"date":"2020-03-19","kind":"autonomous_community","territory":"Comunidad Valenciana"},
+                    {"date":"2020-03-19","kind":"country","territory":"Spain"},
+                    {"date":"2020-03-19","kind":"municipality","territory":"Valencia"},
+                    {"date":"2020-03-19","kind":"island","territory":"Lanzarote"}
+                    ],
+                  "missing_holidays":[
+                    {"territory":"Jaén","year":2020}
+                  ]
+                }
+              }
+            />
 
           </div> {/*body*/}
           
         </div> {/*card*/}
 
-        
+
+
       </div>
     )
   }
