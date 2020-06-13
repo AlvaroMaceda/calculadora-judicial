@@ -14,6 +14,8 @@
     --neutral-color: #fff;
     // --weekend-background: salmon;
     --weekend-text-color: salmon;
+    --header-bg-color: SkyBlue;
+    --daysnames-bg-color: lighten(--header-bg-color, 50%);
 }
   
 
@@ -76,6 +78,7 @@
         display: flex;
         justify-content: left;
         // border-bottom: 1px solid var(--border-color);
+        background-color: var(--header-bg-color);
     }
 
     .days {
@@ -84,8 +87,12 @@
         color: var(--text-color);
         font-size: 70%;
         padding: .75em 0;
-        padding-top: 0px
+        padding-top: 0px;
         // border-bottom: 1px solid var(--border-color);
+        // background-color: var(--daysnames-bg-color);
+        // background-color: lighten(SkyBlue, 50%);
+        background-color: var(--header-bg-color);
+        filter: brightness(110%);
     }
 
     .body {

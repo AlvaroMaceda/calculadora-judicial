@@ -176,6 +176,22 @@ class DeadlineCalculator extends Component {
     return (
       <div className={style.container}>
 
+          <Calendar
+            from='2020-12'
+            to='2021-05'
+            markStyles={{
+              foo: {background: 'red', color: 'yellow'},
+              bar: { background: 'orange', color: 'green'},
+              tee: {background: 'salmon', color: 'white'}
+            }}
+            markDays= {[
+              {'2020-12-07': 'tee'},
+              {'2020-12-25': {background: 'salmon', color: 'white'}},
+              {'2021-01-01': {background: 'teal', color: 'red'}},
+              {'2021-01-06': {background: 'yellow', color: 'purple'}}
+            ]}
+          />
+
         <div className={style.card}>
 
           <div className={style.header}>
@@ -228,31 +244,8 @@ class DeadlineCalculator extends Component {
           
         </div> {/*card*/}
 
-        <Calendar
-          from='2020-12'
-          to='2021-05'
-          markStyles={{
-            foo: {background: 'red', color: 'yellow'},
-            bar: { background: 'orange', color: 'green'},
-            tee: {background: 'salmon', color: 'white'}
-          }}
-          markDays= {[
-            {'2020-12-07': 'tee'},
-            {'2020-12-25': {background: 'salmon', color: 'white'}},
-            {'2021-01-01': {background: 'teal', color: 'red'}},
-            {'2021-01-06': {background: 'yellow', color: 'purple'}}
-          ]}
-          />
-        {/* <Calendar
-          from='2020-12'
-          to='2021-04'
-          highlight= {[
-            '2020-12-25': {background: 'salmon', color: 'white'},
-            '2021-01-01': {background: 'teal', color: 'red'},
-            '2021-01-06': {background: 'yellow', color: 'purple'}
-          ]}
-        /> */}
-      </div> 
+        
+      </div>
     )
   }
 }
