@@ -28,12 +28,16 @@ const props = {
     Object keys are the days to be marked; 
     Values are the styles to be applied:
         - You can speficy an inline style as an object 
-        - If you pass a string, it will be applied as a class
+        - If you pass a string, it will be applied markStyle corresponding style as inline style
+
+    Note that you can't use 'real' classes because classes defined into Month component
+    will be more specific and they will overwrite your class properties, so you will have
+    to use !important in each property.
 
     Example:
     <Month
         markDays= {{
-            '2020-12-07': 'classToApply',
+            '2020-12-07': 'markStyleToApply',
             '2020-12-25': {background: 'salmon', color: 'white'},
         }}
     />
@@ -42,6 +46,23 @@ const props = {
     */
    markdays: PropTypes.object,
 
+   /*
+    Defines "styles" to be applied to the marks, so you don't have to 
+    rewrite css properties for each mark. 
+
+   <Calendar
+        from='...'
+        to='...'
+        markStyles={{
+            style1: { backgroundColor: 'red', fontWeigth: 700},
+            style2: { color: 'purple'}
+        }}
+        markDays={{
+            '2020-12-07': 'style1',
+            '2020-12-25': 'style2',
+        }}
+   */
+   markStyles: PropTypes.object,
 
     /*
     Indicates whether or not the component should display the names of the days of the week.

@@ -57,8 +57,6 @@ class CalendarMonth extends Component {
   constructor(props){
     super(props)
 
-    console.log(this.props)
-    console.log(props)
     this.props.locale && moment.locale(this.props.locale)
     this.month = moment([
       parseInt(this.props.year),

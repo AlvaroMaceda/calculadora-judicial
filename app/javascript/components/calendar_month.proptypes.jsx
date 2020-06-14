@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const props = {
 
     /*
-    Year to show. You can pass whatever thing that can be converted to int with parseInt
+     Year to show. You can pass whatever thing that can be converted to int with parseInt
     */
     year: PropTypes.any.isRequired,
     
@@ -24,6 +24,12 @@ const props = {
     If you pass days which dont pertain to the month, they will be ignored
     */
     markdays: PropTypes.any,
+
+    /*
+    Defines "styles" to be applied to the marks
+    See Calendar component for more information
+    */
+    markStyles: PropTypes.object,
 
     /*
     Indicates whether or not the component should display the names of the days of the week.

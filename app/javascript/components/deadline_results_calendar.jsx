@@ -1,7 +1,6 @@
 import React from "react";
 import Calendar from './calendar'
 import moment from 'moment'
-import style from './deadline_results_calendar.module.scss'
 
 const markStyles = {
   weekend: {
@@ -36,11 +35,11 @@ function termDays(start, end) {
 
   while( current <= endDay ) {
     
-    let appliedStyle = style.term
-    if(current.isSame(startDay,'day')) appliedStyle = style.termStart // style = 'termStart'
-    if(current.isSame(endDay,'day')) appliedStyle = style.termEnd
+    let style = 'term'
+    if(current.isSame(startDay,'day')) style = 'termStart'
+    if(current.isSame(endDay,'day')) style = 'termEnd'
 
-    days[current.format('YYYY-MM-DD')] = appliedStyle
+    days[current.format('YYYY-MM-DD')] = style
     current.add(1,'day')
   }
 
@@ -80,13 +79,13 @@ function DeadlineCalendar(props) {
       from={props.notification}
       to={props.deadline}
       showDayNames={false}
-      // markStyles={markStyles}
-      markDays= {{
-        '2020-12-07': 'tee',
-        '2020-12-25': {background: 'salmon', color: 'white'},
-        '2021-01-01': {background: 'teal', color: 'red'},
-        '2021-01-06': {background: 'yellow', color: 'purple'}
-      }}
+      markStyles={markStyles}
+      // markDays= {{
+      //   '2020-12-07': 'tee',
+      //   '2020-12-25': {background: 'salmon', color: 'white'},
+      //   '2021-01-01': {background: 'teal', color: 'red'},
+      //   '2021-01-06': {background: 'yellow', color: 'purple'}
+      // }}
       markDays={marks}
       // markDays= {[
       //   {'2020-12-07': 'tee'},
