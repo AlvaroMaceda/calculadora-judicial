@@ -100,17 +100,18 @@
         border: 1px solid var(--border-color);
 
         .cell {
-            position: relative;
-            height: 2em;
-            // border-right: 1px solid var(--border-color);
-            overflow: hidden;
-            cursor: pointer;
-            background: var(--neutral-color);
-            transition: 0.25s ease-out;
+          display: flex;
+          align-items: center; 
+          justify-content: center;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          position: relative;
+          height: 2em;
+          overflow: hidden;
+          cursor: pointer;
+
+          color: var(--text-color);
+          background: var(--neutral-color);
+          transition: 0.25s ease-out;
           }
     
           .cell:hover {
@@ -142,7 +143,7 @@
             // font-size: 82.5%;
             line-height: 1;
             font-weight: 500;
-            color: var(--text-color);
+            
           }
     
           .enabled {
@@ -158,7 +159,6 @@
           }
 
           .weekend {
-            // background-color: var(--weekend-background);
             color: var(--weekend-text-color);
           }          
     

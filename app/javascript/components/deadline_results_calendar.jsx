@@ -4,17 +4,17 @@ import moment from 'moment'
 
 const markStyles = {
   weekend: {
-    background: 'red', color: 'white'
+    background: 'skyblue', color: 'red'
   },
   term: {
-    background: 'orange', color: 'blue'
+    background: 'skyblue', color: 'white'
   },
   termStart: {
-    background: 'orange', color: 'blue',
+    background: 'skyblue', color: 'white',
     borderLeft: '5px solid black'
   },
   termEnd: {
-    background: 'orange', color: 'blue',
+    background: 'skyblue', color: 'white',
     borderRight: '5px solid black'
   }
 }
