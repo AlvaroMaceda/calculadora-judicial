@@ -37,6 +37,11 @@ const props = {
     */
     showDayNames: PropTypes.bool,
 
+    /*
+    Indicates whether or not the component should display only the days corresponding to this month
+    See Calendar component for more information
+    */
+    onlyMonthDays: PropTypes.bool,
 }
 
 

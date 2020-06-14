@@ -12,7 +12,7 @@ const props = {
     You don't need to speficy a day, it will take only the year and the month
     */
     from: PropTypes.any.isRequired,
-    
+
     /*
     End date for the calendar. Same rules as 'from' property
     */
@@ -21,7 +21,7 @@ const props = {
     /*
     Locale to use. It will use default locale if not provided
     */
-   locale: PropTypes.string,
+    locale: PropTypes.string,
 
     /*
     Marks to be applied to certain days of the month.
@@ -44,13 +44,13 @@ const props = {
 
     If you pass days which dont pertain to the month, they will be ignored
     */
-   markdays: PropTypes.object,
+    markdays: PropTypes.object,
 
-   /*
+    /*
     Defines "styles" to be applied to the marks, so you don't have to 
     rewrite css properties for each mark. 
 
-   <Calendar
+    <Calendar
         from='...'
         to='...'
         markStyles={{
@@ -61,15 +61,25 @@ const props = {
             '2020-12-07': 'style1',
             '2020-12-25': 'style2',
         }}
-   */
-   markStyles: PropTypes.object,
+    */
+    markStyles: PropTypes.object,
 
     /*
     Indicates whether or not the component should display the names of the days of the week.
     ¿LOCALIZED?
     Defaults to true
     */
-   showDayNames: PropTypes.bool,
+    showDayNames: PropTypes.bool,
+
+    /*
+    Indicates whether or not the component should display only the days corresponding to this month
+    (dont show the final days of previous month and the firsts of next month if
+    the month does not start or finish on the first day of weeek)
+
+    Defaults to false
+    */
+    onlyMonthDays: PropTypes.bool,
+
 }
 
 

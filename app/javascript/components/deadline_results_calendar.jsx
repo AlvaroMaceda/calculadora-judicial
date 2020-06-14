@@ -79,6 +79,7 @@ function DeadlineCalendar(props) {
       from={props.notification}
       to={props.deadline}
       showDayNames={false}
+      onlyMonthDays={true}
       markStyles={markStyles}
       // markDays= {{
       //   '2020-12-07': 'tee',

@@ -40,6 +40,7 @@ class Calendar extends Component {
 
   static defaultProps = {
     showDayNames: true,
+    onlyMonthDays: false,
     markDays: {}
   }
 
@@ -153,6 +154,7 @@ class Calendar extends Component {
              showDayNames={this.props.showDayNames}
              markStyles={this.props.markStyles}
              markDays={this.props.markDays}
+             onlyMonthDays={this.props.onlyMonthDays}
       />)
     })
   }

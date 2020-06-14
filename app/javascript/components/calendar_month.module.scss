@@ -128,12 +128,12 @@
             border-bottom: none;
           }
     
-          .cell:last-child {
+          :last-child {
             border-right: none;
             flex-grow: 100; // To avoid a blank pixel after the cells in some situations
           }
     
-          .cell .number {
+          .number {
             position: absolute;
             // font-size: 82.5%;
             line-height: 1;
@@ -149,6 +149,10 @@
 
           .disabled {
             color: var(--text-color-light);
+          }
+
+          .hidden .number {
+            display: none;
           }
 
           .weekend {

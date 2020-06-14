@@ -50,6 +50,7 @@ class CalendarMonth extends Component {
 
   static defaultProps = {
     showDayNames: true,
+    onlyMonthDays: false,
     markDays: {},
     markStyles: {},
   }
@@ -57,12 +58,13 @@ class CalendarMonth extends Component {
   constructor(props){
     super(props)
 
-    this.props.locale && moment.locale(this.props.locale)
+    props.locale && moment.locale(props.locale)
+    this.disabledStyle = props.onlyMonthDays ? style.hidden : style.disabled 
     this.month = moment([
-      parseInt(this.props.year),
-      parseInt(this.props.month-1),
+      parseInt(props.year),
+      parseInt(props.month-1),
       1])
-    this.markDays = objKeysToMoment(this.props.markDays)
+    this.markDays = objKeysToMoment(props.markDays)
   }
 
   getMarkStyle(styleName){
@@ -94,7 +96,7 @@ class CalendarMonth extends Component {
   }
 
   dayClass(day) {
-    if(!day.isSame(this.month,'month')) return style.disabled
+    if(!day.isSame(this.month,'month')) return this.disabledStyle
     if(isWeekend(day)) return style.weekend
     return NO_CLASS
   }
