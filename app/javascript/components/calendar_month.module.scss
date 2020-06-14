@@ -4,7 +4,7 @@
 
 :root {
     --main-color: #1a8fff;
-    --text-color: #777;
+    --text-color: #555;
     // --text-color: red;
     --text-color-light: #ccc;
     --border-color: #eee;
@@ -107,6 +107,10 @@
             cursor: pointer;
             background: var(--neutral-color);
             transition: 0.25s ease-out;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
     
           .cell:hover {
@@ -137,10 +141,8 @@
             position: absolute;
             // font-size: 82.5%;
             line-height: 1;
-            top: .75em;
-            right: .75em;
             font-weight: 500;
-            // color: var(--text-color);
+            color: var(--text-color);
           }
     
           .enabled {
