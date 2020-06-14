@@ -3,12 +3,12 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import classNames from 'classnames'
 import style from './calendar_month.module.scss'
-
+import proptypes from './calendar_month.proptypes'
 
 const NO_CLASS = ''
 const NO_STYLE = {}
 
-// Duplicate function
+// Duplicated function
 function isWeekend(day) {
   const SATURDAY = 6
   const SUNDAY = 7
@@ -48,10 +48,22 @@ function isString(x) {
 // to compute how many months we will draw in each row
 class CalendarMonth extends Component {
 
+  static defaultProps = {
+    showDayNames: true,
+    markDays: {},
+    markStyles: {},
+  }
+
   constructor(props){
     super(props)
-    props.locale && moment.locale(props.locale)
-    this.month = moment([this.props.year,this.props.month-1,1])
+
+    console.log(this.props)
+    console.log(props)
+    this.props.locale && moment.locale(this.props.locale)
+    this.month = moment([
+      parseInt(this.props.year),
+      parseInt(this.props.month-1),
+      1])
     this.markDays = objKeysToMoment(this.props.markDays)
   }
 
@@ -95,6 +107,9 @@ class CalendarMonth extends Component {
   }
 
   renderDayNames() {
+
+    console.log(this.props.showDayNames)
+    if(!this.props.showDayNames) return ''
 
     const days = ['L','M','X','J','V','S','D']
     let cells = []
@@ -162,5 +177,6 @@ class CalendarMonth extends Component {
   }
 
 }
+CalendarMonth.propTypes = proptypes
 
 export default CalendarMonth

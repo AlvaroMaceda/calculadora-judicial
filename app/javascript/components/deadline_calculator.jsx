@@ -233,6 +233,7 @@ class DeadlineCalculator extends Component {
                   "notification":"2020-03-17",
                   "days":5,
                   "deadline":"2020-04-06",
+                  "deadline":"2020-03-18",
                   "holidays":[
                     {"date":"2020-03-19","kind":"autonomous_community","territory":"Comunidad Valenciana"},
                     {"date":"2020-03-19","kind":"country","territory":"Spain"},

@@ -4,25 +4,7 @@ import ReactDOM from "react-dom";
 import Month from './calendar_month'
 import style from './calendar.module.scss'
 import moment from 'moment'
-
-function getMonthsToDraw(from, to) {
-
-  let months = []
-
-  const fromDate = moment(from,"YYYY-MM")
-  const toDate = moment(to,"YYYY-MM")
-
-  let currentDate = moment(fromDate)
-  while(currentDate <= toDate) {
-    months.push({
-      year: currentDate.year(),
-      month: currentDate.month()+1 // Month expects the "human" month number
-    })
-    currentDate.add(1,'month')
-  }
-
-  return months
-}
+import proptypes from './calendar.proptypes'
 
 function measureElement(element) {
   const DOMNode = ReactDOM.findDOMNode(element);
@@ -55,6 +37,11 @@ function measureElement(element) {
 }
 
 class Calendar extends Component {
+
+  static defaultProps = {
+    showDayNames: true,
+    markDays: {}
+  }
 
   constructor(props){
     super(props)
@@ -137,6 +124,25 @@ class Calendar extends Component {
     return this.maxMonthsPerRow()
   }
 
+  getMonthsToDraw(from, to) {
+
+    let months = []
+  
+    const fromDate = moment(from,"YYYY-MM")
+    const toDate = moment(to,"YYYY-MM")
+  
+    let currentDate = moment(fromDate)
+    while(currentDate <= toDate) {
+      months.push({
+        year: currentDate.year(),
+        month: currentDate.month()+1 // Month expects the "human" month number
+      })
+      currentDate.add(1,'month')
+    }
+  
+    return months
+  }
+
   renderMonths(months) {
     return months.map(month => {
       // We should filter here highlights to pass only the highlights for that month
@@ -144,6 +150,7 @@ class Calendar extends Component {
              year={month.year} 
              month={month.month}
              ref={r => this.monthRef = r}
+             showDayNames={this.props.showDayNames}
              markStyles={this.props.markStyles}
              markDays={this.props.markDays}
       />)
@@ -151,7 +158,7 @@ class Calendar extends Component {
   }
 
   render() {
-    let months = getMonthsToDraw(this.props.from, this.props.to)
+    let months = this.getMonthsToDraw(this.props.from, this.props.to)
 
     return (
       <div className={style.calendar}
@@ -165,5 +172,6 @@ class Calendar extends Component {
   }
 
 }
+Calendar.propTypes = proptypes
 
 export default Calendar;

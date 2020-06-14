@@ -1,6 +1,7 @@
 import React from "react";
 import Calendar from './calendar'
 import moment from 'moment'
+import style from './deadline_results_calendar.module.scss'
 
 const markStyles = {
   weekend: {
@@ -19,7 +20,7 @@ const markStyles = {
   }
 }
 
-// Duplicate function
+// Duplicated function
 function isWeekend(day) {
   const SATURDAY = 6
   const SUNDAY = 7
@@ -35,11 +36,11 @@ function termDays(start, end) {
 
   while( current <= endDay ) {
     
-    let style = 'term';
-    if(current.isSame(startDay,'day')) style = 'termStart'
-    if(current.isSame(endDay,'day')) style = 'termEnd'
+    let appliedStyle = style.term
+    if(current.isSame(startDay,'day')) appliedStyle = style.termStart // style = 'termStart'
+    if(current.isSame(endDay,'day')) appliedStyle = style.termEnd
 
-    days[current.format('YYYY-MM-DD')] = style
+    days[current.format('YYYY-MM-DD')] = appliedStyle
     current.add(1,'day')
   }
 
@@ -78,7 +79,8 @@ function DeadlineCalendar(props) {
       locale='es'
       from={props.notification}
       to={props.deadline}
-      markStyles={markStyles}
+      showDayNames={false}
+      // markStyles={markStyles}
       markDays= {{
         '2020-12-07': 'tee',
         '2020-12-25': {background: 'salmon', color: 'white'},

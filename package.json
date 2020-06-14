@@ -19,6 +19,7 @@
     "react": "^16.13.1",
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
+    "react-props": "^0.0.3",
     "react-select": "^3.1.0",
     "react_ujs": "^2.6.1",
     "rxjs": "^6.5.5",
