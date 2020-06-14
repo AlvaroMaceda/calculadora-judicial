@@ -93,9 +93,7 @@ describe JSON do
             ]
             
             comparison = JSON.compare(json1,json2)
-            p comparison
             
-            #   expect(comparison.error_path).to eql('$[1][0]')
             expect(comparison.result).to be(true)
         end
 
