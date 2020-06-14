@@ -236,9 +236,9 @@ class DeadlineCalculator extends Component {
                   // "deadline":"2020-03-23",
                   "holidays":[
                     {"date":"2020-03-19","kind":"autonomous_community","territory":"Comunidad Valenciana"},
-                    {"date":"2020-03-19","kind":"country","territory":"Spain"},
-                    {"date":"2020-03-19","kind":"municipality","territory":"Valencia"},
-                    {"date":"2020-03-19","kind":"island","territory":"Lanzarote"}
+                    {"date":"2020-03-24","kind":"country","territory":"Spain"},
+                    {"date":"2020-03-27","kind":"municipality","territory":"Valencia"},
+                    {"date":"2020-04-08","kind":"island","territory":"Lanzarote"}
                     ],
                   "missing_holidays":[
                     {"territory":"Jaén","year":2020}

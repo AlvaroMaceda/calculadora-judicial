@@ -4,10 +4,15 @@ import moment from 'moment'
 
 const TERM_BACKGROUND = '#eac23e'
 // const TERM_BACKGROUND = '#skyblue'
+const NATIONAL_HOLIDAY_BACKGROUND = '#bb3a4c'
+const AC_HOLIDAY_BACKGROUND = '#92bb3a'
+const MUNICIPALITY_HOLIDAY_BACKGROUND = '#3a9bbb'
+
 const markStyles = {
   weekend: {
     background: TERM_BACKGROUND, color: 'red'
   },
+
   term: {
     background: TERM_BACKGROUND, color: 'white'
   },
@@ -21,7 +26,25 @@ const markStyles = {
     border: '2px solid red',
     borderRight: '5px solid red'
     // borderRight: '5px solid black'
+  },
+
+  countryHoliday: {
+    background: NATIONAL_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  autonomous_communityHoliday: {
+    background: AC_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  regionHoliday: {
+    background: AC_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  municipalityHoliday: {
+    background: MUNICIPALITY_HOLIDAY_BACKGROUND,
+    color: 'white'
   }
+
 }
 
 // Duplicated function
@@ -51,55 +74,73 @@ function termDays(start, end) {
   return days
 }
 
-function markWeekends(marks) {
-  // TO-DO: this is unintelligible. Refactor.
-  return Object.fromEntries(
-    Object.entries(marks).filter( 
-      ([key, value] ) => {
-        return isWeekend(moment(key))
-      }).map( ([key,value]) => [key,'weekend'] )
-  );
+function styleForKind(kind) {
+  switch(kind) {
+    case 'country':
+    case 'municipality':
+    case 'autonomous_community':
+      return kind + 'Holiday'
+    case 'region':
+    case 'island':
+      return 'regionHoliday'
+    default:
+      console.log('Holiday type not found:'+kind)
+      return ''
+  }
+}
+
+function holidaysMarks(holidays) {
+
+  let marks = {}, style
+
+  holidays.forEach( (holiday) => {
+    style = styleForKind(holiday.kind)
+    marks[moment(holiday.date).format('YYYY-MM-DD')] = style
+  })
+
+  return marks
+}
+
+function weekendMarks(marks) {
+  const filtered = Object.keys(marks)
+    .filter( key => isWeekend(moment(key)) )
+    .reduce((obj, key) => {
+      obj[key] = 'weekend'
+      return obj
+      }, {})
+  return filtered
 }
 
 function DeadlineCalendar(props) {
 
   let termMarks = termDays(props.notification, props.deadline)
-  let termWeekends = markWeekends(termMarks)
-  let termHolidays = {} //TO-DO
+  let termWeekends = weekendMarks(termMarks)
+  let termHolidays = holidaysMarks(props.holidays)
   
 
-  // Order is relevant: last in list will overwriter firsts
+  // Order is relevant: lasts in list will overwrite firsts
   let marks = {
     ...termMarks,
     ...termWeekends,
     ...termHolidays
   }
-  console.log('termMarks:',termMarks)
-  console.log('termWeekends:',termWeekends)
-  console.log('marks:',marks)
+  // console.log('termMarks:',termMarks)
+  // console.log('termWeekends:',termWeekends)
+  // console.log('holidays:',termHolidays)
+  // console.log('marks:',marks)
 
   return(
-    <Calendar
-      locale='es'
-      from={props.notification}
-      to={props.deadline}
-      showDayNames={false}
-      onlyMonthDays={true}
-      markStyles={markStyles}
-      // markDays= {{
-      //   '2020-12-07': 'tee',
-      //   '2020-12-25': {background: 'salmon', color: 'white'},
-      //   '2021-01-01': {background: 'teal', color: 'red'},
-      //   '2021-01-06': {background: 'yellow', color: 'purple'}
-      // }}
-      markDays={marks}
-      // markDays= {[
-      //   {'2020-12-07': 'tee'},
-      //   {'2020-12-25': {background: 'salmon', color: 'white'}},
-      //   {'2021-01-01': {background: 'teal', color: 'red'}},
-      //   {'2021-01-06': {background: 'yellow', color: 'purple'}}
-      // ]}
-    />
+    <React.Fragment>
+      <Calendar
+        locale='es'
+        from={props.notification}
+        to={props.deadline}
+        showDayNames={false}
+        onlyMonthDays={true}
+        markStyles={markStyles}
+        markDays={marks}
+      />
+    </React.Fragment>
   )
 
 }

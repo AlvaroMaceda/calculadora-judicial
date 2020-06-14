@@ -108,7 +108,6 @@ class CalendarMonth extends Component {
 
   renderDayNames() {
 
-    console.log(this.props.showDayNames)
     if(!this.props.showDayNames) return ''
 
     const days = ['L','M','X','J','V','S','D']

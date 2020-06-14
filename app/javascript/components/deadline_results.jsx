@@ -9,6 +9,7 @@ export default function DeadlineResults(props) {
             Notificado: {results.notification}<br/>
             Días:{results.days}<br/>
             Vencimiento:{results.deadline}<br/>
+            {/* Vacaciones:{JSON.stringify(results.holidays)}<br/> */}
             <DeadlineCalendar
                 notification={results.notification}
                 deadline={results.deadline}
