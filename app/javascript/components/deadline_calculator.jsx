@@ -232,7 +232,7 @@ class DeadlineCalculator extends Component {
                   "municipality_code":"ES46250",
                   "notification":"2020-03-17",
                   "days":5,
-                  "deadline":"2020-04-06",
+                  "deadline":"2020-04-09",
                   // "deadline":"2020-03-23",
                   "holidays":[
                     {"date":"2020-03-19","kind":"autonomous_community","territory":"Comunidad Valenciana"},

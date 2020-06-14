@@ -2,20 +2,25 @@ import React from "react";
 import Calendar from './calendar'
 import moment from 'moment'
 
+const TERM_BACKGROUND = '#eac23e'
+// const TERM_BACKGROUND = '#skyblue'
 const markStyles = {
   weekend: {
-    background: 'skyblue', color: 'red'
+    background: TERM_BACKGROUND, color: 'red'
   },
   term: {
-    background: 'skyblue', color: 'white'
+    background: TERM_BACKGROUND, color: 'white'
   },
   termStart: {
-    background: 'skyblue', color: 'white',
-    borderLeft: '5px solid black'
+    background: TERM_BACKGROUND, color: 'white',
+    border: '2px solid #0075a0',
+    borderLeft: '5px solid #0075a0',
   },
   termEnd: {
-    background: 'skyblue', color: 'white',
-    borderRight: '5px solid black'
+    background: TERM_BACKGROUND, color: 'white',
+    border: '2px solid red',
+    borderRight: '5px solid red'
+    // borderRight: '5px solid black'
   }
 }
 
