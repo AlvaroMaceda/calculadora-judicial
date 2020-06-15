@@ -1,12 +1,14 @@
 import React from "react";
 import Calendar from './calendar'
 import moment from 'moment'
+import Legend from './deadline_results_legend'
 
 const TERM_BACKGROUND = '#eac23e'
 // const TERM_BACKGROUND = '#skyblue'
 const NATIONAL_HOLIDAY_BACKGROUND = '#bb3a4c'
 const AC_HOLIDAY_BACKGROUND = '#92bb3a'
 const MUNICIPALITY_HOLIDAY_BACKGROUND = '#3a9bbb'
+const REGIONAL_HOLIDAY_BACKGROUND = '#3a8a78'
 
 const markStyles = {
   weekend: {
@@ -18,13 +20,13 @@ const markStyles = {
   },
   termStart: {
     background: TERM_BACKGROUND, color: 'white',
-    border: '2px solid #0075a0',
-    borderLeft: '5px solid #0075a0',
+    // border: '2px solid #0075a0',
+    // borderLeft: '5px solid #0075a0',
   },
   termEnd: {
     background: TERM_BACKGROUND, color: 'white',
     border: '2px solid red',
-    borderRight: '5px solid red'
+    // borderRight: '5px solid red'
     // borderRight: '5px solid black'
   },
 
@@ -37,7 +39,7 @@ const markStyles = {
     color: 'white'
   },
   regionHoliday: {
-    background: AC_HOLIDAY_BACKGROUND,
+    background: REGIONAL_HOLIDAY_BACKGROUND,
     color: 'white'
   },
   municipalityHoliday: {
@@ -54,7 +56,7 @@ function isWeekend(day) {
   return day.isoWeekday() == SATURDAY || day.isoWeekday() == SUNDAY
 }
 
-function termDays(start, end) {
+function getTermMarks(start, end) {
   const startDay = moment(start)
   const endDay = moment(end)
   
@@ -89,7 +91,7 @@ function styleForKind(kind) {
   }
 }
 
-function holidaysMarks(holidays) {
+function getHolidaysMarks(holidays) {
 
   let marks = {}, style
 
@@ -101,7 +103,7 @@ function holidaysMarks(holidays) {
   return marks
 }
 
-function weekendMarks(marks) {
+function getWeekendMarks(marks) {
   const filtered = Object.keys(marks)
     .filter( key => isWeekend(moment(key)) )
     .reduce((obj, key) => {
@@ -113,16 +115,16 @@ function weekendMarks(marks) {
 
 function DeadlineCalendar(props) {
 
-  let termMarks = termDays(props.notification, props.deadline)
-  let termWeekends = weekendMarks(termMarks)
-  let termHolidays = holidaysMarks(props.holidays)
+  let termMarks = getTermMarks(props.notification, props.deadline)
+  let weekendMarks = getWeekendMarks(termMarks)
+  let holidaysMarks = getHolidaysMarks(props.holidays)
   
 
   // Order is relevant: lasts in list will overwrite firsts
   let marks = {
     ...termMarks,
-    ...termWeekends,
-    ...termHolidays
+    ...weekendMarks,
+    ...holidaysMarks
   }
   // console.log('termMarks:',termMarks)
   // console.log('termWeekends:',termWeekends)
@@ -130,7 +132,7 @@ function DeadlineCalendar(props) {
   // console.log('marks:',marks)
 
   return(
-    <React.Fragment>
+    <div>
       <Calendar
         locale='es'
         from={props.notification}
@@ -140,7 +142,11 @@ function DeadlineCalendar(props) {
         markStyles={markStyles}
         markDays={marks}
       />
-    </React.Fragment>
+      <Legend
+        holidays={props.holidays}
+        markStyles={markStyles}
+      />
+    </div>
   )
 
 }

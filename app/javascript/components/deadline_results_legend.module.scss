@@ -1,0 +1,13 @@
+.row {
+    display: grid;
+    grid-template-columns: 25px auto;
+    margin-bottom: 5px;
+}
+
+.color {
+    height: 25px;
+}
+
+.legend {
+    margin-left: 10px;
+}
