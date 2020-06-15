@@ -10,6 +10,7 @@ class Spain
             @basque_country = FactoryBot::create(:territory, kind: :autonomous_community, name: 'País Vasco', parent: @country)
 
             @benidorm = FactoryBot::create(:territory, kind: :municipality, name: 'Benidorm', parent: @valencian_community)
+            @benidoret = FactoryBot::create(:territory, kind: :local_entity, name: 'Benidoret', parent: @benidorm)
             @javea = FactoryBot::create(:territory, kind: :municipality, name: 'Javea', parent: @valencian_community)
                     
             # Similar but not real holidays

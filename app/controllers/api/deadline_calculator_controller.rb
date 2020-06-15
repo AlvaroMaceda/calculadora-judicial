@@ -34,7 +34,6 @@ class Api::DeadlineCalculatorController < ApplicationController
 
         validates :municipality_code, 
             presence: true, 
-            length: {minimum: 7, maximum: 7}, 
             allow_blank: false
 
         validates :notification, presence: true, valid_date: true
