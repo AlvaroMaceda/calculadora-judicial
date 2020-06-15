@@ -18,6 +18,18 @@ function compareKind(a,b) {
     return kindOrder(a) - kindOrder(b)
 }
 
+function unique(holidays) {
+
+    let uniqueHolidays = Array.from(
+        new Set(holidays.map(holiday => holiday.kind)))
+            .map( kind => {
+                return holidays.find(item => item.kind === kind)
+            }
+        )
+
+    return uniqueHolidays
+}
+
 function sortedHolidays(holidays) {
     return holidays.sort( (a,b) => compareKind(a.kind,b.kind) )
 }
@@ -41,7 +53,7 @@ function renderLegendItem(territory, kind, markStyles) {
 
 function Legend(props) {
 
-    let sorted = sortedHolidays(props.holidays)
+    let sorted = unique(sortedHolidays(props.holidays))
 
     return (
         <div className=''>

@@ -48,8 +48,8 @@ const markStyles = {
     background: TERM_BACKGROUND, color: 'white'
   },
   termStart: {
-    background: TERM_BACKGROUND, color: 'white',
-    // border: '2px solid #0075a0',
+    // background: TERM_BACKGROUND, color: 'white',
+    border: '2px solid #0075a0',
     // borderLeft: '5px solid #0075a0',
   },
   termEnd: {
