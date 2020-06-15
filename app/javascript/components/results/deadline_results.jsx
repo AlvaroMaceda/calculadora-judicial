@@ -1,5 +1,5 @@
 import React from "react";
-import DeadlineCalendar from "./deadline_results_calendar";
+import DeadlineCalendar from "./deadline_calendar";
 import moment from 'moment'
 
 function formatDeadline(deadline){

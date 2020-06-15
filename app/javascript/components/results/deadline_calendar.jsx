@@ -1,7 +1,7 @@
 import React from "react";
 import Calendar from '../calendar/calendar'
 import moment from 'moment'
-import Legend from './deadline_results_legend'
+import Legend from './deadline_calendar_legend'
 
 const TERM_BACKGROUND = '#eac23e'
 // const TERM_BACKGROUND = '#skyblue'

@@ -1,5 +1,5 @@
 import React from "react";
-import style from './deadline_results_legend.module.scss'
+import style from './deadline_calendar_legend.module.scss'
 
 
 function kindOrder(kind) {
