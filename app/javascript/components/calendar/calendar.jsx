@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
 import ReactDOM from "react-dom";
-import Month from './calendar_month'
+import Month from './month'
 import style from './calendar.module.scss'
 import moment from 'moment'
 import proptypes from './calendar.proptypes'

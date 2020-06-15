@@ -19,7 +19,7 @@ registerLocale('es', es)
 
 
 import createLoading from './loading'
-import DeadlineResults from "./deadline_results";
+import DeadlineResults from "./results/deadline_results";
 import Municipality from './municipality'
 
 
@@ -228,8 +228,8 @@ class DeadlineCalculator extends Component {
               </div> {/*form-group*/}
 
             </form>
-            {/* <Loading loading={this.state.loading} results={this.state.results}/> */}
-            <DeadlineResults 
+            <Loading loading={this.state.loading} results={this.state.results}/>
+            {/* <DeadlineResults 
               results={
                 // Los datos son inventados
                 {
@@ -250,7 +250,7 @@ class DeadlineCalculator extends Component {
                   ]
                 }
               }
-            />
+            /> */}
 
           </div> {/*body*/}
           

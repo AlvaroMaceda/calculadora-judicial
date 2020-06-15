@@ -2,8 +2,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import classNames from 'classnames'
-import style from './calendar_month.module.scss'
-import proptypes from './calendar_month.proptypes'
+import style from './month.module.scss'
+import proptypes from './month.proptypes'
 
 const NO_CLASS = ''
 const NO_STYLE = {}
@@ -41,7 +41,7 @@ function renderDayNames_i18n() {
 } // renderDayNames_i18n
 
 function isString(x) {
-  return Object.prototype.toString.call(x) == '[object String]';
+return Object.prototype.toString.call(x) == '[object String]';
 }
 
 // Can't be a functional component because we need a ref to the content

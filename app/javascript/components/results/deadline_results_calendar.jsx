@@ -1,5 +1,5 @@
 import React from "react";
-import Calendar from './calendar'
+import Calendar from '../calendar/calendar'
 import moment from 'moment'
 import Legend from './deadline_results_legend'
 
