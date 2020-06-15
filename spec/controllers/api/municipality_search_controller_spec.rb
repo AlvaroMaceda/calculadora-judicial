@@ -18,11 +18,12 @@ describe Api::MunicipalitySearchController, type: :controller do
         end
 
         before(:each) do
-            @alcala = create(:territory, name: 'Alcala', population: 0, court: :no )
-            @calahorra = create(:territory, name: 'Calahorra', population: 0, court: :no )
-            @calcatta = create(:territory, name: 'Calcatta', population: 0, court: :no )
-            @la_costa_este = create(:territory, name: 'La Costa Este', population: 0, court: :no )
-            @sal_calada = create(:territory, name: 'Sal Calada', population: 0, court: :no )
+            @alcala = create(:territory, kind: :municipality, name: 'Alcala', population: 0, court: :no )
+            @calahorra = create(:territory, kind: :municipality, name: 'Calahorra', population: 0, court: :no )
+            @calahorreta = create(:territory, kind: :local_entity, name: 'Calahorreta', population: 0, court: :no )
+            @calcatta = create(:territory, kind: :municipality, name: 'Calcatta', population: 0, court: :no )
+            @la_costa_este = create(:territory, kind: :local_entity, name: 'La Costa Este', population: 0, court: :no )
+            @sal_calada = create(:territory, kind: :local_entity, name: 'Sal Calada', population: 0, court: :no )
         end
 
         before :each do
@@ -39,18 +40,19 @@ describe Api::MunicipalitySearchController, type: :controller do
                 expect_hash(@calcatta),
                 expect_hash(@sal_calada)
             ]}.to_json
-            expect(response.body).to eq(expected)  
+            expect(JSON.compare(expected,response.body).result).to be(true)
         end
 
-        it 'only returns municipalities' do
+        it 'only returns municipalities and local entities' do
             no_municipality = create(:territory, kind: :country, name: 'Calahorra')
 
-            get 'search', as: :json, params: { name: 'Calahorra' }
+            get 'search', as: :json, params: { name: 'Calahorr' }
 
             expected = {municipalities: [
-                expect_hash(@calahorra)
+                expect_hash(@calahorra),
+                expect_hash(@calahorreta)
             ]}.to_json
-            expect(response.body).to eq(expected) 
+            expect(JSON.compare(expected,response.body).result).to be(true)
         end
 
         it 'works when there are no matches' do
@@ -92,7 +94,7 @@ describe Api::MunicipalitySearchController, type: :controller do
             ]}.to_json
 
             get 'search', as: :json, params: { name: 'Municipio' }
-            expect(response.body).to eq(expected)
+            expect(JSON.compare(expected,response.body).result).to be(true)
         end
 
     end # GET #search

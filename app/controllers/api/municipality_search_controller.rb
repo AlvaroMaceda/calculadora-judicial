@@ -7,7 +7,7 @@ class Api::MunicipalitySearchController < ApplicationController
     name = params['name']
     return [] if name.empty?
     return json_error "Too few characters to search, minimum #{}" if name.length < MINIMUM_CHARACTERS
-    @municipalities = Territory.municipality_kind.similar_to(params['name']).by_relevance
+    @municipalities = Territory.where(kind: [:municipality, :local_entity]).similar_to(params['name']).by_relevance
   end
 
 end
