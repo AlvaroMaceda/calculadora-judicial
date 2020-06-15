@@ -7,8 +7,37 @@ const TERM_BACKGROUND = '#eac23e'
 // const TERM_BACKGROUND = '#skyblue'
 const NATIONAL_HOLIDAY_BACKGROUND = '#bb3a4c'
 const AC_HOLIDAY_BACKGROUND = '#92bb3a'
-const MUNICIPALITY_HOLIDAY_BACKGROUND = '#3a9bbb'
 const REGIONAL_HOLIDAY_BACKGROUND = '#3a8a78'
+const MUNICIPALITY_HOLIDAY_BACKGROUND = '#3a9bbb'
+const LOCAL_ENTITY_HOLIDAY_BACKGROUND = '#3a9bbb'
+
+const holidayStyles = {
+
+  country: {
+    background: NATIONAL_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  autonomous_community: {
+    background: AC_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  region: {
+    background: REGIONAL_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  island: {
+    background: REGIONAL_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  municipality: {
+    background: MUNICIPALITY_HOLIDAY_BACKGROUND,
+    color: 'white'
+  },
+  local_entity: {
+    background: MUNICIPALITY_HOLIDAY_BACKGROUND,
+    color: 'white'
+  }
+}
 
 const markStyles = {
   weekend: {
@@ -30,22 +59,7 @@ const markStyles = {
     // borderRight: '5px solid black'
   },
 
-  countryHoliday: {
-    background: NATIONAL_HOLIDAY_BACKGROUND,
-    color: 'white'
-  },
-  autonomous_communityHoliday: {
-    background: AC_HOLIDAY_BACKGROUND,
-    color: 'white'
-  },
-  regionHoliday: {
-    background: REGIONAL_HOLIDAY_BACKGROUND,
-    color: 'white'
-  },
-  municipalityHoliday: {
-    background: MUNICIPALITY_HOLIDAY_BACKGROUND,
-    color: 'white'
-  }
+  ...holidayStyles
 
 }
 
@@ -76,27 +90,12 @@ function getTermMarks(start, end) {
   return days
 }
 
-function styleForKind(kind) {
-  switch(kind) {
-    case 'country':
-    case 'municipality':
-    case 'autonomous_community':
-      return kind + 'Holiday'
-    case 'region':
-    case 'island':
-      return 'regionHoliday'
-    default:
-      console.log('Holiday type not found:'+kind)
-      return ''
-  }
-}
-
 function getHolidaysMarks(holidays) {
 
   let marks = {}, style
 
   holidays.forEach( (holiday) => {
-    style = styleForKind(holiday.kind)
+    style = holiday.kind
     marks[moment(holiday.date).format('YYYY-MM-DD')] = style
   })
 

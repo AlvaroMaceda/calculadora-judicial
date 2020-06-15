@@ -2,29 +2,50 @@ import React from "react";
 import style from './deadline_results_legend.module.scss'
 
 
+function kindOrder(kind) {
+    const order = [
+        'country',
+        'autonomous_community',
+        'region',
+        'island',
+        'municipality',
+        'local_entity',
+    ]
+    return order.indexOf(kind)
+}
+
+function compareKind(a,b) {
+    return kindOrder(a) - kindOrder(b)
+}
+
+function sortedHolidays(holidays) {
+    return holidays.sort( (a,b) => compareKind(a.kind,b.kind) )
+}
+    
+function renderLegends(holidays, markStyles) {
+    return (
+        holidays.reduce( (acc, holiday) => 
+            [...acc, renderLegendItem(holiday.territory, holiday.kind, markStyles)]
+        , [])
+    )
+}
+
+function renderLegendItem(territory, kind, markStyles) {
+    return (
+    <div className={style.row} key={territory}>
+        <div className={style.color} style={markStyles[kind]}></div>
+        <div className={style.legend}>{'Festivo en '+territory}</div>
+    </div> 
+    )
+}
+
 function Legend(props) {
+
+    let sorted = sortedHolidays(props.holidays)
 
     return (
         <div className=''>
-            {/* {JSON.stringify(props.holidays)}
-            {JSON.stringify(props.markStyles)} */}
-
-            <div className={style.row}>
-                <div className={style.color} style={props.markStyles['countryHoliday']}></div>
-                <div className={style.legend}>Festivos nacionales</div>
-            </div>
-            <div className={style.row}>
-                <div className={style.color} style={props.markStyles['autonomous_communityHoliday']}></div>
-                <div className={style.legend}>Festivos de la comunidad autónoma</div>
-            </div>
-            <div className={style.row}>
-                <div className={style.color} style={props.markStyles['regionHoliday']}></div>
-                <div className={style.legend}>Festivos regionales</div>
-            </div>
-            <div className={style.row}>
-                <div className={style.color} style={props.markStyles['municipalityHoliday']}></div>
-                <div className={style.legend}>Festivos municipales</div>
-            </div>
+            {renderLegends(sorted, props.markStyles)}
         </div>
     )
 }
