@@ -74,6 +74,11 @@ const RESULT_STATE = {
   DATA_RECEIVED: false
 }
 
+const NO_RESPONSE_AVAILABLE = {
+  resultsState: RESULT_STATE.NO_DATA,
+  requestError: null
+}
+
 class DeadlineCalculator extends Component {
 
   constructor (props) {
@@ -86,6 +91,8 @@ class DeadlineCalculator extends Component {
       resultsState: RESULT_STATE.NO_DATA, 
       results: {},
       formErrors: {email: '', password: ''},
+      requestError: null
+      // requestError: 'Error en la consulta del vencimiento'
     }
 
     super(props);
@@ -133,7 +140,10 @@ class DeadlineCalculator extends Component {
     // TO-DO: show some error message
     console.log('EL REQUEST HA PETAO:')
     console.log(error.response.message)
-    this.modifyState({resultsState: RESULT_STATE.NO_DATA})
+    this.modifyState({
+      resultsState: RESULT_STATE.NO_DATA,
+      requestError: error.response.message
+    })
     // We must resubscribe because the original subscription has errored out and isn't valid anymore
     this.subscribeToCalculations()
     // return of({error:true})
@@ -158,16 +168,16 @@ class DeadlineCalculator extends Component {
   }
 
   setNotification(date) {
-    this.modifyState({notification:date, resultsState: RESULT_STATE.NO_DATA})
+    this.modifyState({notification:date, ...NO_RESPONSE_AVAILABLE})
   }
 
   setMunicipality(municipality) {
-    this.modifyState({municipality: municipality, resultsState: RESULT_STATE.NO_DATA})
+    this.modifyState({municipality: municipality, ...NO_RESPONSE_AVAILABLE})
   }
 
   setworkDays(workDays) {
     if(workDays !== '' && isNaN(Number(workDays))) return
-    this.modifyState({workDays: workDays, resultsState: RESULT_STATE.NO_DATA})
+    this.modifyState({workDays: workDays, ...NO_RESPONSE_AVAILABLE})
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -189,6 +199,18 @@ class DeadlineCalculator extends Component {
 
   handleSubmit(event){
     event.preventDefault()
+  }
+
+  renderRequestError() {
+    console.log('Error:',this.state.requestError)
+    console.log(this.state)
+    if(!this.state.requestError) return
+    console.log('hay error')
+    return (
+      <div className="alert alert-danger" role="alert">
+          <strong>Error en la consulta: </strong>{this.state.requestError}
+      </div>
+    )
   }
 
   render() {
@@ -243,6 +265,7 @@ class DeadlineCalculator extends Component {
               </div> {/*form-group*/}
 
             </form>
+            {this.renderRequestError()}
             <Loading loading={this.state.resultsState} results={this.state.results}/>
             {/* <DeadlineResults 
               results={
