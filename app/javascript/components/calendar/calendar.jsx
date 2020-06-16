@@ -48,29 +48,35 @@ class Calendar extends Component {
     super(props)
     props.locale && moment.locale(props.locale)
     this.state = { 
-      monthStyle: {width: '100%'}
+      monthWidth: {width: '100%'}
     }
     this.currentMonthsPerRow = 0
+    this.months = this.getMonthsToDraw(this.props.from, this.props.to)
   }
 
   updateDimensions() {
     this.containerSize = measureElement(this.container)
     this.monthSize = measureElement(this.monthRef)
-    this.setMonthsContainerWidth()
+    this.setMonthsContainerWidth(this.containerSize, this.monthSize)
   }
 
-  setMonthsContainerWidth() {
-    let monthsPerRow = this.monthsPerRow()
+  setMonthsContainerWidth(containerSize, monthSize) {
+    // console.log(`month per row:${monthsPerRow}`)
+    // console.log('container size:', containerSize)
+    // console.log('month size:', monthSize) 
+
+    let monthsPerRow = this.monthsPerRow(containerSize.availableForContent.width, monthSize.spaceOccupied.width)
+
 
     if(monthsPerRow !== this.currentMonthsPerRow) {
       this.currentMonthsPerRow = monthsPerRow
 
       const JUST_IN_CASE=5;
-      let monthContainerWidth = monthsPerRow * this.monthSize.spaceOccupied.width + JUST_IN_CASE 
+      let monthContainerWidth = Math.min(monthsPerRow,this.months.length) * monthSize.spaceOccupied.width + JUST_IN_CASE 
 
       this.setState({
         ...this.state,
-        monthStyle: {width: `${monthContainerWidth}px`}
+        monthWidth: {width: `${monthContainerWidth}px`}
       })
     }
   }
@@ -95,7 +101,10 @@ class Calendar extends Component {
       )
   }
 
-  monthsPerRow() {
+  monthsPerRow(containerWidth, monthWidth) {
+    console.log(`container width: ${containerWidth} month width: ${monthWidth}`)
+
+    const maxMonthsPerRow = Math.floor(containerWidth / monthWidth)
     /*
     The idea is to place the months in a "pretty" layout. For example, if 
     we have 5 monts (1 2 3 4 5)
@@ -121,8 +130,13 @@ class Calendar extends Component {
     1 2 3 4 5
 
     */
+   /*
+    maximo que caben: max
+    desde 1 hasta max: seleccionar el r que deje menos hueco, siendo el hueco: (max - (n % r)) % n (el último %n es porque, si caben justos, no hay hueco)
+    El 1 solo como última opción
+   */
     // Return the max until we have the algorithm
-    return this.maxMonthsPerRow()
+    return maxMonthsPerRow
   }
 
   getMonthsToDraw(from, to) {
@@ -160,14 +174,14 @@ class Calendar extends Component {
   }
 
   render() {
-    let months = this.getMonthsToDraw(this.props.from, this.props.to)
+    
 
     return (
       <div className={style.calendar}
            ref={element => {this.container = element;}}
       >
-        <div className={style.monthsContainer} style={this.state.monthStyle}>
-          { this.renderMonths(months) }
+        <div className={style.monthsContainer} style={this.state.monthWidth}>
+          { this.renderMonths(this.months) }
         </div>
       </div>
     )
