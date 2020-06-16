@@ -5,9 +5,9 @@ import style from './deadline_calculator.module.scss'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Subject, asyncScheduler } from "rxjs";
+import { Subject, asyncScheduler, of } from "rxjs";
 import { ajax } from 'rxjs/ajax';
-import { switchMap, throttleTime, filter } from "rxjs/operators";
+import { switchMap, throttleTime, filter, catchError } from "rxjs/operators";
 
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import moment from 'moment'
@@ -93,21 +93,14 @@ class DeadlineCalculator extends Component {
     this.validator = new FormValidator()
 
     this.requests = new Subject()
-    this.responses = this.requests.pipe(
-      throttleTime(THROTTLE_TIME, asyncScheduler, {trailing:true}), // {trailing: true} is for launching the last request (that's the request we are interested if)    
-      switchMap( (url) => ajax(url) ), // switchMap will ignore all requests except last one
-      filter( () => this.validator.valid), // Ignore responses if form is not valid
-      // catchError(here you could call a function to retry, etc)
-    )
-    this.responses.subscribe( 
-      (data) => this.calculationResponse(data),
-      (error) => this.calculationError(error)
-      )
+    this.subscribeToCalculations()
 
     this.state = INITIAL_STATE
   }
 
   launchRequest(){
+    if(! this.validForm()) return
+
     console.log('Launching request')
     this.modifyState({resultsState: RESULT_STATE.LOADING})
     
@@ -124,16 +117,32 @@ class DeadlineCalculator extends Component {
     this.requests.next(url)
   }
 
+  subscribeToCalculations() {
+    this.requests.pipe(
+      throttleTime(THROTTLE_TIME, asyncScheduler, {trailing:true}), // {trailing: true} is for launching the last request (that's the request we are interested if)    
+      switchMap( (url) => ajax(url) ), // switchMap will ignore all requests except last one
+      filter( () => this.validator.valid), // Ignore responses if form is not valid
+      // catchError(this.calculationError.bind(this))
+    ).subscribe( 
+      (data) => this.calculationResponse(data),
+      (error) => this.calculationError(error)
+    )
+  }
 
   calculationError(error) {
     // TO-DO: show some error message
     console.log('EL REQUEST HA PETAO:')
     console.log(error.response.message)
     this.modifyState({resultsState: RESULT_STATE.NO_DATA})
+    // We must resubscribe because the original subscription has errored out and isn't valid anymore
+    this.subscribeToCalculations()
+    // return of({error:true})
   }
 
   calculationResponse(data) {
     console.log('Request response')
+    console.log(`error: ${data.error}`)
+    if(data.error) return
     console.log(data.response)
     this.modifyState({
       resultsState: RESULT_STATE.DATA_RECEIVED,
@@ -163,7 +172,7 @@ class DeadlineCalculator extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(!this.dataHasChanged(prevState,this.state)) return
-    if(this.validForm()) this.launchRequest()
+    this.launchRequest()
   }
 
   dataHasChanged(previous, current) {
