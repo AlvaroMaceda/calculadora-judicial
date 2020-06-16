@@ -40,6 +40,9 @@ class Spain
                     november_10: FactoryBot::create(:holiday, date: Date.parse('10 Nov 2020'), holidayable: @benidorm),
                     december_10: FactoryBot::create(:holiday, date: Date.parse('10 Dec 2020'), holidayable: @benidorm)
                 },
+                benidoret: {
+                    december_28: FactoryBot::create(:holiday, date: Date.parse('28 Dec 2020'), holidayable: @benidoret)
+                },
                 javea: {
                     november_9: FactoryBot::create(:holiday, date: Date.parse('9 Nov 2020'), holidayable: @javea),
                     november_10: FactoryBot::create(:holiday, date: Date.parse('10 Nov 2020'), holidayable: @javea)
@@ -50,7 +53,7 @@ class Spain
 
         attr_reader :country
         attr_reader :valencian_community
-        attr_reader :benidorm
+        attr_reader :benidorm, :benidoret
         attr_reader :holidays
     end
     
