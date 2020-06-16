@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { Subject, asyncScheduler } from "rxjs";
 import { ajax } from 'rxjs/ajax';
-import { switchMap, throttleTime, filter, catchError } from "rxjs/operators";
+import { switchMap, throttleTime, filter } from "rxjs/operators";
 
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import moment from 'moment'
@@ -68,8 +68,10 @@ class FormValidator {
   }
 }
 
-const INITIAL_STATE = {
-
+const RESULT_STATE = {
+  NO_DATA: null,
+  LOADING: true,
+  DATA_RECEIVED: false
 }
 
 class DeadlineCalculator extends Component {
@@ -81,7 +83,7 @@ class DeadlineCalculator extends Component {
       municipality: null,
       workDays: '',
       formValid: false,
-      loading: null, // true: loading. false: lodaded. null: no data available
+      resultsState: RESULT_STATE.NO_DATA, 
       results: {},
       formErrors: {email: '', password: ''},
     }
@@ -95,16 +97,19 @@ class DeadlineCalculator extends Component {
       throttleTime(THROTTLE_TIME, asyncScheduler, {trailing:true}), // {trailing: true} is for launching the last request (that's the request we are interested if)    
       switchMap( (url) => ajax(url) ), // switchMap will ignore all requests except last one
       filter( () => this.validator.valid), // Ignore responses if form is not valid
-      catchError(this.calculationError)
+      // catchError(here you could call a function to retry, etc)
     )
-    this.responses.subscribe( (data) => this.calculationResponse(data))
+    this.responses.subscribe( 
+      (data) => this.calculationResponse(data),
+      (error) => this.calculationError(error)
+      )
 
     this.state = INITIAL_STATE
   }
 
   launchRequest(){
     console.log('Launching request')
-    this.modifyState({loading: true})
+    this.modifyState({resultsState: RESULT_STATE.LOADING})
     
     let notification = dateToYYYY_MM_DD(this.state.notification)
     let municipality_code = this.state.municipality.value
@@ -119,18 +124,19 @@ class DeadlineCalculator extends Component {
     this.requests.next(url)
   }
 
+
   calculationError(error) {
+    // TO-DO: show some error message
     console.log('EL REQUEST HA PETAO:')
     console.log(error.response.message)
-    this.modifyState({loading: null})
-    return 'BANANA'
+    this.modifyState({resultsState: RESULT_STATE.NO_DATA})
   }
 
   calculationResponse(data) {
     console.log('Request response')
     console.log(data.response)
     this.modifyState({
-      loading: false,
+      resultsState: RESULT_STATE.DATA_RECEIVED,
       results: data.response
     })
   }
@@ -143,16 +149,16 @@ class DeadlineCalculator extends Component {
   }
 
   setNotification(date) {
-    this.modifyState({notification:date, loading: null})
+    this.modifyState({notification:date, resultsState: RESULT_STATE.NO_DATA})
   }
 
   setMunicipality(municipality) {
-    this.modifyState({municipality: municipality, loading: null})
+    this.modifyState({municipality: municipality, resultsState: RESULT_STATE.NO_DATA})
   }
 
   setworkDays(workDays) {
     if(workDays !== '' && isNaN(Number(workDays))) return
-    this.modifyState({workDays: workDays, loading: null})
+    this.modifyState({workDays: workDays, resultsState: RESULT_STATE.NO_DATA})
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -228,7 +234,7 @@ class DeadlineCalculator extends Component {
               </div> {/*form-group*/}
 
             </form>
-            <Loading loading={this.state.loading} results={this.state.results}/>
+            <Loading loading={this.state.resultsState} results={this.state.results}/>
             {/* <DeadlineResults 
               results={
                 // Los datos son inventados
