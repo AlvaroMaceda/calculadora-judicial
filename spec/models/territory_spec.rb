@@ -164,6 +164,29 @@ describe Territory, type: :model do
 
     end
 
+    context 'settlements_scope' do
+
+        it 'returns only municipalities and local entities' do
+
+            @country = create(:territory, kind: :country )
+            @autonomous_community = create(:territory, kind: :autonomous_community )
+            @island = create(:territory, kind: :island )
+            @region = create(:territory, kind: :region )
+            @municipality = create(:territory, kind: :municipality )
+            @local_entity = create(:territory, kind: :local_entity )
+
+            expected = [
+                @municipality,
+                @local_entity
+            ]
+            
+            response = Territory.settlements.to_a
+
+            expect(response).to match_array(expected)
+        end
+
+    end
+
     context 'similar_to scope' do
 
         before(:each) do

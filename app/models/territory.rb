@@ -51,6 +51,12 @@ class Territory < ApplicationRecord
         )
     }
 
+    scope :settlements, ->() {
+        where(
+            kind: [:municipality, :local_entity]
+        )
+    }
+
     scope :by_relevance, -> { order(court: :desc, population: :desc) }
 
     def holidays_between(start_date, end_date)
