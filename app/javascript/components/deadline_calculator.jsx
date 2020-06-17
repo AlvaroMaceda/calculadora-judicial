@@ -202,10 +202,7 @@ class DeadlineCalculator extends Component {
   }
 
   renderRequestError() {
-    console.log('Error:',this.state.requestError)
-    console.log(this.state)
     if(!this.state.requestError) return
-    console.log('hay error')
     return (
       <div className="alert alert-danger" role="alert">
           <strong>Error en la consulta: </strong>{this.state.requestError}
@@ -284,7 +281,9 @@ class DeadlineCalculator extends Component {
                     {"date":"2020-04-13","kind":"local_entity","territory":"El Perelló"}
                     ],
                   "missing_holidays":[
-                    {"territory":"Jaén","year":2020}
+                    {"territory":"Jaén","year":2020},
+                    {"territory":"Jaén","year":2021},
+                    {"autonomous_community":"Andalucía","year":2020}
                   ]
                 }
               }
