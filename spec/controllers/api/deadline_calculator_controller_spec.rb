@@ -85,10 +85,10 @@ describe Api::DeadlineCalculatorController, type: :controller do
         it 'returns missing holidays' do
             params = {
                 municipality_code: Spain.benidorm.code,
-                notification: '2019-02-04',
+                notification: '2018-12-31',
                 days: 1
             }
-            expected_deadline = '2019-02-05'
+            expected_deadline = '2019-01-01'
 
             get 'deadline', as: :json, params: params
             expect(response).to be_json_success_response("deadline_calculator")
@@ -97,9 +97,9 @@ describe Api::DeadlineCalculatorController, type: :controller do
                 deadline: expected_deadline,
                 holidays: [],
                 missing_holidays: [
-                    { territory:Spain.country.name, year: 2019 },
-                    { territory:Spain.valencian_community.name, year: 2019 },
-                    { territory:Spain.benidorm.name, year: 2019 }
+                    { kind:Spain.country.kind, territory:Spain.country.name, years: [2018,2019] },
+                    { kind:Spain.valencian_community.kind , territory:Spain.valencian_community.name, years: [2018,2019] },
+                    { kind:Spain.benidorm.kind , territory:Spain.benidorm.name, years: [2018,2019] }
                 ]
             }).to_json
             expect(response.body).to be_same_json_as(expected) 
