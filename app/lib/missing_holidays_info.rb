@@ -1,4 +1,4 @@
 MissingHolidaysInfo = Struct.new(
     :territory, 
-    :year
+    :years
 )

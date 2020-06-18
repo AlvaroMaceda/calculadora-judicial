@@ -400,15 +400,15 @@ describe DeadlineCalculator do
 
         let (:calculator) { DeadlineCalculator.new(@child_territory) }
 
-        it 'returns missing holidays', focus:true do
+        it 'returns missing holidays' do
 
-            notification_date = Date.parse('30 Dec 2021')
-            days = 10
+            notification_date = Date.parse('1 Dec 2021')
+            days = 1
 
             missing_holidays = calculator.deadline(notification_date,days).missing_holidays
             expected_missing = [
-                MissingHolidaysInfo.new(@parent_territory,[2021,2022]),
-                MissingHolidaysInfo.new(@child_territory,[2021,2022])
+                MissingHolidaysInfo.new(@parent_territory,[2021]),
+                MissingHolidaysInfo.new(@child_territory,[2021])
             ]
 
             expect(missing_holidays).to match_array(expected_missing)
@@ -431,10 +431,8 @@ describe DeadlineCalculator do
 
             missing_holidays = calculator.deadline(notification_date,days).missing_holidays
             expected_missing = [
-                MissingHolidaysInfo.new(@parent_territory,2019),
-                MissingHolidaysInfo.new(@child_territory,2019),
-                MissingHolidaysInfo.new(@parent_territory,2021),
-                MissingHolidaysInfo.new(@child_territory,2021)
+                MissingHolidaysInfo.new(@parent_territory,[2019,2021]),
+                MissingHolidaysInfo.new(@child_territory,[2019,2021]),
             ]
 
             expect(missing_holidays).to match_array(expected_missing)
