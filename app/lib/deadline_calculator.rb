@@ -127,6 +127,20 @@ class DeadlineCalculator
     end
 
     def missing_holidays_between(start_date, end_date)
+        missing = Hash.new do |values, key|
+            values[key] = MissingHolidaysInfo.new(key,[])
+        end
+
+        years_in_interval(start_date, end_date).each do |year|
+            @holidayable.holidays_missing_for(year).each do |territory|
+                missing[territory].years.concat([year])
+            end 
+        end
+
+        return missing.values
+    end
+
+    def missing_holidays_between_old(start_date, end_date)
         missing_holidays = []
 
         years_in_interval(start_date, end_date).each do |year|
