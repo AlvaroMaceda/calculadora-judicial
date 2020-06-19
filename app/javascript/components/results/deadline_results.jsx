@@ -6,10 +6,19 @@ function formatDeadline(deadline){
     return moment(deadline,'YYYY-MM-DD').format('dddd DD [de] MMMM [de] YYYY')
 }
 
-// TO-DO: change the format of holidaysmissiong
+
+function arrayToTextEnumeration(array) {
+    if(array.length==1) return array[0]
+    
+    let firstElements = array.slice(0,-1)
+    let lastElements = array.slice(-1)
+    
+    return [firstElements.join(', ')].concat(lastElements).join(' y ')
+}
+
 function renderMissingHoliday(holiday){
-    console.log(holiday)
-    let text = `${holiday.territory || ''}${holiday.autonomous_community || ''}${holiday.country || ''} ${holiday.year}`
+    let txtYears = holiday.years.length > 1 ? 'años' : 'año'
+    let text = `${holiday.territory}: ${txtYears} ${arrayToTextEnumeration(holiday.years)}`
     return (
     <li key={text}>
         {text}

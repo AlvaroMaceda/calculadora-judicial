@@ -4,7 +4,6 @@ import moment from 'moment'
 import Legend from './deadline_calendar_legend'
 
 const TERM_BACKGROUND = '#eac23e'
-// const TERM_BACKGROUND = '#skyblue'
 const NATIONAL_HOLIDAY_BACKGROUND = '#bb3a4c'
 const AC_HOLIDAY_BACKGROUND = '#92bb3a'
 const REGIONAL_HOLIDAY_BACKGROUND = '#3a8a78'
@@ -34,7 +33,7 @@ const holidayStyles = {
     color: 'white'
   },
   local_entity: {
-    background: MUNICIPALITY_HOLIDAY_BACKGROUND,
+    background: LOCAL_ENTITY_HOLIDAY_BACKGROUND,
     color: 'white'
   }
 }
