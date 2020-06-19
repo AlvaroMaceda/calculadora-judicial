@@ -12,13 +12,13 @@ CT_ESP,autonomous_community,AC00009,Cataluña
 CT_ESP,autonomous_community,AC00010,Comunidad Valenciana
 CT_ESP,autonomous_community,AC00011,Extremadura
 CT_ESP,autonomous_community,AC00012,Galicia
-CT_ESP,autonomous_community,AC00013,Madrid
-CT_ESP,autonomous_community,AC00014,Murcia
+CT_ESP,autonomous_community,AC00013,Comunidad de Madrid
+CT_ESP,autonomous_community,AC00014,Comunidad de Murcia
 CT_ESP,autonomous_community,AC00015,Navarra
 CT_ESP,autonomous_community,AC00016,País Vasco
 CT_ESP,autonomous_community,AC00017,La Rioja
-CT_ESP,autonomous_community,AC00018,Ceuta
-CT_ESP,autonomous_community,AC00019,Melilla
+CT_ESP,autonomous_community,AC00018,Ciudad autónoma de Ceuta
+CT_ESP,autonomous_community,AC00019,Ciudad autónoma de Melilla
 AC00005,island,IS_HIE,El Hierro
 AC00005,island,IS_PAL,La Palma
 AC00005,island,IS_GOM,La Gomera
