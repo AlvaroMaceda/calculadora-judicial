@@ -6,7 +6,6 @@ function formatDeadline(deadline){
     return moment(deadline,'YYYY-MM-DD').format('dddd DD [de] MMMM [de] YYYY')
 }
 
-
 function arrayToTextEnumeration(array) {
     if(array.length==1) return array[0]
     
@@ -28,7 +27,7 @@ function renderMissingHoliday(holiday){
 
 function renderMissingHolidays(missingHolidays) {
     console.log(missingHolidays)
-    // if(!this.state.requestError) return
+    if(!missingHolidays.length) return
 
     let missing = missingHolidays.map( (holiday) => renderMissingHoliday(holiday))
 
@@ -36,7 +35,7 @@ function renderMissingHolidays(missingHolidays) {
       <div className="alert alert-danger" role="alert">
         <p>
         <strong>Atención: </strong>
-        no se dispone de datos de vacaciones para los siguientes territorios, 
+        no se dispone de datos de vacaciones para los siguientes territorios; 
         la fecha de vencimiento podría ser posterior a la fecha calculada:
         </p>
         <ul>
@@ -51,9 +50,6 @@ export default function DeadlineResults(props) {
     let results = props.results
     return (
         <React.Fragment>
-            {/* <h3>Estos son los resultados del cálculo:</h3> */}
-            {/* Notificado: {results.notification}<br/>
-            Días:{results.days}<br/> */}
             <span>Vencimiento:
             <strong>{formatDeadline(results.deadline)}</strong></span>
             <h4></h4>
