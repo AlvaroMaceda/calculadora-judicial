@@ -49,7 +49,7 @@ class Municipality extends Component {
     )
   }
 
-  // TODO: refactor this
+  // TO-DO: refactor this
   async searchMunicipalities(text) {
 
     this.modifyState(

@@ -13,7 +13,7 @@ import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import moment from 'moment'
 
 moment.locale('es')
-// TODO: remove this and change for moment
+// TO-DO: remove this and change for moment
 import es from 'date-fns/locale/es';
 registerLocale('es', es)
 
