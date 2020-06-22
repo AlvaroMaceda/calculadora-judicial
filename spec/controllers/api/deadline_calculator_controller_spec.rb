@@ -19,15 +19,15 @@ describe Api::DeadlineCalculatorController, type: :controller do
         let(:correct_params) { 
             {
                 municipality_code: Spain.benidorm.code,
-                notification: '2020-11-25',
-                days: 5
+                notification: '2020-09-21',
+                days: 3
             }
         }
 
         it 'computes a deadline' do
             # See deadline_calculator_spec for examples of deadline calculations
             params = correct_params
-            expected_deadline = '2020-12-02'
+            expected_deadline = '2020-09-24'
          
             get 'deadline', as: :json, params: params
             expect(response).to be_json_success_response("deadline_calculator")
@@ -43,10 +43,10 @@ describe Api::DeadlineCalculatorController, type: :controller do
         it 'works with local entities' do
             params = {
                 municipality_code: Spain.benidoret.code,
-                notification: '2020-12-01',
-                days: 1
+                notification: '2020-09-21',
+                days: 3
             }
-            expected_deadline = '2020-12-02'
+            expected_deadline = '2020-09-24'
 
             get 'deadline', as: :json, params: params
             expect(response).to be_json_success_response("deadline_calculator")
@@ -59,13 +59,13 @@ describe Api::DeadlineCalculatorController, type: :controller do
             expect(response.body).to eq(expected)
         end
 
-        it 'returns affected holidays' do
+        it 'returns holidays for starting and end month' do
             params = {
                 municipality_code: Spain.benidorm.code,
-                notification: '2020-10-08',
+                notification: '2020-11-30',
                 days: 3
             }
-            expected_deadline = '2020-10-15'
+            expected_deadline = '2020-12-03'
 
             get 'deadline', as: :json, params: params
             expect(response).to be_json_success_response("deadline_calculator")
@@ -73,13 +73,19 @@ describe Api::DeadlineCalculatorController, type: :controller do
             expected = params.merge({
                 deadline: expected_deadline,
                 holidays: [
-                    holiday_api_data(Spain.holidays[:valencian_community][:october_9]),
-                    holiday_api_data(Spain.holidays[:country][:october_12])
+                    # November
+                    holiday_api_data(Spain.holidays[:benidorm][:november_9]),
+                    holiday_api_data(Spain.holidays[:benidorm][:november_10]),
+                    # December
+                    holiday_api_data(Spain.holidays[:benidorm][:december_10]),
+                    holiday_api_data(Spain.holidays[:valencian_community][:december_7]),
+                    holiday_api_data(Spain.holidays[:country][:december_8]),
+                    holiday_api_data(Spain.holidays[:country][:december_25])
                 ],
                 missing_holidays: []
             }).to_json
 
-            expect(response.body).to eq(expected) 
+            expect(response.body).to be_same_json_as(expected) 
         end
 
         it 'returns missing holidays' do
