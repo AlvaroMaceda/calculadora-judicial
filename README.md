@@ -44,6 +44,9 @@ There is a rake tasks to load holidays:
 ### Requirements
 
 To run this project you will need a postgressql server. There is a docker container created if you want to use it; in that case you will need to have docker and docker-compose installed in your system.
+You will need to install libpq-dev for building pg gem.
+
+For development you can also work with sqlite3. If you want to use it, just uncomment the corresponding lines on .env file.
 
 #### Preparing
 
