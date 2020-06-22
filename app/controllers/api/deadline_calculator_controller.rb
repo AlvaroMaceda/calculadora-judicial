@@ -16,9 +16,7 @@ class Api::DeadlineCalculatorController < ApplicationController
     private 
 
     def get_deadline(settlement)
-        result = DeadlineCalculator.new(settlement).deadline(@notification_date, @days)
-        result.deadline 
-        # @holidays_affected = result.holidays_affected
+        DeadlineCalculator.new(settlement).deadline(@notification_date, @days)
     end
 
     def get_missing_holidays(settlement)
