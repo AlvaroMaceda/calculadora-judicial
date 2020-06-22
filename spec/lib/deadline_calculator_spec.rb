@@ -388,56 +388,6 @@ describe DeadlineCalculator do
 
     end # Context holidays affected
 
-    context 'missing holidays' do
-
-        before(:each) do
-            @parent_territory = create(:territory, name: 'parent')
-            @child_territory = create(:territory, name: 'child', parent: @parent_territory)
-
-            create(:holiday, holidayable: @parent_territory, date: Date.parse('10 Jan 2020'))
-            create(:holiday, holidayable: @child_territory, date: Date.parse('10 Jan 2020'))            
-        end
-
-        let (:calculator) { DeadlineCalculator.new(@child_territory) }
-
-        it 'returns missing holidays' do
-
-            notification_date = Date.parse('1 Dec 2021')
-            days = 1
-
-            missing_holidays = calculator.deadline(notification_date,days).missing_holidays
-            expected_missing = [
-                MissingHolidaysInfo.new(@parent_territory,[2021]),
-                MissingHolidaysInfo.new(@child_territory,[2021])
-            ]
-
-            expect(missing_holidays).to match_array(expected_missing)
-        end
-
-        it 'works if no holidays missing' do
-
-            notification_date = Date.parse('15 Jan 2020')
-            days = 1
-
-            missing_holidays = calculator.deadline(notification_date,days).missing_holidays
-            expected_missing = []
-
-            expect(missing_holidays).to match_array(expected_missing)            
-        end
-
-        it 'works if more than one year involved' do
-            notification_date = Date.parse('5 Jan 2019')
-            days = 365 * 2 # This will take 2019, 2020 and 2021
-
-            missing_holidays = calculator.deadline(notification_date,days).missing_holidays
-            expected_missing = [
-                MissingHolidaysInfo.new(@parent_territory,[2019,2021]),
-                MissingHolidaysInfo.new(@child_territory,[2019,2021]),
-            ]
-
-            expect(missing_holidays).to match_array(expected_missing)
-        end
-
-    end # context missing holidays
+    
 
 end

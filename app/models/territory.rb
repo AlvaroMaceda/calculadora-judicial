@@ -79,7 +79,22 @@ class Territory < ApplicationRecord
         parent_missing_holidays = parent ? parent.holidays_missing_for(year) : []
         return self_missing_holidays+parent_missing_holidays 
     end
-    
+
+    def holidays_missing_between(start_year, end_year)
+        missing = Hash.new do |values, key|
+            values[key] = MissingHolidaysInfo.new(key,[])
+        end
+
+        (start_year..end_year).each do |year|
+            holidays_missing_for(year).each do |territory|
+                missing[territory].years.concat([year])
+            end 
+        end
+        
+        return missing.values
+    end
+
+
     private
     
     def have_self_holidays_for?(year)

@@ -353,18 +353,18 @@ describe Territory, type: :model do
 
         it 'returns missing holidays in the chain between two years' do
 
-            whatever = '02'
-            start_date = Date.parse("2018-#{whatever}-#{whatever}")
-            end_date = Date.parse("2020-#{whatever}-#{whatever}")
+            start_year = 2018
+            end_year = 2020
 
-            expected = {
-                @territory => [],
-                @parent => []
-            }
+            expected = [
+                MissingHolidaysInfo.new(@territory, [2018,2019,2020]),
+                MissingHolidaysInfo.new(@parent, [2018,2020]),
+                MissingHolidaysInfo.new(@grandparent, [2018])
+            ]
 
-            result = @territory.holidays_missing_between(start_date, end_date)
-
-            expect(result).to eql(expect)
+            result = @territory.holidays_missing_between(start_year, end_year)
+            
+            expect(result).to eql(expected)
         end
 
 
