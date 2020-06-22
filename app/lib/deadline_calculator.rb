@@ -80,7 +80,7 @@ class DeadlineCalculator
         is_weekend?(date) or is_holiday?(date)
     end
 
-    # TODO: This function launches three queries each time is called
+    # TO-DO: This function launches three queries each time is called
     #       We should reformulate the algorithm to avoid calling this function
     def is_holiday?(date)
         holiday = @holidayable.holidays_between(date, date)
@@ -138,20 +138,6 @@ class DeadlineCalculator
         end
 
         return missing.values
-    end
-
-    def missing_holidays_between_old(start_date, end_date)
-        missing_holidays = []
-
-        years_in_interval(start_date, end_date).each do |year|
-            missing_for_year = @holidayable.holidays_missing_for(year).map do |territory| 
-                MissingHolidaysInfo.new(territory,year) 
-            end
-            
-            missing_holidays.concat missing_for_year
-        end
-        
-        return missing_holidays
     end
 
     def years_in_interval(start_date, end_date)

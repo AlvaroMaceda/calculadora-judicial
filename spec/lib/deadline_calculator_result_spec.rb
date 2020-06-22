@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe DeadlineCalculatorResult do
     
+    # TO-DO: Remove missing_holidays, it's being moved to territory
+
     let(:result_deadline) {Date.parse('21 Jun 2020')}
 
     let(:result_holidays) {

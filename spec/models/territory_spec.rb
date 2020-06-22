@@ -331,11 +331,11 @@ describe Territory, type: :model do
             territory_2021 = create(:holiday, holidayable: @territory, date: Date.parse('15 Jan 2021'))
         end
 
-        it 'returns itself if missing holidays for that year' do
+        it 'returns itself if missing holidays for a year' do
             expect(@territory.holidays_missing_for(2019)).to match_array([@territory])
         end
 
-        it 'returns missing parent holidays' do
+        it 'returns missing parent holidays for a year' do
             expected = [
                 @parent,
                 @territory
@@ -343,13 +343,30 @@ describe Territory, type: :model do
             expect(@territory.holidays_missing_for(2020)).to match_array(expected)
         end
 
-        it 'returns missing holidays in the chain' do
+        it 'returns missing holidays in the chain for a year' do
             expected = [
                 @grandparent,
                 @parent
             ]
             expect(@territory.holidays_missing_for(2021)).to match_array(expected)
         end
+
+        it 'returns missing holidays in the chain between two years' do
+
+            whatever = '02'
+            start_date = Date.parse("2018-#{whatever}-#{whatever}")
+            end_date = Date.parse("2020-#{whatever}-#{whatever}")
+
+            expected = {
+                @territory => [],
+                @parent => []
+            }
+
+            result = @territory.holidays_missing_between(start_date, end_date)
+
+            expect(result).to eql(expect)
+        end
+
 
     end # has holidays for scope
 
