@@ -58,7 +58,7 @@ ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 
 ARG RAILS_ROOT=/app
 # ARG PACKAGES="tzdata postgresql-client nodejs bash"
-ARG PACKAGES="tzdata sqlite nodejs bash libxml2 libxslt"
+ARG PACKAGES="tzdata sqlite sqlite-dev nodejs bash libxml2 libxslt"
 
 ENV RAILS_ENV=production
 ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
@@ -70,7 +70,20 @@ RUN apk update \
     && apk upgrade \
     && apk add --update --no-cache $PACKAGES
 
+RUN gem install bundler:2.1.4    
+
 COPY --from=build-env $RAILS_ROOT $RAILS_ROOT
+
+# Required by sprockets
+COPY /app/assets/config/manifest.js app/assets/config/
+
+# Database configuration
+ENV DATABASE_ADAPTER=sqlite3
+ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
+
+# Database population
+RUN bin/rails db:create db:migrate db:seed
+
 EXPOSE 3000
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]
