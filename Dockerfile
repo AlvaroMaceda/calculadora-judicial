@@ -14,7 +14,8 @@ ENV RAILS_ENV=production
 ENV NODE_ENV=production
 ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
 
-WORKDIR $RAILS_ROOT# install packages
+WORKDIR $RAILS_ROOT
+# install packages
 RUN apk update \
     && apk upgrade \
     && apk add --update --no-cache $BUILD_PACKAGES $DEV_PACKAGES $RUBY_PACKAGES
@@ -28,18 +29,18 @@ COPY Gemfile* package.json yarn.lock ./
 RUN gem install bundler:2.1.4
 COPY Gemfile Gemfile.lock $RAILS_ROOT/
 
-
-# https://bugs.ruby-lang.org/issues/15390
-RUN bundle config build.nokogiri --use-system-libraries --with-xml2-config=/usr/bin/xml2-config --with-xslt-config=/usr/bin/xslt-config
 # for tz-data error
 RUN bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java 
+
+#TO-DO: revise bundle configuration for production
 RUN bundle config --global deployment true 
 RUN bundle config --global frozen 1  \
-    && bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle \
-    # Remove unneeded files (cached *.gem, *.o, *.c)
-    && rm -rf vendor/bundle/ruby/2.5.0/cache/*.gem \
-    && find vendor/bundle/ruby/2.5.0/gems/ -name "*.c" -delete \
-    && find vendor/bundle/ruby/2.5.0/gems/ -name "*.o" -delete
+    && bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle
+
+# Remove unneeded files (cached *.gem, *.o, *.c)
+RUN rm -rf vendor/bundle/ruby/2.6.0/cache/*.gem \
+    && find vendor/bundle/ruby/2.6.0/gems/ -name "*.c" -delete \
+    && find vendor/bundle/ruby/2.6.0/gems/ -name "*.o" -delete
 
 RUN yarn install --production
 COPY . .
@@ -51,9 +52,13 @@ RUN rm -rf node_modules tmp/cache app/assets vendor/assets spec
 
 ############### Build step done ###############
 FROM ruby:2.6.3-alpine
+
+ARG RAILS_MASTER_KEY=
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
 ARG RAILS_ROOT=/app
 # ARG PACKAGES="tzdata postgresql-client nodejs bash"
-ARG PACKAGES="tzdata sqlite3 nodejs bash libxml2 libxslt"
+ARG PACKAGES="tzdata sqlite nodejs bash libxml2 libxslt"
 
 ENV RAILS_ENV=production
 ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
@@ -63,7 +68,9 @@ WORKDIR $RAILS_ROOT
 # install packages
 RUN apk update \
     && apk upgrade \
-    && apk add --update --no-cache $PACKAGESCOPY --from=build-env $RAILS_ROOT $RAILS_ROOT
+    && apk add --update --no-cache $PACKAGES
+
+COPY --from=build-env $RAILS_ROOT $RAILS_ROOT
 EXPOSE 3000
 
 CMD ["rails", "server", "-b", "0.0.0.0"]
