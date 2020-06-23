@@ -23,6 +23,14 @@ Things you may want to cover:
 
 * ...
 
+## Deploying
+
+TO-DO
+
+docker build --tag calculadora_judicial:0.1 .
+docker run --rm --publish 3000:3000 --name calculadora_judicial calculadora_judicial:0.1
+
+
 ## Import data
 
 ### Territories
