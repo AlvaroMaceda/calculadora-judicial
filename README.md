@@ -25,11 +25,30 @@ Things you may want to cover:
 
 ## Deploying
 
+
 TO-DO
 
+You can build only the build environment container. This is useful if you want to make changes in Dockerfile and don't want to build everything each time:
+
+docker build --target build-env -t build-container .
+
+Then omment the line FROM ruby:2.6.3-alpine in the second stage and uncommment the line FROM build-container. After that, if you run docker build (with all the parameters) it will rebuild using the previous container. Note that if you change something in the app you should rebuild everything.
+
+
 docker build --build-arg RAILS_MASTER_KEY=[your master.key contents] --tag calculadora_judicial:0.1 .
+
+
+docker build --build-arg RAILS_MASTER_KEY=[your master.key contents] --tag calculadora_judicial:0.1 .
+
+
+
+
 docker run --rm --publish 3000:3000 --name calculadora_judicial calculadora_judicial:0.1
 
+docker run --rm -ti --publish 3000:3000 --publish 80:80 --name calculadora_judicial calculadora_judicial:0.1 sh
+
+DATABASE_ADAPTER=sqlite3 DATABASE_DATABASE_PRODUCTION=db/production.sqlite3 RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true rails s
+config.consider_all_requests_local 
 
 ## Import data
 
