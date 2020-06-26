@@ -21,8 +21,4 @@ var ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
 
 import "bootstrap"
-
-// This is some bootstrap javascript for testing
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+import '../stylesheets/application.scss'
