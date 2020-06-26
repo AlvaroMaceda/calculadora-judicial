@@ -42,7 +42,7 @@ RUN rm -rf vendor/bundle/ruby/2.6.0/cache/*.gem \
 RUN yarn install --production
 COPY . .
 RUN bin/rails webpacker:compile
-RUN bin/rails assets:precompile
+# RUN bin/rails assets:precompile
 
 # Remove folders not needed in resulting image
 RUN rm -rf node_modules tmp/cache app/assets vendor/assets spec tmp /db/*.sqlite3
@@ -136,9 +136,6 @@ COPY --from=builder $RAILS_ROOT/storage $BANANA/storage
 COPY --from=builder $RAILS_ROOT/vendor $BANANA/vendor
 COPY --from=builder $RAILS_ROOT/public $BANANA/public
 COPY --from=builder $RAILS_ROOT/Gemfile $RAILS_ROOT/Gemfile.lock $BANANA/
-
-# Required by sprockets
-COPY /app/assets/config/manifest.js app/assets/config/
 
 # Database configuration
 ENV DATABASE_ADAPTER=sqlite3
