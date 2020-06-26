@@ -55,6 +55,7 @@ FROM ruby:2.6.3-alpine
 
 # --------------------------------------------------------------------------------------------
 # nginx
+# From: https://github.com/nginxinc/docker-nginx/blob/2ef3fa66f2a434cd5e44e35a02f4ac502cf50808/mainline/alpine/Dockerfile
 # --------------------------------------------------------------------------------------------
 ENV NGINX_VERSION 1.19.0
 ENV NJS_VERSION   0.4.1
