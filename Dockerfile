@@ -2,6 +2,12 @@
 # This image ships with ruby-2.6.6
 FROM phusion/passenger-ruby26:1.0.10
 
+
+# Temporal for debuggin
+# RUN apt update && apt install iputils
+COPY ./tmp/ping /usr/bin
+COPY ./tmp/traceroute.db /usr/bin/traceroute
+
 # Set correct environment variables.
 ENV HOME /root
 
