@@ -57,7 +57,8 @@ ADD ./docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 RUN mkdir /home/app/webapp && chown app:app /home/app/webapp
 COPY --chown=app:app . /home/app/webapp
 
+USER app
+WORKDIR /home/app/webapp
 
-# With app user:
-# gem install bundler:2.1.4
-# bundle install
+RUN gem install bundler:2.1.4
+RUN bundle install
