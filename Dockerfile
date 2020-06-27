@@ -53,7 +53,11 @@ RUN   curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
    && apt-get update && apt-get install yarn
 
-
+# Install tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+RUN ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime \
+ && apt-get update && apt-get install -y tzdata \
+ && dpkg-reconfigure --frontend noninteractive tzdata
 
 # Enable nginx
 RUN rm -f /etc/service/nginx/down
@@ -68,18 +72,16 @@ COPY --chown=app:app . /home/app/webapp
 
 USER app
 WORKDIR /home/app/webapp
+ENV HOME=/home/app
+# RUN whoami
 
 RUN gem install bundler:2.1.4
-RUN bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle
+# RUN bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle
+RUN bundle install --without test:assets -j4 --retry 3 --path=vendor/bundle
+RUN yarn install --check-files
 RUN bundle exec rails webpacker:compile
 
 USER root
-
-# Install tzdata
-ENV DEBIAN_FRONTEND=noninteractive
-RUN    ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime \
-    && apt-get update && apt-get install -y tzdata \
-    && dpkg-reconfigure --frontend noninteractive tzdata
 
 # FALTAN LAS VARIABLES DE ENTORNO DE RAILS
 ENV DATABASE_ADAPTER=sqlite3
@@ -90,3 +92,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
+
+
+#----------------------------------------------------------------
+# Prod stage
+#----------------------------------------------------------------
+# FROM phusion/passenger-ruby26:1.0.10
