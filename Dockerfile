@@ -2,17 +2,12 @@
 # This image ships with ruby-2.6.6
 FROM phusion/passenger-ruby26:1.0.10
 
-
-# Temporal for debuggin
-# RUN apt update && apt install iputils
-COPY ./tmp/ping /usr/bin
-COPY ./tmp/traceroute.db /usr/bin/traceroute
-
 # Set correct environment variables.
 ENV HOME /root
 
-# Use baseimage-docker's init process.
-CMD ["/sbin/my_init"]
+
+# COPY ./tmp/ping /usr/bin/ping
+# COPY ./tmp/traceroute.db /usr/bin/traceroute
 
 # If you're using the 'customizable' variant, you need to explicitly opt-in
 # for features.
@@ -43,8 +38,22 @@ CMD ["/sbin/my_init"]
 # RUN bash -c "rvm install $RUBY_VERSION"
 # RUN bash -c "rvm --default use $RUBY_VERSION"
 
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Install node
+RUN apt-get update -y \
+    && apt-get install curl gnupg -y \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash \
+    && apt-get install gcc g++ make nodejs -y
+# RUN apt-get update -y 
+# RUN apt-get install curl gnupg -y
+# RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+# RUN apt-get ins
+
+# Install yarn
+RUN   curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+   && apt-get update && apt-get install yarn
+
+
 
 # Enable nginx
 RUN rm -f /etc/service/nginx/down
@@ -61,4 +70,23 @@ USER app
 WORKDIR /home/app/webapp
 
 RUN gem install bundler:2.1.4
-RUN bundle install
+RUN bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle
+RUN bundle exec rails webpacker:compile
+
+USER root
+
+# Install tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+RUN    ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime \
+    && apt-get update && apt-get install -y tzdata \
+    && dpkg-reconfigure --frontend noninteractive tzdata
+
+# FALTAN LAS VARIABLES DE ENTORNO DE RAILS
+ENV DATABASE_ADAPTER=sqlite3
+ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Use baseimage-docker's init process.
+CMD ["/sbin/my_init"]
