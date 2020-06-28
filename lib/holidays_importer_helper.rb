@@ -29,13 +29,13 @@ module HolidaysImporterHelper
 
         def delete_all_holidays
             puts "Deleting all holidays..."
-            Holiday.destroy_all
+            Holiday.delete_all
         end
 
         def delete_year_holidays(year)
             Holiday.where(
                 date: Date.new(year.to_i,1,1)..Date.new(year.to_i,12,31)
-            ).destroy_all
+            ).delete_all
         end
 
         def delete_previous_holidays(year)
