@@ -81,12 +81,19 @@ RUN bundle install --without test:assets -j4 --retry 3 --path=vendor/bundle
 RUN yarn install --check-files
 RUN bundle exec rails webpacker:compile
 
+
 USER root
 
 # FALTAN LAS VARIABLES DE ENTORNO DE RAILS
+ENV RAILS_ENV=production
 ENV DATABASE_ADAPTER=sqlite3
 ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
 ENV RAILS_LOG_TO_STDOUT=true
+# For debugging
+ENV RAILS_ALL_REQUESTS_LOCAL=true 
+
+# Initialize database
+RUN bundle exec rails db:create db:migrate db:seed
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
