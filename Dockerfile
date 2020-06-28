@@ -86,6 +86,7 @@ USER root
 # FALTAN LAS VARIABLES DE ENTORNO DE RAILS
 ENV DATABASE_ADAPTER=sqlite3
 ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
+ENV RAILS_LOG_TO_STDOUT=true
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
