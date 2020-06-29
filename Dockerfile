@@ -83,19 +83,25 @@ RUN apk update \
 RUN gem install bundler:2.1.4    
 
 # ***Copy only necessary files
-COPY --from=builder $RAILS_ROOT $RAILS_ROOT
+# COPY --from=builder $RAILS_ROOT $RAILS_ROOT
 
 # This is to see differences
-ENV BANANA=/banana
+# ENV BANANA=/banana
+ENV BANANA=$RAILS_ROOT
+COPY --from=builder $RAILS_ROOT/config.ru $BANANA/config.ru
+COPY --from=builder $RAILS_ROOT/Rakefile $BANANA/Rakefile
+COPY --from=builder $RAILS_ROOT/Gemfile $RAILS_ROOT/Gemfile.lock $BANANA/
+COPY --from=builder $RAILS_ROOT/.bundle $BANANA/.bundle
 COPY --from=builder $RAILS_ROOT/app $BANANA/app
-COPY --from=builder $RAILS_ROOT/config $BANANA/config
 COPY --from=builder $RAILS_ROOT/bin $BANANA/bin
-COPY --from=builder $RAILS_ROOT/db $BANANA/db
+COPY --from=builder $RAILS_ROOT/config $BANANA/config
+COPY --from=builder $RAILS_ROOT/data $BANANA/data
+COPY --from=builder $RAILS_ROOT/db/seeds.rb $BANANA/db/seeds.rb
+COPY --from=builder $RAILS_ROOT/db/migrate $BANANA/db/migrate
 COPY --from=builder $RAILS_ROOT/lib $BANANA/lib
 COPY --from=builder $RAILS_ROOT/storage $BANANA/storage
 COPY --from=builder $RAILS_ROOT/vendor $BANANA/vendor
 COPY --from=builder $RAILS_ROOT/public $BANANA/public
-COPY --from=builder $RAILS_ROOT/Gemfile $RAILS_ROOT/Gemfile.lock $BANANA/
 
 # Database population
 RUN bundle exec rails db:create db:migrate db:seed
