@@ -26,10 +26,6 @@ RUN apk update \
 
 COPY Gemfile* package.json yarn.lock ./
 
-# install rubygem
-
-# bundle install --deployment
-
 RUN gem install bundler:2.1.4
 COPY Gemfile Gemfile.lock $RAILS_ROOT/
 
@@ -46,15 +42,12 @@ RUN rm -rf vendor/bundle/ruby/2.6.0/cache/*.gem \
 RUN yarn install --production
 COPY . .
 RUN bin/rails webpacker:compile
-# RUN bin/rails assets:precompile
 
 # Remove folders not needed in resulting image
-RUN rm -rf node_modules tmp/cache app/assets vendor/assets spec tmp /db/*.sqlite3
+# RUN rm -rf node_modules tmp/cache app/assets vendor/assets spec tmp /db/*.sqlite3
 
 ############### Build step done ###############
 FROM ruby:2.6.6-alpine
-# Uncomment this if you want to 
-# FROM build-container as deploy
 
 # --------------------------------------------------------------------------------------------
 # Rails
@@ -62,21 +55,21 @@ FROM ruby:2.6.6-alpine
 # If you touch RAILS_ROOT, remember to change it in webapp.conf file too
 ARG RAILS_ROOT=/app
 ARG RAILS_MASTER_KEY=
-ENV PACKAGES="tzdata nodejs libxml2 libxslt"
+ENV PACKAGES="tzdata nodejs libxml2 libxslt nginx"
 ENV OPTIONAL_PACKAGES="bash"
 # Change this is you are using postgress
+# sqlite-libs instead of sqlite-dev?
 ENV DATABASE_PACKAGES="sqlite sqlite-dev"
 
 # Rails environmnet variables
 ENV RAILS_ENV=production
 ENV DATABASE_ADAPTER=sqlite3
 ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
-ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
 
 # Nginx configuration
-COPY ./docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+COPY ./docker/webapp.conf /etc/nginx/conf.d/default.conf
 # We must create this directory or override it at start time with nginx -g 'pid /tmp/nginx.pid;'
 RUN mkdir /run/nginx
 
@@ -107,10 +100,14 @@ COPY --from=builder $RAILS_ROOT/Gemfile $RAILS_ROOT/Gemfile.lock $BANANA/
 # Database population
 RUN bundle exec rails db:create db:migrate db:seed
 
+# We put here logs to stdout so we don't need to see all the import statements
+ENV RAILS_LOG_TO_STDOUT=true
+
 EXPOSE 80
 
 # multiple commands:
 # https://docs.docker.com/config/containers/multi-service_container/
 # CMD ["bin/rails", "server", "-b", "0.0.0.0"]
 # CMD [ "sh", "-c", "bundle exec rake db:create db:migrate && bundle exec rails server -b 0.0.0.0" ]
-CMD [ "sh", "-c", "bundle exec rails server -b 0.0.0.0" ]
+# TO-DO: control the two process running in the container
+CMD [ "sh", "-c", "nginx && bundle exec rails server -b 0.0.0.0" ]
