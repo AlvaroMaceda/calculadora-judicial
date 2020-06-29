@@ -1,91 +1,116 @@
-# https://github.com/phusion/passenger-docker
-# This image ships with ruby-2.6.6
-FROM phusion/passenger-ruby26:1.0.10 as builder
+# From https://medium.com/@lemuelbarango/ruby-on-rails-smaller-docker-images-bff240931332
+FROM ruby:2.6.6-alpine AS builder
 
-# Set correct environment variables.
-ENV HOME /root
+# This label is so we can prune the build images later with:
+# docker image prune --filter label=stage=builder
+LABEL stage=builder
 
-# For debugging
-# COPY ./tmp/ping /usr/bin/ping
-# COPY ./tmp/traceroute.db /usr/bin/traceroute
+ARG RAILS_ROOT=/app
+ARG BUILD_PACKAGES="build-base curl-dev git libxml2 libxslt"
+# For postgress
+# ARG DEV_PACKAGES="postgresql-dev sqlite-dev yaml-dev zlib-dev nodejs yarn libxml2 libxslt"
+# For sqlite3
+# don't sure if libxml2 and libxslt goes in dev or in build packages
+ARG DEV_PACKAGES="sqlite-dev yaml-dev zlib-dev nodejs yarn libxml2-dev libxslt-dev"
+ARG RUBY_PACKAGES="tzdata"
+ENV RAILS_ENV=production
 
-# Install node
-RUN apt-get update -y \
-    && apt-get install curl gnupg -y \
-    && curl -sL https://deb.nodesource.com/setup_10.x | bash \
-    && apt-get install gcc g++ make nodejs -y
+ENV NODE_ENV=production
+ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
 
-# Install yarn
-RUN   curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-   && apt-get update && apt-get install yarn
+WORKDIR $RAILS_ROOT
+# install packages
+RUN apk update \
+    && apk upgrade \
+    && apk add --update --no-cache $BUILD_PACKAGES $DEV_PACKAGES $RUBY_PACKAGES
 
-# Install tzdata
-ENV DEBIAN_FRONTEND=noninteractive
-RUN ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime \
- && apt-get update && apt-get install -y tzdata \
- && dpkg-reconfigure --frontend noninteractive tzdata
+COPY Gemfile* package.json yarn.lock ./
 
-# Copy app
-RUN mkdir /home/app/webapp && chown app:app /home/app/webapp
-COPY --chown=app:app . /home/app/webapp
+# install rubygem
 
-USER app
-WORKDIR /home/app/webapp
-ENV HOME=/home/app
-# RUN whoami
+# bundle install --deployment
 
 RUN gem install bundler:2.1.4
-# RUN bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle
-RUN bundle install --without test:assets -j4 --retry 3 --path=vendor/bundle
-RUN yarn install --check-files
-RUN bundle exec rails webpacker:compile
+COPY Gemfile Gemfile.lock $RAILS_ROOT/
 
-USER root
+#TO-DO: revise bundle configuration for production
+RUN bundle config --global deployment true 
+RUN bundle config --global frozen 1  \
+    && bundle install --without development:test:assets -j4 --retry 3 --path=vendor/bundle
 
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Remove unneeded files (cached *.gem, *.o, *.c)
+RUN rm -rf vendor/bundle/ruby/2.6.0/cache/*.gem \
+    && find vendor/bundle/ruby/2.6.0/gems/ -name "*.c" -delete \
+    && find vendor/bundle/ruby/2.6.0/gems/ -name "*.o" -delete
 
-#----------------------------------------------------------------
-# Prod stage
-#----------------------------------------------------------------
-FROM phusion/passenger-ruby26:1.0.10
+RUN yarn install --production
+COPY . .
+RUN bin/rails webpacker:compile
+# RUN bin/rails assets:precompile
 
-# Install tzdata
-ENV DEBIAN_FRONTEND=noninteractive
-RUN ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime \
- && apt-get update && apt-get install -y tzdata \
- && dpkg-reconfigure --frontend noninteractive tzdata
+# Remove folders not needed in resulting image
+RUN rm -rf node_modules tmp/cache app/assets vendor/assets spec tmp /db/*.sqlite3
 
-# Enable nginx
-RUN rm -f /etc/service/nginx/down
+############### Build step done ###############
+FROM ruby:2.6.6-alpine
+# Uncomment this if you want to 
+# FROM build-container as deploy
 
-# Configure nginx
-RUN rm /etc/nginx/sites-enabled/default
-ADD ./docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+# --------------------------------------------------------------------------------------------
+# Rails
+# --------------------------------------------------------------------------------------------
+# If you touch RAILS_ROOT, remember to change it in webapp.conf file too
+ARG RAILS_ROOT=/app
+ARG RAILS_MASTER_KEY=
+ENV PACKAGES="tzdata nodejs libxml2 libxslt"
+ENV OPTIONAL_PACKAGES="bash"
+# Change this is you are using postgress
+ENV DATABASE_PACKAGES="sqlite sqlite-dev"
 
-# Copy app files. Bundler files are here, under vendor/bundle
-ENV RAILS_ROOT=/home/app/webapp
-COPY --from=builder $RAILS_ROOT $RAILS_ROOT
-
-# Change user 
-USER app
-WORKDIR /home/app/webapp
-ENV HOME=/home/app
-
-RUN gem install bundler:2.1.4
-
-# FALTAN LAS VARIABLES DE ENTORNO DE RAILS
+# Rails environmnet variables
 ENV RAILS_ENV=production
 ENV DATABASE_ADAPTER=sqlite3
 ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
 ENV RAILS_LOG_TO_STDOUT=true
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
 
-# For debugging
-ENV RAILS_ALL_REQUESTS_LOCAL=true 
+# Nginx configuration
+COPY ./docker/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+# We must create this directory or override it at start time with nginx -g 'pid /tmp/nginx.pid;'
+RUN mkdir /run/nginx
 
-# Initialize database
+WORKDIR $RAILS_ROOT
+
+# install packages
+RUN apk update \
+    && apk upgrade \
+    && apk add --update --no-cache $PACKAGES $OPTIONAL_PACKAGES $DATABASE_PACKAGES
+
+RUN gem install bundler:2.1.4    
+
+# ***Copy only necessary files
+COPY --from=builder $RAILS_ROOT $RAILS_ROOT
+
+# This is to see differences
+ENV BANANA=/banana
+COPY --from=builder $RAILS_ROOT/app $BANANA/app
+COPY --from=builder $RAILS_ROOT/config $BANANA/config
+COPY --from=builder $RAILS_ROOT/bin $BANANA/bin
+COPY --from=builder $RAILS_ROOT/db $BANANA/db
+COPY --from=builder $RAILS_ROOT/lib $BANANA/lib
+COPY --from=builder $RAILS_ROOT/storage $BANANA/storage
+COPY --from=builder $RAILS_ROOT/vendor $BANANA/vendor
+COPY --from=builder $RAILS_ROOT/public $BANANA/public
+COPY --from=builder $RAILS_ROOT/Gemfile $RAILS_ROOT/Gemfile.lock $BANANA/
+
+# Database population
 RUN bundle exec rails db:create db:migrate db:seed
 
-# Use baseimage-docker's init process.
-CMD ["/sbin/my_init"]
+EXPOSE 80
+
+# multiple commands:
+# https://docs.docker.com/config/containers/multi-service_container/
+# CMD ["bin/rails", "server", "-b", "0.0.0.0"]
+# CMD [ "sh", "-c", "bundle exec rake db:create db:migrate && bundle exec rails server -b 0.0.0.0" ]
+CMD [ "sh", "-c", "bundle exec rails server -b 0.0.0.0" ]
