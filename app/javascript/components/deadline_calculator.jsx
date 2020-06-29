@@ -12,6 +12,9 @@ import { switchMap, throttleTime, filter, catchError } from "rxjs/operators";
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import moment from 'moment'
 
+// import 'bootstrap'
+// import '../stylesheets/application.scss'
+
 moment.locale('es')
 // TO-DO: remove this and change for moment
 import es from 'date-fns/locale/es';
