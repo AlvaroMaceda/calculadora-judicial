@@ -6,6 +6,9 @@
 
 .git
 
+# Credentials
+config/credentials.yml.enc
+
 # Ignore bundler config.
 /.bundle
 

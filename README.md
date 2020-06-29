@@ -31,6 +31,8 @@ The only credential used by this app is secret_key_base. Before using the applic
 You can change to whatever editor you like more. If you use vim, you can exit with "ESC :wq" keys combination. You are wellcome.
 Save and exit. You will have /config/master.key and /config/credentials.yml.enc generated for your project. Don't share master.key. 
 
+This app uses no credentials, so be aware that config/credentials.yml.enc is in .gitignore and won't be checked-in.
+
 ## Deploying
 
 You can build a container to deploy the app running this command:
