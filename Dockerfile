@@ -61,13 +61,6 @@ ENV OPTIONAL_PACKAGES="bash"
 # sqlite-libs instead of sqlite-dev?
 ENV DATABASE_PACKAGES="sqlite sqlite-dev"
 
-# Rails environmnet variables
-ENV RAILS_ENV=production
-ENV DATABASE_ADAPTER=sqlite3
-ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
-ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
-ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
-
 # Nginx configuration
 COPY ./docker/webapp.conf /etc/nginx/conf.d/default.conf
 # We must create this directory or override it at start time with nginx -g 'pid /tmp/nginx.pid;'
@@ -79,8 +72,6 @@ WORKDIR $RAILS_ROOT
 RUN apk update \
     && apk upgrade \
     && apk add --update --no-cache $PACKAGES $OPTIONAL_PACKAGES $DATABASE_PACKAGES
-
-RUN gem install bundler:2.1.4    
 
 # Copy necesary files. Gems are in /vendor directory, no need to reinstall them
 COPY --from=builder $RAILS_ROOT/config.ru $RAILS_ROOT/config.ru
@@ -98,6 +89,23 @@ COPY --from=builder $RAILS_ROOT/storage $RAILS_ROOT/storage
 COPY --from=builder $RAILS_ROOT/vendor $RAILS_ROOT/vendor
 COPY --from=builder $RAILS_ROOT/public $RAILS_ROOT/public
 
+# Add user
+RUN adduser rails_user -D --home /app
+
+# Write permissions to app's directories
+RUN chown -R rails_user.rails_user $RAILS_ROOT/db
+
+# Switch to rails app user
+USER rails_user
+RUN gem install bundler:2.1.4 --user-install
+
+# Rails environmnet variables
+ENV RAILS_ENV=production
+ENV DATABASE_ADAPTER=sqlite3
+ENV DATABASE_DATABASE_PRODUCTION=db/production.sqlite3
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
+
 # Database population
 RUN bundle exec rails db:create db:migrate db:seed
 
@@ -106,9 +114,11 @@ ENV RAILS_LOG_TO_STDOUT=true
 
 EXPOSE 80
 
+USER root
 # multiple commands:
 # https://docs.docker.com/config/containers/multi-service_container/
 # CMD ["bin/rails", "server", "-b", "0.0.0.0"]
 # CMD [ "sh", "-c", "bundle exec rake db:create db:migrate && bundle exec rails server -b 0.0.0.0" ]
 # TO-DO: control the two process running in the container
-CMD [ "sh", "-c", "nginx && bundle exec rails server -b 0.0.0.0" ]
+# CMD [ "sh", "-c", "nginx && bundle exec rails server -b 0.0.0.0" ]
+CMD [ "sh", "-c", "nginx && su -c 'bundle exec rails s -b 0.0.0.0' rails_user" ]
