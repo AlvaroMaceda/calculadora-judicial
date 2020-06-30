@@ -23,6 +23,16 @@ Things you may want to cover:
 
 * ...
 
+## Credentials
+
+The only credential used by this app is secret_key_base. Before using the application you should generate credentials with:
+- EDITOR=vim rails credentials:edit
+
+You can change to whatever editor you like more. If you use vim, you can exit with "ESC :wq" keys combination. You are wellcome.
+Save and exit. You will have /config/master.key and /config/credentials.yml.enc generated for your project. Don't share master.key. 
+
+This app uses no credentials, so be aware that config/credentials.yml.enc is in .gitignore and won't be checked-in.
+
 ## Deploying
 
 You can build a container to deploy the app running this command:
@@ -32,6 +42,8 @@ You can build a container to deploy the app running this command:
 To test the container localy: 
 
 - ```docker run --rm --publish 80:80 --name calculadora_judicial calculadora_judicial```
+
+Change ```--publish 80:80``` to ```--publish [YOUR MACHINE PORT NUMBER]:80``` to publish the app in a different port.
 
 You can open a shell into the container appening "sh" after that order. In that case, the app won't launch: you can launch it running ```nginx && bundle exec rails s``` (the CMD order of the Dockerfile) Of course you can use all docker utilities like exec, start, etc. to manage that container. Change ```config.consider_all_requests_local``` in ```/config/environments/production``` inside the container if you want to see error outputs.
 
