@@ -50,9 +50,9 @@ export default function DeadlineResults(props) {
     let results = props.results
     return (
         <React.Fragment>
-            <span>Vencimiento:
-            <strong>{formatDeadline(results.deadline)}</strong></span>
-            <h4></h4>
+            <h4>
+            <span>Vencimiento: <strong>{formatDeadline(results.deadline)}</strong></span>
+            </h4>
             {renderMissingHolidays(results.missing_holidays)}
             {/* Vacaciones:{JSON.stringify(results.holidays)}<br/> */}
             <DeadlineCalendar
