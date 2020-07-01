@@ -36,9 +36,13 @@ This app uses no credentials, so be aware that config/credentials.yml.enc is in 
 
 ## Deploying
 
+### Building the container
+
 You can build a container to deploy the app running this command:
 
 - ```docker build --build-arg RAILS_MASTER_KEY=[your master.key contents] --tag calculadora_judicial . ```
+
+### Running the container
 
 To test the container localy: 
 
@@ -46,39 +50,41 @@ To test the container localy:
 
 Change ```--publish 80:80``` to ```--publish [YOUR MACHINE PORT NUMBER]:80``` to publish the app in a different port.
 
-The simplest way to deploy the container is to copy the image to a server with docker installed:
-- Make a file with the contents of your image:
-
-    ```docker save calculadora_judicial | gzip > /tmp/calculadora_judicial.tgz```
-
-- Copy the image to your server:
-
-    ```scp calculadora_judicial.tgz [USERNAME]@[SERVER]:/[DOCKER_IMAGES_DIR]/```
-s
-- Load the image in your server. This command should be executed in the server:
-
-    ```docker load < /[DOCKER_IMAGES_DIR]/calculadora_judicial.tgz```
-
-- Tell docker to start the image:
-
-    ```docker run -d --name calculadora_judicial --restart unless-stopped -p 80:80 calculadora_judicial```
-
-    In this step, you can change the port where the app listens if you have more than one app running in the server. For example, ```-p 8001:80``` will start the app listening in port 8001. Then you can use a virtualhost to redirect to that port. For example, in nginx with a namedvirtualhost:
-```
-    server {
-    listen 80;
-    server_name "your.server.name;
-    location / {
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;	    
-        proxy_pass http://localhost:8001;
-        }
-    }
-```
-
 You can open a shell into the container appening "sh" after that order. In that case, the app won't launch: you can launch it running ```nginx && bundle exec rails s``` (the CMD order of the Dockerfile) Of course you can use all docker utilities like exec, start, etc. to manage that container. Change ```config.consider_all_requests_local``` in ```/config/environments/production``` inside the container if you want to see error outputs.
 
 The container uses nginx as a reverse proxy for the application and also to serve static files. It runs using sqlite3 as database. Be aware that it should work as a read-only database in production: after data is seeded you don't need to change anything. If data changes you can redeploy the container. 
+
+### Deploying the container
+
+The simplest way to deploy the container is to copy the image to a server with docker installed:
+1) Make a file with the contents of your image:
+
+    ```docker save calculadora_judicial | gzip > /tmp/calculadora_judicial.tgz```
+
+2) Copy the image to your server:
+
+    ```scp calculadora_judicial.tgz [USERNAME]@[SERVER]:/[DOCKER_IMAGES_DIR]/```
+
+3) Load the image in your server. This command should be executed in the server:
+
+    ```docker load < /[DOCKER_IMAGES_DIR]/calculadora_judicial.tgz```
+
+4) Tell docker to start the image:
+
+    ```docker run -d --name calculadora_judicial --restart unless-stopped -p 80:80 calculadora_judicial```
+
+    In this step, you can change the port where the app listens if you have more than one app running in the server. For example, ```-p 8001:80``` will start the app listening in port 8001. Then you can use a virtualhost to redirect to that port. For example, in nginx with a named virtualhost:
+```
+    server {
+        listen 80;
+        server_name "your.server.name;
+        location / {
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;	    
+            proxy_pass http://localhost:8001;
+            }
+    }
+```
 
 It should be easy to write a Dockerfile to use a postrgresql server from the Dockerfile provided.
 
@@ -101,7 +107,7 @@ The csv with the data was last updated in 2020. It don't change often (but it ch
 
 Holiday's files are stored in ```data/holidays``` directory. There is a subdirectory for each year. They are loaded with ```rails db:seed```.
 
-There is a rake tasks to load holidays:
+There is also a rake tasks to load holidays:
 - ```rails import:holiday YEAR=2020``` will delete all 2020's holidays and create them again for that year. You can use ```YEAR=All``` to process all files.
 
 ## Development
@@ -160,7 +166,7 @@ To run tests just:
 You can use guard to watch for changes and run tests automatically:
 - ```bundle exec guard```
 
-### Removing the containers
+### Removing the development containers
 
 To completely remove the containers and volumens:
 - ```docker-compose down -v```
