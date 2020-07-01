@@ -1,13 +1,21 @@
 .row {
+    /* IE 11*/
+    -ms-grid-columns: 25px auto;
+    display: -ms-grid;
+
     display: grid;
     grid-template-columns: 25px auto;
-    margin-bottom: 5px;
+    margin-bottom: 5px;    
 }
 
 .color {
     height: 25px;
+    /* IE 11*/
+    -ms-grid-column: 1;
 }
 
 .legend {
     margin-left: 10px;
+    /* IE 11*/
+    -ms-grid-column: 2;
 }

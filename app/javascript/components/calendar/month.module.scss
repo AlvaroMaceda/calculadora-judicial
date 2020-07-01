@@ -27,7 +27,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 100%;
+    width: 99.9%;
 }
   
 .row-middle {
@@ -164,8 +164,8 @@
     
           .col {
             flex-grow: 0;
-            flex-basis: calc(100%/7);
-            width: calc(100%/7);
+            flex-basis: calc(99%/7);
+            width: calc(99%/7);
           }
     
     } // .body
