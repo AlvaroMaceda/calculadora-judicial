@@ -23,7 +23,8 @@
     "react-select": "^3.1.0",
     "react_ujs": "^2.6.1",
     "rxjs": "^6.5.5",
-    "turbolinks": "^5.2.0"
+    "turbolinks": "^5.2.0",
+    "whatwg-fetch": "^3.1.0"
   },
   "version": "0.1.0",
   "devDependencies": {
