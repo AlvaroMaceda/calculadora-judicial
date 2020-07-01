@@ -125,8 +125,8 @@ function DeadlineCalendar(props) {
     ...holidaysMarks
   }
   // console.log('termMarks:',termMarks)
-  // console.log('termWeekends:',termWeekends)
-  // console.log('holidays:',termHolidays)
+  // console.log('termWeekends:',weekendMarks)
+  // console.log('holidays:',holidaysMarks)
   // console.log('marks:',marks)
 
   return(

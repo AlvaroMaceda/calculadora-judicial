@@ -26,7 +26,6 @@ function renderMissingHoliday(holiday){
 }
 
 function renderMissingHolidays(missingHolidays) {
-    console.log(missingHolidays)
     if(!missingHolidays.length) return
 
     let missing = missingHolidays.map( (holiday) => renderMissingHoliday(holiday))

@@ -15,12 +15,6 @@ function isWeekend(day) {
   return day.isoWeekday() == SATURDAY || day.isoWeekday() == SUNDAY
 }
 
-function objKeysToMoment(obj) {
-  return Object.fromEntries(
-    Object.entries(obj).map( ([key, value] ) => [moment(key), value])
-  );
-}
-
 // I don't like this, it abreviates as "lu ma mi ju vi sá do"
 function renderDayNames_i18n() {
 
@@ -41,7 +35,7 @@ function renderDayNames_i18n() {
 } // renderDayNames_i18n
 
 function isString(x) {
-return Object.prototype.toString.call(x) == '[object String]';
+  return Object.prototype.toString.call(x) == '[object String]';
 }
 
 // Can't be a functional component because we need a ref to the content
@@ -59,12 +53,13 @@ class CalendarMonth extends Component {
     super(props)
 
     props.locale && moment.locale(props.locale)
+
     this.disabledStyle = props.onlyMonthDays ? style.hidden : style.disabled 
     this.month = moment([
       parseInt(props.year),
       parseInt(props.month-1),
       1])
-    this.markDays = objKeysToMoment(props.markDays)
+    this.markDays = props.markDays
   }
 
   getMarkStyle(styleName){
@@ -72,7 +67,7 @@ class CalendarMonth extends Component {
   }
   
   getHighlightedStyle(day) {
-    let style = this.markDays[day]
+    let style = this.markDays[day.format('YYYY-MM-DD')]
     if(!style) return {}
 
     return isString(style) ? 

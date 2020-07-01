@@ -102,7 +102,7 @@ class Calendar extends Component {
   }
 
   monthsPerRow(containerWidth, monthWidth) {
-    console.log(`container width: ${containerWidth} month width: ${monthWidth}`)
+    // console.log(`container width: ${containerWidth} month width: ${monthWidth}`)
 
     const maxMonthsPerRow = Math.floor(containerWidth / monthWidth)
     /*

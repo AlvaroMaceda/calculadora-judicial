@@ -111,7 +111,7 @@ class DeadlineCalculator extends Component {
   launchRequest(){
     if(! this.validForm()) return
 
-    console.log('Launching request')
+    // console.log('Launching request')
     this.modifyState({resultsState: RESULT_STATE.LOADING})
     
     let notification = dateToYYYY_MM_DD(this.state.notification)
@@ -123,7 +123,6 @@ class DeadlineCalculator extends Component {
       `&municipality_code=${municipality_code}` + 
       `&days=${days}`
 
-    console.log(url)
     this.requests.next(url)
   }
 
@@ -141,8 +140,8 @@ class DeadlineCalculator extends Component {
 
   calculationError(error) {
     // TO-DO: show some error message
-    console.log('EL REQUEST HA PETAO:')
-    console.log(error.response.message)
+    // console.log('EL REQUEST HA PETAO:')
+    // console.log(error.response.message)
     this.modifyState({
       resultsState: RESULT_STATE.NO_DATA,
       requestError: error.response.message
@@ -153,10 +152,10 @@ class DeadlineCalculator extends Component {
   }
 
   calculationResponse(data) {
-    console.log('Request response')
-    console.log(`error: ${data.error}`)
+    // console.log('Request response')
+    // console.log(`error: ${data.error}`)
     if(data.error) return
-    console.log(data.response)
+    // console.log(data.response)
     this.modifyState({
       resultsState: RESULT_STATE.DATA_RECEIVED,
       results: data.response
