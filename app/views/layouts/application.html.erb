@@ -2,20 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de plazos judiciales</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%
-=begin%>
- <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %> 
-<%
-=end%>
     <%= stylesheet_pack_tag 'application' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <%= yield %>
   </body>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 </html>
