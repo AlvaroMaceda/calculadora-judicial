@@ -3,9 +3,7 @@ import { Component } from 'react';
 import style from './deadline_calculator.module.scss'
 
 import FormGroup from 'react-bootstrap/FormGroup'
-import Container from 'react-bootstrap/Container'
-import Card from 'react-bootstrap/Card'
-import Form from 'react-bootstrap/Form'
+import {Container, Card, Form} from 'react-bootstrap'
 
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
@@ -27,9 +25,8 @@ registerLocale('es', es)
 
 
 import createLoading from './loading'
-import DeadlineResults from './results/deadline_results'
+import DeadlineResults from "./results/deadline_results";
 import Municipality from './municipality'
-import FullScreenOnFocus from './full_screen_on_focus'
 
 
 const Loading = createLoading(DeadlineResults)
@@ -234,7 +231,7 @@ class DeadlineCalculator extends Component {
                   onSubmit={(e)=>e.preventDefault()}>
 
               <FormGroup>
-                <Form.Label>Fecha de notificación</Form.Label>
+              <Form.Label>Fecha de notificación</Form.Label>
                 <div className="row">
                   <div className="col-md-12">
                     <DatePicker
@@ -254,13 +251,6 @@ class DeadlineCalculator extends Component {
                 <Municipality 
                   onChange={ (municipality) => this.setMunicipality(municipality) }
                 />
-
-                <FullScreenOnFocus>
-                  <Municipality 
-                    onChange={ (municipality) => this.setMunicipality(municipality) }
-                  />
-                </FullScreenOnFocus>
-
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
               </FormGroup>
 
