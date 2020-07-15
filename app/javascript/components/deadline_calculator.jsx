@@ -2,6 +2,9 @@ import React from 'react';
 import { Component } from 'react';
 import style from './deadline_calculator.module.scss'
 
+import FormGroup from 'react-bootstrap/FormGroup'
+import {Container, Card} from 'react-bootstrap'
+
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -214,22 +217,20 @@ class DeadlineCalculator extends Component {
 
   render() {
     return (
-      <div className={style.container}>
+      <Container className={style.container}>
 
+        <Card className={style.card}>
 
-
-        <div className={style.card}>
-
-          <div className={style.header}>
+          <Card.Header className={style.header}>
             <h3 className="mb-0">Calculadora de plazos judiciales</h3>
-          </div>
+          </Card.Header>
 
-          <div className={style.body}>
+          <Card.Body className={style.body}>
             <form className="form" role="form" autoComplete="off" 
                   id="loginForm" noValidate="" 
                   onSubmit={(e)=>e.preventDefault()}>
 
-              <div className="form-group">
+              <FormGroup>
                 <label>Fecha de notificación</label>
                 <div className="row">
                   <div className="col-md-12">
@@ -243,17 +244,17 @@ class DeadlineCalculator extends Component {
                   </div>
                 </div>
                 <div className="invalid-feedback">Please enter a password</div>
-              </div> {/*form-group*/}
+              </FormGroup>
 
-              <div className="form-group">
+              <FormGroup>
                 <label htmlFor="municipality" className="lb-lg">Municipio</label>
                 <Municipality 
                   onChange={ (municipality) => this.setMunicipality(municipality) }
                 />
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
-              </div> {/*form-group*/}
+              </FormGroup>
 
-              <div className="form-group">
+              <FormGroup>
                 <label>Días hábiles</label>
                 <input id="workDays" type="text" pattern="[0-9]*"
                   className="form-control" required="" autoComplete="on"
@@ -261,7 +262,7 @@ class DeadlineCalculator extends Component {
                   onChange={e => this.setworkDays(e.target.value)}
                 />
                 <div className="invalid-feedback">Por favor, introduzca un número</div>
-              </div> {/*form-group*/}
+              </FormGroup>
 
             </form>
             {this.renderRequestError()}
@@ -291,13 +292,12 @@ class DeadlineCalculator extends Component {
               }
             /> */}
 
-          </div> {/*body*/}
+          </Card.Body>
           
-        </div> {/*card*/}
+        </Card>
 
 
-
-      </div>
+      </Container>
     )
   }
 }
