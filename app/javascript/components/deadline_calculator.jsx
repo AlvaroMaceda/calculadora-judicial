@@ -3,7 +3,7 @@ import { Component } from 'react';
 import style from './deadline_calculator.module.scss'
 
 import FormGroup from 'react-bootstrap/FormGroup'
-import {Container, Card} from 'react-bootstrap'
+import {Container, Card, Form} from 'react-bootstrap'
 
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
@@ -231,7 +231,7 @@ class DeadlineCalculator extends Component {
                   onSubmit={(e)=>e.preventDefault()}>
 
               <FormGroup>
-                <label>Fecha de notificación</label>
+              <Form.Label>Fecha de notificación</Form.Label>
                 <div className="row">
                   <div className="col-md-12">
                     <DatePicker
@@ -247,7 +247,7 @@ class DeadlineCalculator extends Component {
               </FormGroup>
 
               <FormGroup>
-                <label htmlFor="municipality" className="lb-lg">Municipio</label>
+                <Form.Label>Municipio</Form.Label>
                 <Municipality 
                   onChange={ (municipality) => this.setMunicipality(municipality) }
                 />
@@ -255,7 +255,7 @@ class DeadlineCalculator extends Component {
               </FormGroup>
 
               <FormGroup>
-                <label>Días hábiles</label>
+                <Form.Label>Días hábiles</Form.Label>
                 <input id="workDays" type="text" pattern="[0-9]*"
                   className="form-control" required="" autoComplete="on"
                   value={this.state.workDays}
@@ -267,31 +267,6 @@ class DeadlineCalculator extends Component {
             </form>
             {this.renderRequestError()}
             <Loading loading={this.state.resultsState} results={this.state.results}/>
-            {/* <DeadlineResults 
-              results={
-                // Los datos son inventados
-                {
-                  "municipality_code":"ES46250",
-                  "notification":"2020-03-17",
-                  "days":5,
-                  "deadline":"2020-04-28",
-                  // "deadline":"2020-03-23",
-                  "holidays":[
-                    {"date":"2020-03-19","kind":"country","territory":"Spain"},
-                    {"date":"2020-03-24","kind":"country","territory":"Spain"},
-                    {"date":"2020-03-27","kind":"municipality","territory":"Valencia"},
-                    {"date":"2020-04-08","kind":"island","territory":"Lanzarote"},
-                    {"date":"2020-04-13","kind":"local_entity","territory":"El Perelló"}
-                    ],
-                  "missing_holidays":[
-                    {"territory":"Jaén","year":2020},
-                    {"territory":"Jaén","year":2021},
-                    {"autonomous_community":"Andalucía","year":2020}
-                  ]
-                }
-              }
-            /> */}
-
           </Card.Body>
           
         </Card>
