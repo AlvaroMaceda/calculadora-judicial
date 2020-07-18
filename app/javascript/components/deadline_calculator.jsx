@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import style from './deadline_calculator.module.scss'
+import OverlayableMunicipality from './overlayable_municipality'
 
 import FormGroup from 'react-bootstrap/FormGroup'
 import Container from 'react-bootstrap/Container'
@@ -100,7 +101,7 @@ class DeadlineCalculator extends Component {
       resultsState: RESULT_STATE.NO_DATA, 
       results: {},
       formErrors: {email: '', password: ''},
-      requestError: null
+      requestError: null,
       // requestError: 'Error en la consulta del vencimiento'
     }
 
@@ -251,15 +252,21 @@ class DeadlineCalculator extends Component {
 
               <FormGroup>
                 <Form.Label>Municipio</Form.Label>
-                <Municipality 
+                {/* <Municipality 
+                  onChange={ (municipality) => this.setMunicipality(municipality) }
+                /> */}
+
+                {/* <FullScreenOnFocus>
+                  <Municipality 
+                    
+                    onFocus={ () => console.log('onFocus') }
+                    onBlur={ () =>  console.log('onBlur') }
+                  />
+                </FullScreenOnFocus> */}
+
+                <OverlayableMunicipality
                   onChange={ (municipality) => this.setMunicipality(municipality) }
                 />
-
-                <FullScreenOnFocus>
-                  <Municipality 
-                    onChange={ (municipality) => this.setMunicipality(municipality) }
-                  />
-                </FullScreenOnFocus>
 
                 <div className="invalid-feedback">Por favor, introduzca un municipio correcto</div>
               </FormGroup>

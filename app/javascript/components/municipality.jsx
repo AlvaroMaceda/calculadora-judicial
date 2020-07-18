@@ -4,6 +4,8 @@ import { Component, Fragment } from 'react';
 import Select from 'react-select';
 import { throttle } from "lodash";
 import transliterate from '../transliterate'
+import proptypes from './municipality.proptypes'
+import callIfSet from '../call_if_set'
 
 const MINIMUM_TEXT_TO_SEARCH = 3 // This should be the same number as MunicipalitySearchController minimum 
 
@@ -113,7 +115,7 @@ class Municipality extends Component {
   }
 
   noOptionsMessage({inputValue}) {
-    // if(inputValue && this.state.loading) return 'Cargando municipios...'
+    if(inputValue && this.state.loading) return 'Cargando municipios...'
     if(inputValue.length >= MINIMUM_TEXT_TO_SEARCH) return 'No se ha encontrado el municipio'
     return 'Introduzca al menos tres letras'
   }
@@ -132,9 +134,11 @@ class Municipality extends Component {
           loadingMessage={()=>'Buscando municipios...'}
           options={this.state.options}
           noOptionsMessage={this.noOptionsMessage.bind(this)}
-          onChange={ (item) => this.props.onChange && this.props.onChange(item) }
           onInputChange={this.handleInputChange.bind(this)}
           filterOption={filterOption}
+          onChange={ (item) => callIfSet(this.props.onChange,item) }
+          onFocus={ () => callIfSet(this.props.onFocus) }
+          onBlur={ () => callIfSet(this.props.onBlur) }
         />
       </Fragment>
     )
@@ -143,8 +147,6 @@ class Municipality extends Component {
 
 } // Component
 
-Municipality.propTypes = {
-  onChange: PropTypes.func
-}
+Municipality.propTypes = proptypes
 
 export default Municipality;
