@@ -37,7 +37,7 @@ class Municipality extends Component {
     this.state = {
       options: [],
       error: null,
-      loading: false
+      loading: false,
     }
     this.throttledSearch = throttle(this.searchMunicipalities.bind(this),1000)
     this.lastSearch = null
@@ -139,6 +139,7 @@ class Municipality extends Component {
           onChange={ (item) => callIfSet(this.props.onChange,item) }
           onFocus={ () => callIfSet(this.props.onFocus) }
           onBlur={ () => callIfSet(this.props.onBlur) }
+          onKeyDown={ () => callIfSet(this.props.onKeyDown) }
         />
       </Fragment>
     )

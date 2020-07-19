@@ -14,6 +14,9 @@ function FullScreenOnFocus(props) {
 
   return (
     <React.Fragment>
+      {
+        props.focused ? <div>'BANANA'</div> :''
+      }
       <div className={classes}>
         {props.children}
       </div>

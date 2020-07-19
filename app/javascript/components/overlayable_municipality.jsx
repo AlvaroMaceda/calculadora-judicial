@@ -37,9 +37,15 @@ class OverlayableMunicipality extends Component {
     return(
     <FullScreenOnFocus focused={this.state.focused}>
       <Municipality 
-        onChange={ (municipality) => this.onChange(municipality) }
-        onFocus={ () => {console.log('onFocus'); this.setFocused(true) }}
-        onBlur={ () =>  {console.log('onBlur'); this.setFocused(false) }}
+        onChange={ (municipality) => {
+            municipality.onBlur()
+            this.onChange(municipality)
+          } 
+        }
+        onFocus={ () => this.setFocused(true) }
+        onBlur={ () =>  this.setFocused(false) }
+        onInputChange={ () => this.setFocused(true) }
+        onKeyDown={ () => this.setFocused(true) }
       />
     </FullScreenOnFocus>
     )
