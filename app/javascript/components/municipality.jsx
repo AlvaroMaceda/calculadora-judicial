@@ -33,7 +33,8 @@ function removeSpecialChars(str) {
 class Municipality extends Component {
 
   constructor (props) {
-    super(props);    
+    super(props);
+    this.selectRef = React.createRef()
     this.state = {
       options: [],
       error: null,
@@ -109,6 +110,13 @@ class Municipality extends Component {
     }
   } //searchMunicipalities
 
+  blurSelect() {
+    console.log('BANANA!!')
+    console.log(this.selectRef.current)
+    // this blur has no efect to 'refocus' element on click
+    this.selectRef.current.blur()
+  }
+
   handleInputChange(text) {
     this.lastSearch = text
     this.throttledSearch(text)
@@ -128,6 +136,7 @@ class Municipality extends Component {
       <Fragment>        
         {this.state.error && <div className='alert alert-danger'>{ this.state.error }</div>}
         <Select 
+          ref={this.selectRef}
           isClearable
           placeholder = '...'
           isLoading={this.state.loading}

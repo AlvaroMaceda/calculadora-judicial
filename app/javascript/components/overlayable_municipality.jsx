@@ -16,6 +16,8 @@ class OverlayableMunicipality extends Component {
 
   constructor(props) {
     super(props)
+    
+    this.municipalityRef = React.createRef();
     this.state = {
       focused: false
     }
@@ -30,15 +32,19 @@ class OverlayableMunicipality extends Component {
 
   onChange(municipality) {
     this.setFocused(false)
+    console.log(this.municipalityRef.current)
+    this.municipalityRef.current.blurSelect();
     callIfSet(this.props.onChange, municipality)
   }
 
   render() {
     return(
     <FullScreenOnFocus focused={this.state.focused}>
-      <Municipality 
+      <Municipality
+        ref={this.municipalityRef}
         onChange={ (municipality) => {
-            municipality.onBlur()
+            // municipality.onBlur()
+            /* HOL */
             this.onChange(municipality)
           } 
         }
